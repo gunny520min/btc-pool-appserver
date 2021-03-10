@@ -61,18 +61,6 @@ func (p stringRvSlice) Less(i, j int) bool {
 	return p[uint(i)].v < p[uint(j)].v
 }
 
-type stringIntf struct {
-	v string
-	i interface{}
-}
-type stringIntfSlice []stringIntf
-
-func (p stringIntfSlice) Len() int      { return len(p) }
-func (p stringIntfSlice) Swap(i, j int) { p[uint(i)], p[uint(j)] = p[uint(j)], p[uint(i)] }
-func (p stringIntfSlice) Less(i, j int) bool {
-	return p[uint(i)].v < p[uint(j)].v
-}
-
 type float64Rv struct {
 	v float64
 	r reflect.Value
