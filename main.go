@@ -1,13 +1,20 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"btc-pool-appserver/application/app"
+	"btc-pool-appserver/application/library/log"
+	"fmt"
+	"runtime"
+)
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	_ = r.Run() // listen and serve on 0.0.0.0:8080
+	fmt.Printf("NumCPU: %d, GOMAXPROCS: %d\n", runtime.NumCPU(), runtime.GOMAXPROCS(-1))
+	//initial app
+	app.Init("web", "./")
+	defer app.Exit()
+
+	if err := app.Start(); err != nil {
+		log.Error(err)
+		panic(err.Error())
+	}
 }
