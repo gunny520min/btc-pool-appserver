@@ -1,6 +1,7 @@
 package app
 
 import (
+	"btc-pool-appserver/application/config"
 	"btc-pool-appserver/application/library/log"
 	"os"
 	"sync/atomic"
@@ -24,7 +25,7 @@ func Init(typeStr string, workDir string) {
 	}
 
 	//读取环境变量
-	env := os.Getenv("RUNTIME_ENVIRONMENT")
+	env := "dev" //os.Getenv("RUNTIME_ENVIRONMENT")
 	if env == "" {
 		env = defaultEnv
 	}
@@ -60,7 +61,7 @@ func Init(typeStr string, workDir string) {
 	log.Info("app run in mode " + env)
 
 	// 加载配置，区分运行环境
-	// config.Load(workDir + "conf/env." + env + "/")
+	config.Load(workDir + "conf/env." + env + "/")
 
 	// 初始化语言包
 	// lang.Load(workDir + "conf/lang/")
@@ -79,6 +80,7 @@ func Start() error {
 	engine := gin.New()
 	var err error
 
+	// TODO:
 	// config gin
 
 	// 健康检查
@@ -107,6 +109,6 @@ func Start() error {
 
 func setBtcpool(engine *gin.Engine) error {
 
-	//todo
+	// TODO:
 	return nil
 }
