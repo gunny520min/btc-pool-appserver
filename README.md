@@ -20,5 +20,4 @@ TODO：
 * 初始化很多步骤都注释了。。回头慢慢加吧
 * config 只简单写了一个
 * 简单配置了conf中文件，目前Load后没有映射到config下到结构体中，不知道为什么。。
-* third/base.go中的// "gitlab.bitdeer.vip/bitdeer/go-lib/okHttp" 下不了， okHttp暂时注释了，还没发起http请求
 

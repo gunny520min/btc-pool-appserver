@@ -11,7 +11,8 @@ import (
 	"btc-pool-appserver/application/config"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/log"
-	// "gitlab.bitdeer.vip/bitdeer/go-lib/okHttp"
+
+	"gitlab.bitdeer.vip/bitdeer/go-lib/okHttp"
 )
 
 func init() {
@@ -55,9 +56,9 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 
 	if api.Method == "POST" {
 		headers["Content-Type"] = "application/json"
-		// res, ext, err = okHttp.Post(api.Uri, finalParams, api.Timeout, 3, headers)
+		res, ext, err = okHttp.Post(api.Uri, finalParams, api.Timeout, 3, headers)
 	} else {
-		// res, ext, err = okHttp.Get(api.Uri+"?"+finalParams, api.Timeout, 3, headers)
+		res, ext, err = okHttp.Get(api.Uri+"?"+finalParams, api.Timeout, 3, headers)
 	}
 
 	if err != nil {
