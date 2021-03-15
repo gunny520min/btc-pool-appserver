@@ -21,3 +21,14 @@ TODO：
 * config 只简单写了一个
 * 简单配置了conf中文件，目前Load后没有映射到config下到结构体中，不知道为什么。。
 
+--------------------------------
+2021/03/15
+```
+    gin -> handler(controller) {
+        service -> Get {
+            client -> Get {
+                dorequest
+            }
+        }
+    }
+```

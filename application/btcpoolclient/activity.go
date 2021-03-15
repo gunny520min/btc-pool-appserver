@@ -40,10 +40,10 @@ func GetBannerList(c *gin.Context, params interface{}) ([]Banner, error) {
 	// return res, nil
 
 	var dest = struct {
-		Status int    `json:"status"`
-		Env  string `json:"env"`
-		Version string `json:"version"`
-		Data []Banner `json:"data"`
+		Status  int      `json:"status"`
+		Env     string   `json:"env"`
+		Version string   `json:"version"`
+		Data    []Banner `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "app.banner", params, &dest)
