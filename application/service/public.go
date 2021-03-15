@@ -1,7 +1,7 @@
 package service
 
 import (
-	"btc-pool-appserver/application/library/btcpoolclient"
+	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/model"
 	"fmt"
 

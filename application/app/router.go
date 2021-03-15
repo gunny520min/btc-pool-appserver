@@ -18,11 +18,11 @@ func InitRouter(r *gin.Engine) error {
 // InitPublicRouter ..
 func InitPublicRouter(r *gin.Engine) {
 	pGroup := r.Group("/api/public")
-	pGroup.POST("/home/index", controller.HomeIndex)
+	pGroup.GET("/home/index", controller.HomeIndex)
 }
 
 // InitAppRouter ...
 func InitAppRouter(r *gin.Engine) {
 	pGroup := r.Group("/api/operation")
-	pGroup.POST("/app/version", controller.AppVersion)
+	pGroup.GET("/app/version", controller.AppVersion)
 }
