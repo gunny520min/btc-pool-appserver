@@ -1,13 +1,13 @@
-btcpool:
-  timeout: 10000
+timeout: 10000
 
-  base: "https://pre.pool.btc.com"
-  basetwo: "https://help.pool.btc.com"
-  explorerBase: "https://explorer-dev.api.btc.com/"
+base: "https://pre.pool.btc.com"
+basetwo: "https://help.pool.btc.com"
+explorerBase: "https://explorer-dev.api.btc.com/"
 
-  apis:
-    app.banner:
-      uri: ""
-    app.notice:
-      uri: ""
-    
+apis:
+  app.banner:
+    uri: "https://doc.btc.com/v1/poster/production/btcpool-app.json"
+    method: "GET"
+  app.notice:
+    uri: ""
+
