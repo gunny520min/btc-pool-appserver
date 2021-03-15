@@ -1,6 +1,8 @@
 package btcpoolclient
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,19 +35,19 @@ type Banner struct {
 func GetBannerList(c *gin.Context, params interface{}) ([]Banner, error) {
 
 	// fake data
-	res := make([]Banner, 1)
-	res[0] = Banner{"0", "http://xxx.png", "http://xxx.png"}
-	return res, nil
+	// res := make([]Banner, 1)
+	// res[0] = Banner{"0", "http://xxx.png", "http://xxx.png"}
+	// return res, nil
 
-	// var dest = struct {
-	// 	BtcpoolRescomm
-	// 	Data []Banner `json:"data"`
-	// }{}
+	var dest = struct {
+		BtcpoolRescomm
+		Data []Banner `json:"data"`
+	}{}
 
-	// _, err := doRequest(c, "bannerlist", params, &dest)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("banner list: %w", err)
-	// }
+	_, err := doRequest(c, "bannerlist", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("banner list: %w", err)
+	}
 
-	// return dest.Data, nil
+	return dest.Data, nil
 }
