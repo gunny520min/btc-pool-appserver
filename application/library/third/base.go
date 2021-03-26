@@ -78,7 +78,7 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	}
 
 	if dest != nil {
-		fmt.Println("222222222222222222")
+		fmt.Println(api.Uri+"  res is")
 		fmt.Println(string(res))
 		if err = jsoniter.Unmarshal(res, dest); err != nil {
 			return nil, err

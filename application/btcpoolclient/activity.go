@@ -29,6 +29,8 @@ type Banner struct {
 	Id   string `json:"id"`
 	Pic  string `json:"pic"`
 	Link string `json:"link"`
+	Title string `json:"Title"`
+	I18n int `json:"i18n"`
 }
 
 // GetBannerList ..

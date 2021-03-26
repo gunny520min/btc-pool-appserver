@@ -11,6 +11,7 @@ import (
 func HomeIndex(c *gin.Context) {
 
 	cpsParams := make(map[string]interface{})
+	lang := GetLang(c)
 	// cpsParams["platform"] = 1
 	if GetLang(c) == "zh_CN" {
 
@@ -27,7 +28,7 @@ func HomeIndex(c *gin.Context) {
 
 	// res
 	res := make(map[string]interface{})
-	res["banner_list"] = service.PublicService.FormatBannerList(cps)
+	res["banner_list"] = service.PublicService.FormatBannerList(cps, lang)
 
 	output.Succ(c, res)
 }

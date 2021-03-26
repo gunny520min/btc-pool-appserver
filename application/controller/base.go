@@ -9,5 +9,10 @@ func GetLang(c *gin.Context) string {
 			return langStr
 		}
 	}
-	return "en_US"
+	langStr := c.Query("lang")
+	if len(langStr)==0 {
+		return "en_US"
+	} else {
+		return langStr
+	}
 }
