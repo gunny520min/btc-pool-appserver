@@ -6,8 +6,9 @@ explorerBase: "https://explorer-dev.api.btc.com/"
 
 apis:
   app.banner:
-    uri: "https://doc.btc.com/v1/poster/production/btcpool-app.json"
+    uri: "/v1/getappbanner"
     method: "GET"
   app.notice:
-    uri: ""
+    uri: "/v1/announcement"
+    method: "GET"
 

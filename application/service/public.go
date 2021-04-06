@@ -12,6 +12,25 @@ type publicHandler struct{}
 
 var PublicService = &publicHandler{}
 
+func (p *publicHandler) AsyncGetNotice(c *gin.Context, params interface{}) <-chan btcpoolclient.NoticeList {
+	ch := make(chan btcpoolclient.NoticeList)
+	go func() {
+		var noticeList btcpoolclient.NoticeList
+		defer func() {
+			if err := recover(); err != nil {
+				_ = c.Error(fmt.Errorf("%v", err))
+			}
+			ch <- noticeList
+		}()
+		if list, err := btcpoolclient.GetNoticeList(c, params); err != nil {
+			_ = c.Error(err).SetType(gin.ErrorTypeNu)
+		} else {
+			noticeList = list
+		}
+	}()
+	return ch
+}
+
 func (p *publicHandler) AsyncGetBanner(c *gin.Context, params interface{}) <-chan btcpoolclient.BannerList {
 	ch := make(chan btcpoolclient.BannerList, 1)
 	go func() {
@@ -41,26 +60,22 @@ func (p *publicHandler) FormatBannerList(ads btcpoolclient.BannerList, lang stri
 
 	// ad := ads[0]
 	for _, v := range ads {
-		if lang=="en_US" {
-			if v.I18n==2 {
-				var b model.Banner
-				b.Id = v.Id
-				b.Link = v.Link
-				b.Lang = "en_US"
-				b.Title = v.Title
-				banners = append(banners, b)
-			}
-		} else {
-			if v.I18n==1 {
-				var b model.Banner
-				b.Id = v.Id
-				b.Link = v.Link
-				b.Lang = "zh_CN"
-				b.Title = v.Title
-				banners = append(banners, b)
-			}
-		}
-
+		var b model.Banner
+		b.Id = v.Id
+		b.ImgUrl = v.Pic
+		b.Link = v.Link
+		banners = append(banners, b)
 	}
 	return banners
+}
+
+func (p *publicHandler) FormatNoticeList(list btcpoolclient.NoticeList, lang string) []model.Notice {
+	var noticeList = make([]model.Notice, 0)
+	for _, v := range list {
+		var n model.Notice
+		n.Content = v.Title
+		n.Link = v.Url
+		noticeList = append(noticeList, n)
+	}
+	return noticeList
 }

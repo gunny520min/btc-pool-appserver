@@ -1,9 +1,8 @@
 package model
 
 type Banner struct {
-	Id   string `json:"id"`
-	Pic  string `json:"pic"`
-	Link string `json:"link"`
-	Lang string `json:"lang"`
-	Title string `json:"title"`
+	Id     string `json:"id"`
+	Index  int    `json:"index"`
+	ImgUrl string `json:"imgUrl"`
+	Link   string `json:"link"`
 }

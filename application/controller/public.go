@@ -18,17 +18,20 @@ func HomeIndex(c *gin.Context) {
 	}
 	// get banner
 	cpsChan := service.PublicService.AsyncGetBanner(c, cpsParams)
+	bannerRes := <-cpsChan
 
 	// get notice
+	noticeChan := service.PublicService.AsyncGetNotice(c, cpsParams)
+	noticeRes := <-noticeChan
 
 	// 获取数据， 判断是否发生了错误
-	cps := <-cpsChan
 
 	// TODO:
 
 	// res
 	res := make(map[string]interface{})
-	res["banner_list"] = service.PublicService.FormatBannerList(cps, lang)
+	res["banner"] = service.PublicService.FormatBannerList(bannerRes, lang)
+	res["notice"] = service.PublicService.FormatNoticeList(noticeRes, lang)
 
 	output.Succ(c, res)
 }

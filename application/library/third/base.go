@@ -37,6 +37,8 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	}
 	if c != nil {
 		headers["Cookie"] = c.GetHeader("Cookie")
+		headers["Accept-Language"] = c.GetHeader("Accept-Language")
+		headers["Authorization"] = c.GetHeader("Authorization")
 		langV, exists := c.Get("lang")
 		if exists {
 			lang = langV.(string)
@@ -78,7 +80,7 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	}
 
 	if dest != nil {
-		fmt.Println(api.Uri+"  res is")
+		fmt.Println(api.Uri + "  res is")
 		fmt.Println(string(res))
 		if err = jsoniter.Unmarshal(res, dest); err != nil {
 			return nil, err

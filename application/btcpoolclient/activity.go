@@ -22,15 +22,14 @@ var id: String = ""
     var backgroundColor: String = ""
 */
 
-type BannerList []Banner
-
 // Banner ..
+type BannerList []Banner
 type Banner struct {
-	Id   string `json:"id"`
-	Pic  string `json:"pic"`
-	Link string `json:"link"`
+	Id    string `json:"id"`
+	Pic   string `json:"pic"`
+	Link  string `json:"link"`
 	Title string `json:"Title"`
-	I18n int `json:"i18n"`
+	I18n  int    `json:"i18n"`
 }
 
 // GetBannerList ..
@@ -42,16 +41,35 @@ func GetBannerList(c *gin.Context, params interface{}) ([]Banner, error) {
 	// return res, nil
 
 	var dest = struct {
-		Status  int      `json:"status"`
-		Env     string   `json:"env"`
-		Version string   `json:"version"`
-		Data    []Banner `json:"data"`
+		BtcpoolRescomm
+		Data []Banner `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "app.banner", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("banner list: %w", err)
+		return nil, fmt.Errorf("error getting banner list: %v", err)
 	}
 
+	return dest.Data, nil
+}
+
+// Notice
+type NoticeList []Notice
+type Notice struct {
+	Id    string `json:"id"`
+	Url   string `json:"url"`
+	Title string `json:"title"`
+}
+
+// Get notice list
+func GetNoticeList(c *gin.Context, params interface{}) ([]Notice, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data []Notice `json:"data"`
+	}{}
+	_, err := doRequest(c, "app.notice", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error getting notice list: %v", err)
+	}
 	return dest.Data, nil
 }

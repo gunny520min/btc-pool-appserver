@@ -10,8 +10,8 @@ import (
 
 // BtcpoolRescomm ..
 type BtcpoolRescomm struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
+	Code int    `json:"err_no"`
+	Msg  string `json:"err_msg"`
 }
 
 // GetCode ..
