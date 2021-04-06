@@ -1,6 +1,11 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/url"
+
+	"github.com/gin-gonic/gin"
+)
 
 // GetLang ...
 func GetLang(c *gin.Context) string {
@@ -10,9 +15,18 @@ func GetLang(c *gin.Context) string {
 		}
 	}
 	langStr := c.Query("lang")
-	if len(langStr)==0 {
+	if len(langStr) == 0 {
 		return "en_US"
 	} else {
 		return langStr
 	}
+}
+
+func urlEncoded(params map[string]interface{}) (string, error) {
+	ue := url.Values{}
+	for k, v := range params {
+		str := fmt.Sprintf("%v", v)
+		ue.Add(k, str)
+	}
+	return url.QueryUnescape(ue.Encode())
 }

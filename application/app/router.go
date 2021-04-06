@@ -19,6 +19,8 @@ func InitRouter(r *gin.Engine) error {
 func InitPublicRouter(r *gin.Engine) {
 	pGroup := r.Group("/api/public")
 	pGroup.GET("/home/index", controller.HomeIndex)
+	pGroup.GET("/home/multiCoinStats", controller.MultiCoinStats)
+	pGroup.GET("/home/hashrateHistory", controller.HashrateHistory)
 }
 
 // InitAppRouter ...

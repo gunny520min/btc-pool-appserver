@@ -11,4 +11,9 @@ apis:
   app.notice:
     uri: "/v1/announcement"
     method: "GET"
-
+  home.multiCoinStats:
+    uri: "/v1/coinstats"
+    method: "GET"
+  pool.hashrateHistory:
+    uri: "/public/v1/pool/share-history/merge"
+    method: "GET"
