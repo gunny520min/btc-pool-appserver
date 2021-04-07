@@ -6,38 +6,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// type ShareHashrates []Ticket
+type ShareHashrateData struct {
+	Unit    string        `json:"unit"`
+	Tickers []([]float64) `json:"tickers"`
+}
 
-// type Ticket interface{} //[]float64
-
-// type Ticket struct {
-// 	x float64
-// 	y float64
-// }
-
-func GetPoolShareHashrate(c *gin.Context, params interface{}) (interface{}, error) {
+func GetPoolShareHashrate(c *gin.Context, params interface{}) (ShareHashrateData, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string]interface{} `json:"data"`
+		Data ShareHashrateData `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "pool.hashrateHistory", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error getting banner list: %v", err)
+		var res ShareHashrateData
+		return res, fmt.Errorf("error getting banner list: %v", err)
 	}
-
-	fmt.Printf("ticket= %v", dest.Data["tickers"])
 	return dest.Data, nil
-	// if tarr, ok := dest.Data["tickers"].([]Ticket); ok {
-	// 	// fmt.Printf("ticket data=%v", tarr)
 
-	// 	// res := make([]Ticket, len(tarr))
-	// 	// for _, t := range tarr {
-	// 	// 	tck := Ticket{t[0], t[1]}
-	// 	// 	res = append(res, tck)
-	// 	// }
-	// 	return tarr, nil
-	// } else {
-	// 	return []Ticket{}, nil
-	// }
 }

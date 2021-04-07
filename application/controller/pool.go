@@ -28,10 +28,13 @@ func HashrateHistory(c *gin.Context) {
 		params["coin_type"] = coin
 
 		if p, err := urlEncoded(params); err != nil {
-			res["histories"] = []float64{}
+			res["histories"] = make(map[string]interface{})
+			res["unit"] = ""
 			output.Succ(c, res)
 		} else {
-			res["histories"] = service.PoolService.GetShareHashrate(c, p)
+			shareData := service.PoolService.GetShareHashrate(c, p)
+			res["histories"] = service.PoolService.FormatHashrateChartData(shareData)
+			res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData)
 			output.Succ(c, res)
 		}
 	}
