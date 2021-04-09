@@ -2,7 +2,7 @@ timeout: 10000
 
 base: "https://pre.pool.btc.com"
 basetwo: "https://help.pool.btc.com"
-explorerBase: "https://explorer-dev.api.btc.com/"
+explorerBase: "https://explorer-app.api.btc.com/"
 
 apis:
   app.banner:
@@ -11,9 +11,25 @@ apis:
   app.notice:
     uri: "/v1/announcement"
     method: "GET"
-  home.multiCoinStats:
-    uri: "/v1/coinstats"
+
+  explorer.poolRank:
+      uri: "/stats/app/pool/top"
+      method: "GET"
+      base: "https://explorer-app.api.btc.com"
+  explorer.blockList:
+      uri: "/chain/app/index/block/list/"
+      method: "GET"
+      base: "https://explorer-app.api.btc.com"
+
+  public.multiCoinStats:
+    uri: "/v1/multiCoinStats"
     method: "GET"
+  public.coinsIncome:
+    uri: "/v1/coins-income"
+    method: "GET"
+
+
+  
   pool.hashrateHistory:
     uri: "/public/v1/pool/share-history/merge"
     method: "GET"

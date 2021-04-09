@@ -35,3 +35,15 @@ func HomeIndex(c *gin.Context) {
 
 	output.Succ(c, res)
 }
+
+func HomeCoinInfoList(c *gin.Context) {
+	//get mul coin stat
+	multiCoinChan := service.PublicService.AsnycGetMultiCoinStats(c)
+	incomeChan := service.PublicService.AsyncGetAllCoinIncome(c)
+	multiCoin := <-multiCoinChan
+	income := <-incomeChan
+
+	res := make(map[string]interface{})
+	res["coinList"] = service.PublicService.FormatHomeCoinList(multiCoin, income)
+	output.Succ(c, res)
+}

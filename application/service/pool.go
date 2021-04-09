@@ -12,6 +12,7 @@ type poolHandler struct{}
 
 var PoolService = &poolHandler{}
 
+// 获取首页算力图表数据
 func (p *poolHandler) GetShareHashrate(c *gin.Context, params interface{}) btcpoolclient.ShareHashrateData {
 	var ret btcpoolclient.ShareHashrateData
 	if list, err := btcpoolclient.GetPoolShareHashrate(c, params); err != nil {

@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/model"
 	"fmt"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -78,4 +79,67 @@ func (p *publicHandler) FormatNoticeList(list btcpoolclient.NoticeList, lang str
 		noticeList = append(noticeList, n)
 	}
 	return noticeList
+}
+
+// 获取全网币收益
+func (p *publicHandler) AsyncGetAllCoinIncome(c *gin.Context) <-chan btcpoolclient.CoinIncomList {
+	ch := make(chan btcpoolclient.CoinIncomList)
+	go func() {
+		incomeList := make(btcpoolclient.CoinIncomList, 0)
+		defer func() {
+			if err := recover(); err != nil {
+				_ = c.Error(fmt.Errorf("get all coin income async panic: %v", err))
+			}
+			ch <- incomeList
+		}()
+		if dic, err := btcpoolclient.GetCoinIncome(c); err != nil {
+			_ = c.Error(err).SetType(gin.ErrorTypeNu)
+		} else {
+			for k, info := range dic {
+				info.CoinType = k
+				incomeList = append(incomeList, info)
+			}
+			incomeList = incomeList
+		}
+	}()
+	return ch
+}
+
+// 获取多币种信息
+func (p *publicHandler) AsnycGetMultiCoinStats(c *gin.Context) <-chan (map[string](btcpoolclient.CoinStat)) {
+	ch := make(chan map[string](btcpoolclient.CoinStat))
+	go func() {
+		var res map[string](btcpoolclient.CoinStat)
+		defer func() {
+			if err := recover(); err != nil {
+				_ = c.Error(fmt.Errorf("get multicoin_stats async panic %v", err))
+			}
+			ch <- res
+		}()
+		if info, err := btcpoolclient.GetPoolMultiCoinStats(c); err != nil {
+			_ = c.Error(err).SetType(gin.ErrorTypeNu)
+		} else {
+			res = info
+		}
+	}()
+	return ch
+}
+
+func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.CoinStat), incomeList btcpoolclient.CoinIncomList) []*model.HomeCoinInfo {
+	fmt.Printf(">>>>>stats.count=%v, incomelist.coutn=%v\n", len(mulStats), len(incomeList))
+	var ret []*model.HomeCoinInfo = make([]*model.HomeCoinInfo, 0)
+	for k, stats := range mulStats {
+		fmt.Printf(">>>>>%v\n", k)
+		for _, income := range incomeList {
+			fmt.Printf(">>>>>income type = %v\n", income.CoinType)
+			if strings.ToLower(k) == strings.ToLower(income.CoinType) {
+				hci := new(model.HomeCoinInfo)
+				hci.Coin = income.CoinType
+				hci.SetData(stats, income)
+				ret = append(ret, hci)
+				break
+			}
+		}
+	}
+	return ret
 }

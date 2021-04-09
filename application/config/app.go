@@ -9,11 +9,9 @@ import (
 
 // Btcpool ..
 var Btcpool = struct {
-	Timeout      int
-	Base         string
-	BaseTwo      string
-	ExplorerBase string
-	Apis         map[string]Api
+	Timeout int
+	Base    string
+	Apis    map[string]Api
 }{}
 
 // API ..
@@ -21,6 +19,7 @@ type Api struct {
 	Uri     string
 	Method  string
 	Timeout int
+	Base    string
 }
 
 // LoadAppConfig ..
@@ -40,7 +39,11 @@ func formatApiMap(apis map[string]Api, base string, defaultTimeout int) map[stri
 		}
 
 		if !strings.HasPrefix(v.Uri, "http") {
-			v.Uri = base + v.Uri
+			if len(v.Base) > 0 {
+				v.Uri = v.Base + v.Uri
+			} else {
+				v.Uri = base + v.Uri
+			}
 		}
 
 		if v.Method == "" {

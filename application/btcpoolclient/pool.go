@@ -11,6 +11,7 @@ type ShareHashrateData struct {
 	Tickers []([]float64) `json:"tickers"`
 }
 
+// 获取首页算力图表数据
 func GetPoolShareHashrate(c *gin.Context, params interface{}) (ShareHashrateData, error) {
 	var dest = struct {
 		BtcpoolRescomm
@@ -23,5 +24,4 @@ func GetPoolShareHashrate(c *gin.Context, params interface{}) (ShareHashrateData
 		return res, fmt.Errorf("error getting banner list: %v", err)
 	}
 	return dest.Data, nil
-
 }
