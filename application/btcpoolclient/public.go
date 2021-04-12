@@ -87,7 +87,7 @@ func GetPoolMultiCoinStats(c *gin.Context) (map[string]CoinStat, error) {
 
 type CoinIncomList []CoinIncome
 type CoinIncome struct {
-	CoinType                 string  `json:"coinType"`
+	CoinType                 string  `json:"-"`
 	Hashrate                 float64 `json:"hashrate"`
 	Diff                     float64 `json:"diff"`
 	IncomeCoin               float64 `json:"income_coin"`
@@ -96,11 +96,11 @@ type CoinIncome struct {
 	IncomeOptimizeCoin       float64 `json:"income_optimize_coin"`
 	IncomeOptimizeUsd        float64 `json:"income_optimize_usd"`
 	IncomeOptimizeCny        float64 `json:"income_optimize_cny"`
-	DiffAdjustTime           float64 `json:"diff_adjust_time"`
-	NextDiff                 float64 `json:"next_diff"`
-	NextIncomeCoin           float64 `json:"next_income_coin"`
-	NextIncomeUsd            float64 `json:"next_income_usd"`
-	NextIncomeCny            float64 `json:"next_income_cny"`
+	DiffAdjustTime           string  `json:"diff_adjust_time"`
+	NextDiff                 string  `json:"next_diff"`
+	NextIncomeCoin           string  `json:"next_income_coin"`
+	NextIncomeUsd            string  `json:"next_income_usd"`
+	NextIncomeCny            string  `json:"next_income_cny"`
 	PaymentMode              string  `json:"payment_mode"`
 	IncomeHashrateUnitSuffix string  `json:"income_hashrate_unit_suffix"`
 	IncomeRealCoin           float64 `json:"income_real_coin"`
@@ -116,6 +116,7 @@ func GetCoinIncome(c *gin.Context) (map[string](CoinIncome), error) {
 	}{}
 
 	_, err := doRequest(c, "public.coinsIncome", "", &dest)
+	fmt.Printf("GetCoinIncome err >>>> %v\n", err)
 	if err != nil {
 		return nil, fmt.Errorf("error GetCoinIncome: %v", err)
 	}

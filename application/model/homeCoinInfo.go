@@ -17,10 +17,10 @@ type HomeCoinInfo struct {
 	AllHashrate     string  `json:"allHashrate"`     // 全网算力
 	AllHashrateUnit string  `json:"allHashrateUnit"` // 全网算力单位
 	Diff            float64 `json:"diff"`            // 全网难度
-	NextDiff        float64 `json:"nextDiff"`        // 下次调整难度
+	NextDiff        string  `json:"nextDiff"`        // 下次调整难度
 	// DiffUnit        string `json:"diffUnit"`        // 全网难度单位
 	// NextDiffPer     string  `json:"nextDiffPer"`     // 下次调整难度百分比
-	NextDiffTime      float64 `json:"nextDiffTime"`      // 下次调整难度时间
+	NextDiffTime      string  `json:"nextDiffTime"`      // 下次调整难度时间
 	IncomeCoin        float64 `json:"incomeCoin"`        // 币单位收益
 	IncomeUnit        string  `json:"incomeUnit"`        // 单位收益单位： th/s
 	IncomeCurrencyUsd float64 `json:"incomeCurrencyUsd"` // 币值单位收益

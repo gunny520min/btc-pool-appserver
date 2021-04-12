@@ -99,7 +99,6 @@ func (p *publicHandler) AsyncGetAllCoinIncome(c *gin.Context) <-chan btcpoolclie
 				info.CoinType = k
 				incomeList = append(incomeList, info)
 			}
-			incomeList = incomeList
 		}
 	}()
 	return ch

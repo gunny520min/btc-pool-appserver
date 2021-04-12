@@ -22,7 +22,7 @@ apis:
       base: "https://explorer-app.api.btc.com"
 
   public.multiCoinStats:
-    uri: "/v1/multiCoinStats"
+    uri: "/v1/pool/multi-coin-stats"
     method: "GET"
   public.coinsIncome:
     uri: "/v1/coins-income"
