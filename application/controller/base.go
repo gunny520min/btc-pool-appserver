@@ -22,6 +22,21 @@ func GetLang(c *gin.Context) string {
 	}
 }
 
+func GetParam(c *gin.Context, key string) string {
+	if v, exit := c.Get(key); exit {
+		if val, ok := v.(string); ok {
+			return val
+		}
+	}
+	val := c.Query(key)
+	if len(val) == 0 {
+		return ""
+	} else {
+		return val
+	}
+	// post？postfrom
+}
+
 func urlEncoded(params map[string]interface{}) (string, error) {
 	ue := url.Values{}
 	for k, v := range params {

@@ -125,12 +125,9 @@ func (p *publicHandler) AsnycGetMultiCoinStats(c *gin.Context) <-chan (map[strin
 }
 
 func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.CoinStat), incomeList btcpoolclient.CoinIncomList) []*model.HomeCoinInfo {
-	fmt.Printf(">>>>>stats.count=%v, incomelist.coutn=%v\n", len(mulStats), len(incomeList))
 	var ret []*model.HomeCoinInfo = make([]*model.HomeCoinInfo, 0)
 	for k, stats := range mulStats {
-		fmt.Printf(">>>>>%v\n", k)
 		for _, income := range incomeList {
-			fmt.Printf(">>>>>income type = %v\n", income.CoinType)
 			if strings.ToLower(k) == strings.ToLower(income.CoinType) {
 				hci := new(model.HomeCoinInfo)
 				hci.Coin = income.CoinType
@@ -141,4 +138,85 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 		}
 	}
 	return ret
+}
+
+// get pool rank
+func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string) <-chan btcpoolclient.PoolRankList {
+	ch := make(chan btcpoolclient.PoolRankList, 0)
+	go func() {
+		var res btcpoolclient.PoolRankList
+		defer func() {
+			if err := recover(); err != nil {
+				_ = c.Error(fmt.Errorf("AsnycGetPoolrank err %v", err))
+			}
+			ch <- res
+		}()
+		if dic, err := btcpoolclient.GetPoolRank(c); err != nil {
+			_ = c.Error(err).SetType(gin.ErrorTypeNu)
+		} else {
+			res = dic[strings.ToLower(coin)].Realtime.List
+		}
+	}()
+	return ch
+}
+
+/*
+type LatestBlock struct {
+	Timestamp string `json:"timestamp"`
+	Reward    string `json:"reward"`
+	Height    int    `json:"height"`
+	PoolName  string `json:"poolName"`
+	Hash      string `json:"hash"`
+	Size      int    `json:"size"`
+}*/
+func (p *publicHandler) FormatPoolRankList(params btcpoolclient.PoolRankList) []model.PoolRank {
+	res := make([]model.PoolRank, 0)
+	for _, v := range params {
+		res = append(res, model.PoolRank{
+			PoolName:               v.PoolName,
+			IconLink:               v.IconLink,
+			RealtimeHashrate:       v.RealtimeHashrate,
+			EstimateHashrate:       v.EstimateHashrate,
+			RealtimeCur2maxPercent: v.RealtimeCur2maxPercent,
+			EstimateCur2max:        v.EstimateCur2max,
+			HashSuffix:             v.HashSuffix,
+			RealtimeDiff24hPercent: v.RealtimeDiff24hPercent,
+		})
+	}
+	return res
+}
+
+// get latest block
+func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string) <-chan btcpoolclient.LatestBlockList {
+	ch := make(chan btcpoolclient.LatestBlockList, 0)
+	go func() {
+		var res btcpoolclient.LatestBlockList
+		defer func() {
+			if err := recover(); err != nil {
+				_ = c.Error(fmt.Errorf("AsnycGetLatestBlocks err %v", err))
+			}
+			ch <- res
+		}()
+		if dic, err := btcpoolclient.GetLatestBlockList(c); err != nil {
+			_ = c.Error(err).SetType(gin.ErrorTypeNu)
+		} else {
+			res = dic[strings.ToLower(coin)].List
+		}
+	}()
+	return ch
+}
+
+func (p *publicHandler) FormatLatestBlockList(params btcpoolclient.LatestBlockList) []model.LatestBlock {
+	res := make([]model.LatestBlock, 0)
+	for _, v := range params {
+		res = append(res, model.LatestBlock{
+			Timestamp: v.Timestamp,
+			Reward:    v.Reward,
+			Height:    v.Height,
+			PoolName:  v.PoolName,
+			Hash:      v.Hash,
+			Size:      v.Size,
+		})
+	}
+	return res
 }

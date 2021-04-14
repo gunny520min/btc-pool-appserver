@@ -39,6 +39,7 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 		headers["Cookie"] = c.GetHeader("Cookie")
 		headers["Accept-Language"] = c.GetHeader("Accept-Language")
 		headers["Authorization"] = c.GetHeader("Authorization")
+		headers["platform"] = c.GetHeader("platform")
 		langV, exists := c.Get("lang")
 		if exists {
 			lang = langV.(string)

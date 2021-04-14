@@ -2,20 +2,22 @@ package controller
 
 import (
 	"btc-pool-appserver/application/library/output"
+	"btc-pool-appserver/application/model"
 	"btc-pool-appserver/application/service"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 // HomeIndex 首页数据
-func HomeIndex(c *gin.Context) {
+func HomeBannerNotice(c *gin.Context) {
 
 	cpsParams := make(map[string]interface{})
 	lang := GetLang(c)
 	// cpsParams["platform"] = 1
-	if GetLang(c) == "zh_CN" {
+	// if GetLang(c) == "zh_CN" {
 
-	}
+	// }
 	// get banner
 	cpsChan := service.PublicService.AsyncGetBanner(c, cpsParams)
 	bannerRes := <-cpsChan
@@ -42,8 +44,22 @@ func HomeCoinInfoList(c *gin.Context) {
 	incomeChan := service.PublicService.AsyncGetAllCoinIncome(c)
 	multiCoin := <-multiCoinChan
 	income := <-incomeChan
-
+	coin := GetParam(c, "coin")
 	res := make(map[string]interface{})
+	if strings.Contains("btc,bch", strings.ToLower(coin)) {
+		// get pool rank
+		// get latest blocks
+		poolrankCh := service.PublicService.AsnycGetPoolRank(c, coin)
+		latestBlockCh := service.PublicService.AsnycGetLatestBlocks(c, coin)
+		poolrank := <-poolrankCh
+		latestBlock := <-latestBlockCh
+
+		res["blocks"] = service.PublicService.FormatLatestBlockList(latestBlock)
+		res["poolRank"] = service.PublicService.FormatPoolRankList(poolrank)
+	} else {
+		res["blocks"] = make([]model.LatestBlock, 0)
+		res["poolRank"] = make([]model.PoolRank, 0)
+	}
 	res["coinList"] = service.PublicService.FormatHomeCoinList(multiCoin, income)
 	output.Succ(c, res)
 }

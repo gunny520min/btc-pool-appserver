@@ -116,7 +116,6 @@ func GetCoinIncome(c *gin.Context) (map[string](CoinIncome), error) {
 	}{}
 
 	_, err := doRequest(c, "public.coinsIncome", "", &dest)
-	fmt.Printf("GetCoinIncome err >>>> %v\n", err)
 	if err != nil {
 		return nil, fmt.Errorf("error GetCoinIncome: %v", err)
 	}
