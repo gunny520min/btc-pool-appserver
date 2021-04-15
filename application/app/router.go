@@ -26,8 +26,9 @@ func InitPublicRouter(r *gin.Engine) {
 
 // InitAppRouter ...
 func InitAppRouter(r *gin.Engine) {
-	pGroup := r.Group("/api/operation")
+	pGroup := r.Group("/api")
 	pGroup.GET("/app/version", controller.AppVersion)
+	pGroup.GET("/app/urlConfig", controller.UrlConfig)
 }
 
 /// 子账户相关

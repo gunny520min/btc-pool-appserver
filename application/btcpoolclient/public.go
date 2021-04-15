@@ -6,6 +6,34 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func AppVersionCheck(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "app.versionCheck", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error  AppVersionCheck: %v", err)
+	}
+
+	return dest.Data, nil
+}
+
+func UrlConfig(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "app.urlConfig", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error UrlConfig: %v", err)
+	}
+
+	return dest.Data, nil
+}
+
 // Banner ..
 type BannerList []Banner
 type Banner struct {

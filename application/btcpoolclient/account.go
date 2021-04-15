@@ -75,3 +75,7 @@ func GetAccountMinerConfig(c *gin.Context, params interface{}) (map[string]inter
 	}
 	return dest.Data, nil
 }
+
+// func GetAccountEarnstats(c *gin.Context, params interface{}) {
+
+// }

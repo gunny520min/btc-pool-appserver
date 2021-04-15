@@ -11,6 +11,12 @@ apis:
   app.notice:
     uri: "/v1/announcement"
     method: "GET"
+  app.versionCheck:
+    uri: "/v1/versioncheck"
+    method: "GET"
+  app.urlConfig:
+    uri: "/v1/getallurl"
+    method: "GET"
 
   explorer.poolRank:
       uri: "/stats/app/pool/top"
