@@ -12,6 +12,8 @@ func InitRouter(r *gin.Engine) error {
 	InitPublicRouter(r)
 	// app相关
 	InitAppRouter(r)
+	// 子账户
+	InitAccountSubaccount(r)
 	return nil
 }
 
@@ -26,4 +28,15 @@ func InitPublicRouter(r *gin.Engine) {
 func InitAppRouter(r *gin.Engine) {
 	pGroup := r.Group("/api/operation")
 	pGroup.GET("/app/version", controller.AppVersion)
+}
+
+/// 子账户相关
+func InitAccountSubaccount(r *gin.Engine) {
+	pgroup := r.Group("/account/subaccount/")
+	pgroup.GET("/info", controller.UpdateSubaccountPayAddress)
+	pgroup.GET("/payset", controller.GetSubaccountPayset)
+	pgroup.POST("/address/update", controller.UpdateSubaccountPayAddress)
+	pgroup.POST("/paylimit/update", controller.UpdateSubaccountPayAddress)
+	pgroup.GET("/minerConfig", controller.UpdateSubaccountPayAddress)
+	pgroup.GET("/earnStats", controller.UpdateSubaccountPayAddress)
 }

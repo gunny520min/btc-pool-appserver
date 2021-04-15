@@ -28,8 +28,26 @@ apis:
     uri: "/v1/coins-income"
     method: "GET"
 
-
-  
   pool.hashrateHistory:
     uri: "/public/v1/pool/share-history/merge"
     method: "GET"
+
+
+  account.info:
+    uri: "/v1/account/info"
+    method : "GET"
+  account.payset:
+    uri: "/v1/account/pay/limit"
+    method: "GET"
+  account.paysetAddressUpdate:
+    uri: "/v1/account/address/update"
+    method: "POST"
+  account.paylimitUpdate:
+    uri: "/v1/account/pay/limit"
+    method: "POST"
+  account.minerConfig:
+    uri: "account/sub-account/info"
+    method : "GET"
+  account.earnStats:
+    uri: "/v1/account/earn-stats"
+    method : "GET"

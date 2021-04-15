@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type AccountParams struct {
+	Puid string `json:"puid" bind:"required"`
+}
+
 // GetLang ...
 func GetLang(c *gin.Context) string {
 	if l, exit := c.Get("lang"); exit {
