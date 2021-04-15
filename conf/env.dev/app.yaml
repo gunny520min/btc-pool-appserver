@@ -1,8 +1,6 @@
 timeout: 10000
 
 base: "https://pre.pool.btc.com"
-basetwo: "https://help.pool.btc.com"
-explorerBase: "https://explorer-app.api.btc.com/"
 
 apis:
   app.banner:
@@ -37,7 +35,14 @@ apis:
   pool.hashrateHistory:
     uri: "/public/v1/pool/share-history/merge"
     method: "GET"
-
+  
+  
+  account.mergeEarnStats:
+    uri: "/v1/account/merged-mining/earn-stats"
+    method: "GET"
+  account.mergeEarnHistory:
+    uri: "/v1/account/merged-mining/earn-history"
+    method: "GET"
 
   account.info:
     uri: "/v1/account/info"
