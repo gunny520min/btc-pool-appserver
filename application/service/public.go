@@ -141,7 +141,7 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 }
 
 // get pool rank
-func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string) <-chan btcpoolclient.PoolRankList {
+func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params interface{}) <-chan btcpoolclient.PoolRankList {
 	ch := make(chan btcpoolclient.PoolRankList, 0)
 	go func() {
 		var res btcpoolclient.PoolRankList
@@ -151,7 +151,7 @@ func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string) <-chan btc
 			}
 			ch <- res
 		}()
-		if dic, err := btcpoolclient.GetPoolRank(c); err != nil {
+		if dic, err := btcpoolclient.GetPoolRank(c, params); err != nil {
 			_ = c.Error(err).SetType(gin.ErrorTypeNu)
 		} else {
 			res = dic[strings.ToLower(coin)].Realtime.List
@@ -160,15 +160,6 @@ func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string) <-chan btc
 	return ch
 }
 
-/*
-type LatestBlock struct {
-	Timestamp string `json:"timestamp"`
-	Reward    string `json:"reward"`
-	Height    int    `json:"height"`
-	PoolName  string `json:"poolName"`
-	Hash      string `json:"hash"`
-	Size      int    `json:"size"`
-}*/
 func (p *publicHandler) FormatPoolRankList(params btcpoolclient.PoolRankList) []model.PoolRank {
 	res := make([]model.PoolRank, 0)
 	for _, v := range params {
@@ -187,7 +178,7 @@ func (p *publicHandler) FormatPoolRankList(params btcpoolclient.PoolRankList) []
 }
 
 // get latest block
-func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string) <-chan btcpoolclient.LatestBlockList {
+func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string, params interface{}) <-chan btcpoolclient.LatestBlockList {
 	ch := make(chan btcpoolclient.LatestBlockList, 0)
 	go func() {
 		var res btcpoolclient.LatestBlockList
@@ -197,7 +188,7 @@ func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string) <-chan
 			}
 			ch <- res
 		}()
-		if dic, err := btcpoolclient.GetLatestBlockList(c); err != nil {
+		if dic, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
 			_ = c.Error(err).SetType(gin.ErrorTypeNu)
 		} else {
 			res = dic[strings.ToLower(coin)].List

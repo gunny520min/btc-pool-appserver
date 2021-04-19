@@ -73,16 +73,12 @@ type PoolRankData struct {
 }
 
 // 获取矿池排名
-func GetPoolRank(c *gin.Context) (map[string]PoolRankData, error) {
+func GetPoolRank(c *gin.Context, params interface{}) (map[string]PoolRankData, error) {
 	var dest = struct {
 		BtcpoolRescomm
 		Data map[string]PoolRankData `json:"data"`
 	}{}
-	// res := make(map[string]string)
-	// res["coins"] = "btc,bch"
-	// res["show_unconfirm_info"] = "true"
-	// fmt.Printf(">>>> sign1 = %v", Sign(res))
-	_, err := doRequest(c, "explorer.poolRank", c.Params, &dest)
+	_, err := doRequest(c, "explorer.poolRank", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error GetPoolRank: %v", err)
 	}
@@ -102,19 +98,13 @@ type LatestBlockData struct {
 	List LatestBlockList `json:"list"`
 }
 
-// 获取最新出块列表
-func GetLatestBlockList(c *gin.Context) (map[string]LatestBlockData, error) {
+func GetLatestBlockList(c *gin.Context, params interface{}) (map[string]LatestBlockData, error) {
 	var dest = struct {
 		BtcpoolRescomm
 		Data map[string]LatestBlockData `json:"data"`
 	}{}
 
-	// res := make(map[string]string)
-	// res["coins"] = "btc,bch"
-	// res["show_unconfirm_info"] = "true"
-	// res["from"] = "ios"
-	// fmt.Printf(">>>> sign = %v", Sign(res))
-	_, err := doRequest(c, "explorer.blockList", c.Params, &dest)
+	_, err := doRequest(c, "explorer.blockList", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error GetLatestBlockList: %v", err)
 	}
