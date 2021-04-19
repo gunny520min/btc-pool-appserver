@@ -38,3 +38,18 @@ func doRequest(c *gin.Context, action string, params interface{}, dest interface
 		return res, nil
 	}
 }
+
+func doRequestEx(c *gin.Context, action string, exuri string, params interface{}, dest interface{}) ([]byte, error) {
+	// 根据action获取配置请求
+	apiConfig, exist := config.Btcpool.Apis[action]
+	if !exist {
+		return nil, fmt.Errorf("btcpool dorequest unknown action: %s", action)
+	}
+	apiConfig.Uri = apiConfig.Uri + exuri
+	// 发起http请求
+	if res, err := third.DoActionRequest(c, &apiConfig, params, nil, dest); err != nil {
+		return nil, fmt.Errorf("btcpool: %w", err)
+	} else {
+		return res, nil
+	}
+}

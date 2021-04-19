@@ -62,3 +62,29 @@ apis:
   account.earnStats:
     uri: "/v1/account/earn-stats"
     method : "GET"
+
+  worker.groups:
+    uri: "/v1/worker/groups"
+    method: "GET"
+  worker.deleteGroup:
+    uri: "/v1/groups/delete/"
+    method: "GET"
+  worker.createGruop:
+    uir: "/v1/groups/create"
+    method: "GET"
+
+  worker.move:
+    uri: "/v1/worker/update"
+    method: "GET"
+  worker.update:
+    uri: "/v1/worker/update"
+    method: "GET"
+  worker.list:
+    uri:"/v1/worker/"
+    method: "GET"
+  worker.detailInfo:
+    uri: "/v1/worker/"
+    method: "GET"
+  worker.hashrateHistory:
+    uri: "/v1/worker/"
+    method: "GET"
