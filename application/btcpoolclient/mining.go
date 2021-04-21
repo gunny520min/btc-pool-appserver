@@ -112,10 +112,10 @@ func WorkerMove(c *gin.Context, params interface{}) (map[string]interface{}, err
 }
 
 //  矿机列表
-func WorkerList(c *gin.Context, params interface{}) (map[string][]Worker, error) {
+func WorkerList(c *gin.Context, params interface{}) (map[string]interface{}, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string][]Worker `json:"data"`
+		Data map[string]interface{} `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "worker.list", params, &dest)

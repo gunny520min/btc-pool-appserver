@@ -80,7 +80,7 @@ apis:
     uri: "/v1/worker/update"
     method: "GET"
   worker.list:
-    uri:"/v1/worker/"
+    uri: "/v1/worker/"
     method: "GET"
   worker.detailInfo:
     uri: "/v1/worker/"

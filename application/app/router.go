@@ -14,6 +14,8 @@ func InitRouter(r *gin.Engine) error {
 	InitAppRouter(r)
 	// 子账户
 	InitAccountSubaccount(r)
+	// 矿机
+	InitMiningWorker(r)
 	return nil
 }
 
@@ -42,4 +44,17 @@ func InitAccountSubaccount(r *gin.Engine) {
 	pgroup.POST("/paylimit/update", controller.UpdateSubaccountPayAddress)
 	pgroup.GET("/minerConfig", controller.UpdateSubaccountPayAddress)
 	pgroup.GET("/earnStats", controller.UpdateSubaccountPayAddress)
+}
+
+/// 挖矿矿机相关
+func InitMiningWorker(r *gin.Engine) {
+	pgroup := r.Group("/mining/worker/")
+	pgroup.GET("/groups", controller.GetMinerGroups)
+	pgroup.GET("/groups/delete", controller.MinerGroupDelete)
+	pgroup.POST("/groups/create", controller.MinerGroupCreate)
+	pgroup.POST("/delete", controller.MinerWorkerDelete)
+	pgroup.GET("/move", controller.MinerWorkerMove)
+	pgroup.GET("/list", controller.GetMinerWorkerList)
+	pgroup.GET("/detail", controller.GetMinerWorkerDetail)
+	pgroup.GET("/hashrate", controller.GetMinerWorkerHashrate)
 }
