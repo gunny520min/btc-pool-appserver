@@ -88,3 +88,28 @@ apis:
   worker.hashrateHistory:
     uri: "/v1/worker/"
     method: "GET"
+
+  alert.settings:
+    uri: "/v1/account/info"
+    method: "GET"
+  alert.contacts:
+    uri: "/v1/alert/contacts/my"
+    method: "GET"
+  alert.hashrateUpdate:
+    uri: "/v1/alert/setting/hashrate"
+    method: "POST"
+  alert.minersUpdate:
+    uri: "/v1/alert/setting/miners"
+    method: "POST"
+  alert.intervalUpdate:
+    uri: "/v1/alert/setting/interval"
+    method: "POST"
+  alert.contactDelete:
+    uri: "/v1/alert/contacts/delete"
+    method: "POST"
+  alert.contactCreate:
+    uri: "/v1/alert/contacts/create"
+    method: "POST"
+  alert.contactUpdate:
+    uri: "/v1/alert/contacts/update"
+    method: "POST"
