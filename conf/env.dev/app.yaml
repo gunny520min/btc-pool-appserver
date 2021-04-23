@@ -63,6 +63,13 @@ apis:
     uri: "/v1/account/earn-stats"
     method : "GET"
 
+  account.hidden:
+    uri: "/v1/account/hidden/set"
+    method: "GET"
+  account.hiddenCancel:
+    uri: "/v1/account/hidden/cancel"
+    method: "GET"
+
   worker.groups:
     uri: "/v1/worker/groups"
     method: "GET"

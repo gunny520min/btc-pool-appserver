@@ -123,3 +123,29 @@ func GetMergeEarnHistory(c *gin.Context, params interface{}) (map[string]([]Merg
 	}
 	return dest.Data, nil
 }
+
+func SubacountHiiden(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "account.hidden", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error account.hidden: %v", err)
+	}
+	return dest.Data, nil
+}
+
+func SubacountHiidenCancel(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "account.hiddenCancel", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error account.hiddenCancel: %v", err)
+	}
+	return dest.Data, nil
+}

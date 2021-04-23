@@ -150,3 +150,37 @@ func GetMergeEarnHistory(c *gin.Context) {
 		output.Succ(c, res)
 	}
 }
+
+func SetSubacountHiiden(c *gin.Context) {
+	var params struct {
+		AccountParams
+		HiddenPuid string `json:"hidden_puid" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.SubacountHiiden(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
+}
+
+func CancelSubacountHiiden(c *gin.Context) {
+	var params struct {
+		AccountParams
+		CancleHiddenPuid string `json:"cancle_hidden_puid" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.SubacountHiidenCancel(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
+}
