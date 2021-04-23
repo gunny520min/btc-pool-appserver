@@ -62,6 +62,9 @@ apis:
   account.earnStats:
     uri: "/v1/account/earn-stats"
     method : "GET"
+  account.earnHistory:
+    uri: "/subaccount/ming/earnHistory"
+    method: "GET"
 
   account.hidden:
     uri: "/v1/account/hidden/set"

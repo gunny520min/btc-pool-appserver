@@ -32,3 +32,16 @@ type MergeEarnHistory struct {
 	EarnModeMore    string `json:"earnModeMore"`
 	Earn            string `json:"earn"`
 }
+
+type EarnHistory struct {
+	DiffRate        string `json:"diffRate"`
+	PaymentTime     string `json:"paymentTime"`
+	Address         string `json:"address"`
+	PaymentRedirect string `json:"paymentRedirect"`
+	Date            string `json:"date"`
+	Stats           string `json:"stats"`
+	EarnMode        string `json:"earnMode"`
+	Unit            string `json:"unit"`
+	EarnModeMore    string `json:"earnModeMore"`
+	Earn            string `json:"earn"`
+}

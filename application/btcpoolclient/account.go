@@ -76,54 +76,6 @@ func GetAccountMinerConfig(c *gin.Context, params interface{}) (map[string]inter
 	return dest.Data, nil
 }
 
-type Earnstats struct {
-	EarningsYesterday string `json:"earnings_yesterday"`
-	EarningsToday     string `json:"earnings_today"`
-	Unpaid            string `json:"unpaid"`
-	Paid              string `json:"paid"`
-}
-
-func GetMergeEarnstats(c *gin.Context, params interface{}) (map[string]Earnstats, error) {
-	var dest = struct {
-		BtcpoolRescomm
-		Data Earnstats `json:"data"`
-	}{}
-
-	_, err := doRequest(c, "account.mergeEarnStats", params, &dest)
-	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnstats: %v", err)
-	}
-	res := make(map[string]Earnstats)
-	res["earnstats"] = dest.Data
-	return res, nil
-}
-
-type MergeEarnHistory struct {
-	DiffRate        string `json:"diff_rate"`
-	PaymentTime     string `json:"payment_time"`
-	Address         string `json:"address"`
-	PaymentRedirect string `json:"payment_redirect"`
-	Date            string `json:"date"`
-	Stats           string `json:"stats"`
-	EarnMode        string `json:"payment_mode"`
-	Unit            string `json:"unit"`
-	EarnModeMore    string `json:"more_than_pps96"`
-	Earn            string `json:"earn"`
-}
-
-func GetMergeEarnHistory(c *gin.Context, params interface{}) (map[string]([]MergeEarnHistory), error) {
-	var dest = struct {
-		BtcpoolRescomm
-		Data map[string]([]MergeEarnHistory) `json:"data"`
-	}{}
-
-	_, err := doRequest(c, "account.mergeEarnHistory", params, &dest)
-	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnHistory: %v", err)
-	}
-	return dest.Data, nil
-}
-
 func SubacountHiiden(c *gin.Context, params interface{}) (map[string]interface{}, error) {
 	var dest = struct {
 		BtcpoolRescomm
