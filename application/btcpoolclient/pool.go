@@ -39,9 +39,9 @@ func GetEarnstats(c *gin.Context, params interface{}) (map[string]Earnstats, err
 		Data Earnstats `json:"data"`
 	}{}
 
-	_, err := doRequest(c, "account.mergeEarnStats", params, &dest)
+	_, err := doRequest(c, "account.earnStats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnstats: %v", err)
+		return nil, fmt.Errorf("error account.earnStats: %v", err)
 	}
 	res := make(map[string]Earnstats)
 	res["earnstats"] = dest.Data
@@ -56,7 +56,7 @@ func GetMergeEarnstats(c *gin.Context, params interface{}) (map[string]Earnstats
 
 	_, err := doRequest(c, "account.mergeEarnStats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnstats: %v", err)
+		return nil, fmt.Errorf("error account.mergeEarnStats: %v", err)
 	}
 	res := make(map[string]Earnstats)
 	res["earnstats"] = dest.Data
@@ -82,9 +82,9 @@ func GetEarnHistory(c *gin.Context, params interface{}) (map[string]([]EarnHisto
 		Data map[string]([]EarnHistory) `json:"data"`
 	}{}
 
-	_, err := doRequest(c, "account.mergeEarnHistory", params, &dest)
+	_, err := doRequest(c, "account.earnHistory", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnHistory: %v", err)
+		return nil, fmt.Errorf("error account.earnHistory: %v", err)
 	}
 	return dest.Data, nil
 }

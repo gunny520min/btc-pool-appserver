@@ -35,14 +35,7 @@ apis:
   pool.hashrateHistory:
     uri: "/public/v1/pool/share-history/merge"
     method: "GET"
-  
-  
-  account.mergeEarnStats:
-    uri: "/v1/account/merged-mining/earn-stats"
-    method: "GET"
-  account.mergeEarnHistory:
-    uri: "/v1/account/merged-mining/earn-history"
-    method: "GET"
+
 
   account.info:
     uri: "/v1/account/info"
@@ -59,11 +52,18 @@ apis:
   account.minerConfig:
     uri: "account/sub-account/info"
     method : "GET"
+
   account.earnStats:
     uri: "/v1/account/earn-stats"
     method : "GET"
   account.earnHistory:
     uri: "/subaccount/ming/earnHistory"
+    method: "GET"
+  account.mergeEarnStats:
+    uri: "/v1/account/merged-mining/earn-stats"
+    method: "GET"
+  account.mergeEarnHistory:
+    uri: "/v1/account/merged-mining/earn-history"
     method: "GET"
 
   account.hidden:
