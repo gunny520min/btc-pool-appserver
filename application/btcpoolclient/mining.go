@@ -156,7 +156,7 @@ func WorkerHashrate(c *gin.Context, params interface{}) (map[string]interface{},
 		return nil, fmt.Errorf("request WorkerHashrate paramaters no workerId")
 	}
 
-	_, err := doRequestEx(c, "worker.hashrate", "/"+workerId+"/share-history/", params, &dest)
+	_, err := doRequestEx(c, "worker.hashrateHistory", "/"+workerId+"/share-history/", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error WorkerHashrate: %v", err)
 	}
