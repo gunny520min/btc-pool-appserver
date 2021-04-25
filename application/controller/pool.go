@@ -55,6 +55,32 @@ func GetMergeEarnHistory(c *gin.Context) {
 	}
 }
 
+func GetEarnstats(c *gin.Context) {
+	var params struct {
+		AccountParams
+		MergeType string `json:"mergeType" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.GetEarnstats(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		res := make(map[string]model.Earnstats)
+		stats := d["earnstats"]
+		res["earnstats"] = model.Earnstats{
+			EarningsYesterday: stats.EarningsYesterday,
+			EarningsToday:     stats.EarningsToday,
+			Unpaid:            stats.Unpaid,
+			Paid:              stats.Paid,
+			EarnUnit:          params.MergeType,
+		}
+		output.Succ(c, res)
+	}
+}
+
 func GetEarnHistory(c *gin.Context) {
 	var params struct {
 		AccountParams

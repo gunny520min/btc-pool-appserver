@@ -33,6 +33,14 @@ type MergeEarnHistory struct {
 	Earn            string `json:"earn"`
 }
 
+type Earnstats struct {
+	EarningsYesterday string `json:"earningsYesterday"`
+	EarningsToday     string `json:"earningsToday"`
+	Unpaid            string `json:"unpaid"`
+	Paid              string `json:"paid"`
+	EarnUnit          string `json:"earnUnit"`
+}
+
 type EarnHistory struct {
 	DiffRate        string `json:"diffRate"`
 	PaymentTime     string `json:"paymentTime"`

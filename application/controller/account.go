@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -102,6 +103,23 @@ func GetAccountMinerConfig(c *gin.Context) {
 		// res["payset"] = d["payset"]
 		output.Succ(c, d)
 	}
+}
+
+func GetSubacountHiidenList(c *gin.Context) {
+	fmt.Println("not implemented")
+	// var params struct {
+	// 	AccountParams
+	// }
+	// if err := c.ShouldBindJSON(&params); err != nil {
+	// 	output.ShowErr(c, errs.ApiErrParams)
+	// 	return
+	// }
+	// if d, err := btcpoolclient.SubacountHiiden(c, params); err != nil {
+	// 	output.ShowErr(c, err)
+	// 	return
+	// } else {
+	// 	output.Succ(c, d)
+	// }
 }
 
 func SetSubacountHiiden(c *gin.Context) {

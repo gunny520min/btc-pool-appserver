@@ -47,11 +47,12 @@ func InitAccountSubaccount(r *gin.Engine) {
 	// 挖矿配置
 	pgroup.GET("/subaccount/minerConfig", controller.GetAccountMinerConfig)
 	// 收益
-	pgroup.GET("/subaccount/mining/earnStats", controller.GetMergeEarnstats)
+	pgroup.GET("/subaccount/mining/earnStats", controller.GetEarnstats)
 	pgroup.GET("/subaccount/mining/earnHistory", controller.GetEarnHistory)
 	pgroup.GET("/subaccount/mining/merge/earnStats", controller.GetMergeEarnstats)
 	pgroup.GET("/subaccount/mining/merge/earnHistory", controller.GetMergeEarnHistory)
 	// 隐藏子账户
+	pgroup.GET("/subaccount/hidden/list", controller.GetSubacountHiidenList)
 	pgroup.GET("/subaccount/hidden", controller.SetSubacountHiiden)
 	pgroup.GET("/subaccount/hiddenCancel", controller.CancelSubacountHiiden)
 }
