@@ -50,7 +50,7 @@ apis:
     uri: "/v1/account/pay/limit"
     method: "POST"
   account.minerConfig:
-    uri: "account/sub-account/info"
+    uri: "/v1/account/sub-account/info"
     method : "GET"
 
   account.earnStats:
