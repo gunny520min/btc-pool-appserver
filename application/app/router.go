@@ -34,6 +34,7 @@ func InitAppRouter(r *gin.Engine) {
 	pGroup := r.Group("/api")
 	pGroup.GET("/app/version", controller.AppVersion)
 	pGroup.GET("/app/urlConfig", controller.UrlConfig)
+	pGroup.GET("/alert/get/merge", controller.GetAlertList)
 }
 
 /// 子账户相关

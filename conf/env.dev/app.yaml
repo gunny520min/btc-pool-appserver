@@ -123,3 +123,9 @@ apis:
   alert.contactUpdate:
     uri: "/v1/alert/contacts/update"
     method: "POST"
+  alert.list:
+    uri: "/v1/alert/get/merge"
+    method: "GET"
+  alert.read:
+    uri: "/v1/alert/read"
+    method: "POST"

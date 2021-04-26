@@ -132,3 +132,38 @@ func UpdateAlertContact(c *gin.Context, params interface{}) (map[string]interfac
 	}
 	return dest.Data, nil
 }
+
+/// 报警列表
+type AlarmClassification struct {
+	Id        string `json:"id"`
+	Uid       string `json:"uid"`
+	CreatedAt string `json:"created_at"`
+	Puid      string `json:"puid"`
+	Content   string `json:"content"`
+}
+
+func GetAlerMerge(c *gin.Context, params interface{}) ([]AlarmClassification, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data ([]AlarmClassification) `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "alert.list", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error alert.list: %v", err)
+	}
+	return dest.Data, nil
+}
+
+func AlertRead(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "alert.read", params, &dest)
+	if err != nil {
+		return nil, fmt.Errorf("error alert.read: %v", err)
+	}
+	return dest.Data, nil
+}

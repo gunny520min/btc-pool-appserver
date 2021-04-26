@@ -148,3 +148,35 @@ func UpdateAlertContact(c *gin.Context) {
 		output.Succ(c, d)
 	}
 }
+
+/// 报警列表
+func GetAlertList(c *gin.Context) {
+	var params AccountParams
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.GetAlerMerge(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
+}
+
+func AlertRead(c *gin.Context) {
+	var params struct {
+		AccountParams
+		LogId string `json:"log_id" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.AlertRead(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
+}

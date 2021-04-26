@@ -93,7 +93,7 @@ func GetEarnHistory(c *gin.Context) {
 		return
 	}
 	params.IsDecimal = "1"
-	if d, err := btcpoolclient.GetMergeEarnHistory(c, params); err != nil {
+	if d, err := btcpoolclient.GetEarnHistory(c, params); err != nil {
 		output.ShowErr(c, err)
 		return
 	} else {
