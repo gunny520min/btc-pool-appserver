@@ -49,9 +49,9 @@ func GetMergeEarnHistory(c *gin.Context) {
 		output.ShowErr(c, err)
 		return
 	} else {
-		res := make(map[string][]btcpoolclient.EarnHistory)
-		res["list"] = d["list"]
-		output.Succ(c, res)
+		// res := make(map[string][]btcpoolclient.EarnHistory)
+		// res["list"] = d["list"]
+		output.Succ(c, d)
 	}
 }
 
@@ -97,8 +97,6 @@ func GetEarnHistory(c *gin.Context) {
 		output.ShowErr(c, err)
 		return
 	} else {
-		res := make(map[string][]btcpoolclient.EarnHistory)
-		res["list"] = d["list"]
-		output.Succ(c, res)
+		output.Succ(c, d)
 	}
 }

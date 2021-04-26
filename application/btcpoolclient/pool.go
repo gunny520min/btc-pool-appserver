@@ -76,10 +76,10 @@ type EarnHistory struct {
 	Earn            string `json:"earn"`
 }
 
-func GetEarnHistory(c *gin.Context, params interface{}) (map[string]([]EarnHistory), error) {
+func GetEarnHistory(c *gin.Context, params interface{}) (map[string]interface{}, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string]([]EarnHistory) `json:"data"`
+		Data map[string]interface{} `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "account.earnHistory", params, &dest)
@@ -89,10 +89,10 @@ func GetEarnHistory(c *gin.Context, params interface{}) (map[string]([]EarnHisto
 	return dest.Data, nil
 }
 
-func GetMergeEarnHistory(c *gin.Context, params interface{}) (map[string]([]EarnHistory), error) {
+func GetMergeEarnHistory(c *gin.Context, params interface{}) (map[string]interface{}, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string]([]EarnHistory) `json:"data"`
+		Data map[string]interface{} `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "account.mergeEarnHistory", params, &dest)

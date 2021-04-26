@@ -12,7 +12,7 @@ type AccountParams struct {
 }
 type PageParams struct {
 	Page     int `json:"page" binding:"required"`
-	PageSize int `json:"pageSize" binding:"required"`
+	PageSize int `json:"page_size" binding:"required"`
 }
 
 // GetLang ...
