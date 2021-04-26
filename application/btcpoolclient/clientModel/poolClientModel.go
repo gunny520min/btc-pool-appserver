@@ -68,3 +68,26 @@ type WorkGroupEntity struct {
 	Shares1d        string `json:"shares_1d"`
 	Shares1dUnit    string `json:"shares_1d_unit"`
 }
+
+type SubAccountRegionEntity struct {
+	Gid            string               `json:"gid"`
+	StratumUrlConf []string             `json:"stratum_url_conf"`
+	CoinType       string               `json:"coin_type"`
+	UserInfo       SubAccountUserInfo   `json:"user_info"`
+	RegionConf     SubAccountRegionConf `json:"region_conf"`
+}
+
+type SubAccountUserInfo struct {
+	Mail      string      `json:"mail"`
+	Phone     PhoneNumber `json:"phone"`
+	AvatarPic string      `json:"avatar_pic"`
+}
+
+type PhoneNumber struct {
+	Country string `json:"country"`
+	Number  string `json:"number"`
+}
+
+type SubAccountRegionConf struct {
+	Text map[string]string `json:"text"`
+}
