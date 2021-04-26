@@ -42,6 +42,9 @@ apis:
     uri: "/public/v1/pool/share-history/merge"
     method: "GET"
 
+  subaccount.algorithms:
+    uri: "v1/account/sub-account/algorithms/morelist"
+    method: "GET"
 
   account.info:
     uri: "/v1/account/info"
@@ -79,6 +82,9 @@ apis:
     uri: "/v1/account/hidden/cancel"
     method: "GET"
 
+  worker.stats:
+    uri: "/v1/worker/stats"
+    method: "GET"
   worker.groups:
     uri: "/v1/worker/groups"
     method: "GET"

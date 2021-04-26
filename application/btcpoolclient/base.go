@@ -2,6 +2,7 @@ package btcpoolclient
 
 import (
 	"btc-pool-appserver/application/config"
+	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/third"
 	"fmt"
 
@@ -22,6 +23,11 @@ func (b *BtcpoolRescomm) GetCode() int {
 // GetMessage ..
 func (b *BtcpoolRescomm) GetMessage() string {
 	return b.Msg
+}
+
+// GetMessage ..
+func (b *BtcpoolRescomm) IsSucc() bool {
+	return b.Code == errs.ErrnoSucc
 }
 
 func doRequest(c *gin.Context, action string, params interface{}, dest interface{}) ([]byte, error) {
