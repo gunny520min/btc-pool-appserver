@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
+	"btc-pool-appserver/application/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +15,7 @@ func GetAlertSetting(c *gin.Context) {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
-	if d, err := btcpoolclient.AlertSettings(c, params); err != nil {
+	if d, err := service.AlertService.GetAlertSettings(c, params); err != nil {
 		output.ShowErr(c, err)
 		return
 	} else {
@@ -22,19 +23,19 @@ func GetAlertSetting(c *gin.Context) {
 	}
 }
 
-func GetAlertContacts(c *gin.Context) {
-	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
-		output.ShowErr(c, errs.ApiErrParams)
-		return
-	}
-	if d, err := btcpoolclient.AlertContacts(c, params); err != nil {
-		output.ShowErr(c, err)
-		return
-	} else {
-		output.Succ(c, d)
-	}
-}
+// func GetAlertContacts(c *gin.Context) {
+// 	var params AccountParams
+// 	if err := c.ShouldBindJSON(&params); err != nil {
+// 		output.ShowErr(c, errs.ApiErrParams)
+// 		return
+// 	}
+// 	if d, err := btcpoolclient.AlertContacts(c, params); err != nil {
+// 		output.ShowErr(c, err)
+// 		return
+// 	} else {
+// 		output.Succ(c, d)
+// 	}
+// }
 
 func UpdateAlertHashrate(c *gin.Context) {
 	var params struct {

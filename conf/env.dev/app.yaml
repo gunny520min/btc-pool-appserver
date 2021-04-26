@@ -57,7 +57,7 @@ apis:
     uri: "/v1/account/earn-stats"
     method : "GET"
   account.earnHistory:
-    uri: "/subaccount/ming/earnHistory"
+    uri: "/v1/account/earn-history"
     method: "GET"
   account.mergeEarnStats:
     uri: "/v1/account/merged-mining/earn-stats"
@@ -129,3 +129,25 @@ apis:
   alert.read:
     uri: "/v1/alert/read"
     method: "POST"
+
+  watcher.list:
+    uri: "/v1/account/watcher/list"
+    method: "GET"
+  watcher.create:
+    uri: "/v1/account/watcher/create" 
+    method: "POST"
+  watcher.delete:
+    uri: "/v1/account/watcher/delete" 
+    method: "POST"
+  watcher.update:
+    uri: "/v1/account/watcher/update"
+    method: "POST"
+  watcher.authority:
+    uri: "/v1/account/getUserAuthority"
+    method: "GET"
+  watcher.check:
+    uri: "/v1/public/watcher/others-list/merge" 
+    method: "GET"
+  watcher.info:
+    uri: "/v1/account/sub-account/info"
+    method: "GET"
