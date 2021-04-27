@@ -3,6 +3,7 @@ package third
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
@@ -46,6 +47,8 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 		}
 	}
 
+	contentType := api.ContentType
+
 	var finalParams string
 	switch p := params.(type) {
 	case string:
@@ -53,12 +56,24 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	case []byte:
 		finalParams = string(p)
 	default:
-		pbyte, _ := json.Marshal(p)
-		finalParams = string(pbyte)
+		if contentType == "json" {
+			pbyte, _ := json.Marshal(p)
+			finalParams = string(pbyte)
+		} else {
+			// urlencoded default
+			m := make(map[string]interface{})
+			pbyte, _ := json.Marshal(p)
+			json.Unmarshal(pbyte, &m)
+			finalParams, _ = urlEncoded(m)
+		}
 	}
 
 	if api.Method == "POST" {
-		headers["Content-Type"] = "application/json"
+		if contentType == "json" {
+			headers["Content-Type"] = "application/json"
+		} else {
+			headers["Content-Type"] = "application/x-www-form-urlencoded"
+		}
 		res, ext, err = okHttp.Post(api.Uri, finalParams, api.Timeout, 3, headers)
 	} else {
 		res, ext, err = okHttp.Get(api.Uri+"?"+finalParams, api.Timeout, 3, headers)
@@ -104,4 +119,13 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	}
 
 	return res, nil
+}
+
+func urlEncoded(params map[string]interface{}) (string, error) {
+	ue := url.Values{}
+	for k, v := range params {
+		str := fmt.Sprintf("%v", v)
+		ue.Add(k, str)
+	}
+	return url.QueryUnescape(ue.Encode())
 }

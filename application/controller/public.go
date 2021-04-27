@@ -60,28 +60,38 @@ func HomeCoinInfoList(c *gin.Context) {
 }
 
 func GetHomeHashrateHistory(c *gin.Context) {
-	params := make(map[string]interface{})
+	// params := make(map[string]interface{})
 	res := make(map[string]interface{})
-	params["dimension"] = "1h"
-	params["count"] = 72
-	params["real_point"] = "1"
+	// params["dimension"] = "1h"
+	// params["count"] = 72
+	// params["real_point"] = "1"
 
 	coin := c.Query("coin")
 	if len(coin) == 0 {
 		output.ShowErr(c, errs.ApiErrParams)
 	} else {
 		fmt.Println("get hashrate")
-		params["coin_type"] = coin
-
-		if p, err := urlEncoded(params); err != nil {
-			res["histories"] = make(map[string]interface{})
-			res["unit"] = ""
-			output.Succ(c, res)
-		} else {
-			shareData := service.PoolService.GetShareHashrate(c, p)
-			res["histories"] = service.PoolService.FormatHashrateChartData(shareData)
-			res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData)
-			output.Succ(c, res)
+		// params["coin_type"] = coin
+		var p struct {
+			Dimension string `json:"dimension"`
+			Count     int    `json:"count"`
+			RealPoint string `json:"real_point"`
+			CoinType  string `json:"coin_type"`
 		}
+		p.CoinType = coin
+		p.Count = 72
+		p.Dimension = "1h"
+		p.RealPoint = "1"
+
+		// if p, err := urlEncoded(params); err != nil {
+		// 	res["histories"] = make(map[string]interface{})
+		// 	res["unit"] = ""
+		// 	output.Succ(c, res)
+		// } else {
+		shareData := service.PoolService.GetShareHashrate(c, p)
+		res["histories"] = service.PoolService.FormatHashrateChartData(shareData)
+		res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData)
+		output.Succ(c, res)
+		// }
 	}
 }

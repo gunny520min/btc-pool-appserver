@@ -16,10 +16,11 @@ var Btcpool = struct {
 
 // API ..
 type Api struct {
-	Uri     string
-	Method  string
-	Timeout int
-	Base    string
+	Uri         string
+	Method      string
+	Timeout     int
+	Base        string
+	ContentType string
 }
 
 // LoadAppConfig ..
