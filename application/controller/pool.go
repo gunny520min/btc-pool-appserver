@@ -100,3 +100,7 @@ func GetEarnHistory(c *gin.Context) {
 		output.Succ(c, d)
 	}
 }
+
+func GetDashboardHome(c *gin.Context) {
+
+}
