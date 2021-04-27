@@ -5,6 +5,7 @@ import (
 	"btc-pool-appserver/application/model"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,43 @@ import (
 type publicHandler struct{}
 
 var PublicService = &publicHandler{}
+
+type BannerAndNoticeData struct {
+	Banner btcpoolclient.BannerList
+	Notice btcpoolclient.NoticeList
+}
+
+func (p *publicHandler) GetBannerAndNotice(c *gin.Context, params interface{}) (BannerAndNoticeData, error) {
+
+	bannerList := make([]btcpoolclient.Banner, 0)
+	var eBanner error
+	noticeList := make([]btcpoolclient.Notice, 0)
+	var eNotice error
+
+	wg := &sync.WaitGroup{}
+	wg.Add(2)
+	go func() {
+		//notice
+		defer wg.Done()
+		noticeList, eNotice = btcpoolclient.GetNoticeList(c, params)
+	}()
+	go func() {
+		//banner
+		defer wg.Done()
+		bannerList, eBanner = btcpoolclient.GetBannerList(c, params)
+	}()
+	wg.Wait()
+	var res BannerAndNoticeData
+	if eBanner != nil {
+		return res, eBanner
+	}
+	if eNotice != nil {
+		return res, eNotice
+	}
+	res.Banner = bannerList
+	res.Notice = noticeList
+	return res, nil
+}
 
 func (p *publicHandler) AsyncGetNotice(c *gin.Context, params interface{}) <-chan btcpoolclient.NoticeList {
 	ch := make(chan btcpoolclient.NoticeList)

@@ -11,29 +11,28 @@ import (
 
 // HomeIndex 首页数据
 func HomeBannerNotice(c *gin.Context) {
-
-	cpsParams := make(map[string]interface{})
-	lang := GetLang(c)
-	// cpsParams["platform"] = 1
-	// if GetLang(c) == "zh_CN" {
-
-	// }
+	// cpsParams := make(map[string]interface{})
 	// get banner
-	cpsChan := service.PublicService.AsyncGetBanner(c, cpsParams)
-	bannerRes := <-cpsChan
+	// cpsChan := service.PublicService.AsyncGetBanner(c, cpsParams)
+	// bannerRes := <-cpsChan
 
-	// get notice
-	noticeChan := service.PublicService.AsyncGetNotice(c, cpsParams)
-	noticeRes := <-noticeChan
+	// // get notice
+	// noticeChan := service.PublicService.AsyncGetNotice(c, cpsParams)
+	// noticeRes := <-noticeChan
 
 	// 获取数据， 判断是否发生了错误
-
 	// TODO:
 
+	lang := GetLang(c)
 	// res
 	res := make(map[string]interface{})
-	res["banner"] = service.PublicService.FormatBannerList(bannerRes, lang)
-	res["notice"] = service.PublicService.FormatNoticeList(noticeRes, lang)
+	if d, err := service.PublicService.GetBannerAndNotice(c, ""); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		res["banner"] = service.PublicService.FormatBannerList(d.Banner, lang)
+		res["notice"] = service.PublicService.FormatNoticeList(d.Notice, lang)
+	}
 
 	output.Succ(c, res)
 }
