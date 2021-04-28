@@ -15,7 +15,13 @@ apis:
   app.urlConfig:
     uri: "/v1/getallurl"
     method: "GET"
-    
+  app.captchaSMS:
+    uri: "/v1/account/verify-code/sms"
+    method: "GET"
+  app.captchaEmail:
+    uri: "/v1/account/verify-code/mail"
+    method: "GET"
+
   explorer.poolRank:
       uri: "/stats/app/pool/top"
       method: "GET"

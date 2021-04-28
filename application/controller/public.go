@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
 	"btc-pool-appserver/application/service"
@@ -93,5 +94,30 @@ func GetHomeHashrateHistory(c *gin.Context) {
 		res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData)
 		output.Succ(c, res)
 		// }
+	}
+}
+
+func GetCaptcha(c *gin.Context) {
+	var params struct {
+		AccountParams
+		Type string `json:"type:" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	h := c.Request.Header
+	l := h.Get("accept-language")
+	if len(l) == 0 {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	var p = make(map[string]string)
+	p["puid"] = params.AccountParams.Puid
+	p["lang"] = l
+	if d, err := btcpoolclient.GetCpatcha(c, p, params.Type); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, d)
 	}
 }

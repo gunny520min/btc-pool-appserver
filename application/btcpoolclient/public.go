@@ -149,3 +149,25 @@ func GetCoinIncome(c *gin.Context) (map[string](CoinIncome), error) {
 	}
 	return dest.Data, nil
 }
+
+func GetCpatcha(c *gin.Context, params interface{}, typeStr string) (map[string]interface{}, error) {
+	var dest struct {
+		BtcpoolRescomm
+		Data map[string]interface{} `json:"data"`
+	}
+
+	if typeStr == "sms" {
+		_, err := doRequest(c, "app.captchaSMS", params, &dest)
+		if err != nil {
+			return nil, fmt.Errorf("error GetCoinIncome: %v", err)
+		}
+	} else if typeStr == "email" {
+		_, err := doRequest(c, "app.captchaEmail", params, &dest)
+		if err != nil {
+			return nil, fmt.Errorf("error GetCoinIncome: %v", err)
+		}
+	} else {
+		return nil, fmt.Errorf("err GetCpatcha: wrong type")
+	}
+	return dest.Data, nil
+}
