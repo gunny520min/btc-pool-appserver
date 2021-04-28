@@ -31,7 +31,9 @@ func (p *publicHandler) GetBannerAndNotice(c *gin.Context, params interface{}) (
 	go func() {
 		//notice
 		defer wg.Done()
-		noticeList, eNotice = btcpoolclient.GetNoticeList(c, params)
+		var p = make(map[string]string)
+		p["test"] = "1"
+		noticeList, eNotice = btcpoolclient.GetNoticeList(c, p)
 	}()
 	go func() {
 		//banner

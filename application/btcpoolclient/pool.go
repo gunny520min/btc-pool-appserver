@@ -3,6 +3,7 @@ package btcpoolclient
 import (
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
 	"fmt"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,39 +28,76 @@ func GetPoolShareHashrate(c *gin.Context, params interface{}) (ShareHashrateData
 	return dest.Data, nil
 }
 
-type Earnstats struct {
-	EarningsYesterday string `json:"earnings_yesterday"`
-	EarningsToday     string `json:"earnings_today"`
-	Unpaid            string `json:"unpaid"`
-	Paid              string `json:"paid"`
+type EarnStats struct {
+	TotalPaid                    string             `json:"total_paid"`
+	PendingPayouts               string             `json:"pending_payouts"`
+	EarningsYesterdayPaymentTime string             `json:"earnings_yesterday_payment_time"`
+	EarningsYesterday            string             `json:"earnings_yesterday"`
+	EarningsYesterdayIsOtc       bool               `json:"earnings_yesterday_is_otc"`
+	LastPaymentTime              string             `json:"last_payment_time"`
+	EarningsToday                string             `json:"earnings_today"`
+	Unpaid                       string             `json:"unpaid"`
+	RelativePpsRate              string             `json:"relative_pps_rate"`
+	Amount100t                   string             `json:"amount_100t"`
+	AmountStandardEarn           string             `json:"amount_standard_earn"`
+	AmountStandardUnit           string             `json:"amount_standard_unit"`
+	HashrateYesterday            HashrateUnitEntity `json:"hashrate_yesterday"`
+	Shares1d                     HashrateUnitEntity `json:"shares_1d"`
+	CoinType                     string             `json:"coin_type"`
+	EarningsYesterdayCoins       EarnStatsSmartItem `json:"earnings_yesterday_coins"`
+	PaymentMode                  string             `json:"payment_mode"`
+	EarningsBefore               bool               `json:"earnings_before"`
 }
 
-func GetEarnstats(c *gin.Context, params interface{}) (map[string]Earnstats, error) {
+func (e *EarnStats) IsSmart() bool {
+	return strings.HasPrefix(e.CoinType, "smart_")
+}
+
+func (e *EarnStats) GetCoin() string {
+	if e.IsSmart() {
+		return "BTC"
+	} else {
+		return strings.ToUpper(e.CoinType)
+	}
+}
+
+type EarnStatsSmartItem struct {
+	Btc string `json:"btc"`
+	Bch string `json:"bch"`
+	Bsv string `json:"bsv"`
+}
+
+type HashrateUnitEntity struct {
+	Size string `json:"size"`
+	Unit string `json:"unit"`
+	Pure string `json:"pure"`
+}
+
+func GetEarnstats(c *gin.Context, params interface{}) (*EarnStats, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data Earnstats `json:"data"`
+		Data EarnStats `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "account.earnStats", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error account.earnStats: %v", err)
 	}
-	res := make(map[string]Earnstats)
-	res["earnstats"] = dest.Data
-	return res, nil
+
+	return &dest.Data, nil
 }
 
-func GetMergeEarnstats(c *gin.Context, params interface{}) (map[string]Earnstats, error) {
+func GetMergeEarnstats(c *gin.Context, params interface{}) (map[string]EarnStats, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data Earnstats `json:"data"`
+		Data EarnStats `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "account.mergeEarnStats", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error account.mergeEarnStats: %v", err)
 	}
-	res := make(map[string]Earnstats)
+	res := make(map[string]EarnStats)
 	res["earnstats"] = dest.Data
 	return res, nil
 }

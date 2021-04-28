@@ -1,5 +1,7 @@
 package clientModel
 
+import "strings"
+
 type SubAccountAlgorithmList struct {
 	HaveDefault bool                  `json:"have_default"`
 	Account     string                `json:"account"`
@@ -22,10 +24,14 @@ type SubAccountAlgorithmDetail struct {
 	CurrentModeText string             `json:"current_mode_text"`
 	OpenCoinType    []string           `json:"open_coin_type"`
 	SupportCoins    []string           `json:"support_coins"`
-	CoinAccounts    []SubAccountEntity `json:"coin_accounts"`
+	CoinAccounts    []SubAccountCoinEntity `json:"coin_accounts"`
 }
 
-type SubAccountEntity struct {
+func (sa *SubAccountAlgorithmDetail) IsSmart() bool {
+	return strings.HasPrefix(sa.CurrentMode, "smart_")
+}
+
+type SubAccountCoinEntity struct {
 	RegionServiceName string   `json:"region_service_name"`
 	Puid              string   `json:"puid"`
 	RegionId          string   `json:"region_id"`
@@ -44,13 +50,13 @@ type SubAccountEntity struct {
 	IsDefault         int      `json:"is_default"`
 	IsCurrent         int      `json:"is_current"`
 	ChangeUpdatedAt   string   `json:"change_updated_at"`
-	CurrentMode       string   `json:"current_mode"`
-	CurrentModeText   string   `json:"current_mode_text"`
-	OpenCoinType      []string `json:"open_coin_type"`
-	CurrentCoinType   string   `json:"current_coin_type"`
 }
 
-type WorkGroupEntity struct {
+func (sa *SubAccountCoinEntity) IsSmart() bool {
+	return strings.HasPrefix(sa.CoinType, "smart_")
+}
+
+type WorkerGroupEntity struct {
 	Gid             string `json:"gid"`
 	WorkersDead     string `json:"workers_dead"`
 	WorkersActive   string `json:"workers_active"`

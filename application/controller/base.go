@@ -23,8 +23,13 @@ func GetLang(c *gin.Context) string {
 		}
 	}
 	langStr := c.Query("lang")
+
 	if len(langStr) == 0 {
-		return "en_US"
+		langStr = c.GetHeader("Accept-Language")
+	}
+
+	if len(langStr) == 0 {
+		return "en_us"
 	} else {
 		return langStr
 	}
