@@ -20,6 +20,8 @@ func InitRouter(r *gin.Engine) error {
 	InitAlert(r)
 	// 观察者链接
 	InitWatcher(r)
+	// 合并挖矿
+	InitMergeMining(r)
 	return nil
 }
 
@@ -97,4 +99,10 @@ func InitWatcher(r *gin.Engine) {
 	pgroup.GET("/update", controller.UpdateWatcher)
 	pgroup.GET("/authority", controller.WatcherAuthority)
 	pgroup.GET("/check", controller.AddOtherWatcher)
+}
+
+func InitMergeMining(r *gin.Engine) {
+	pgroup := r.Group("/merge")
+	pgroup.GET("/coinList", controller.GetMergeCoinInfo)
+	pgroup.GET("/updateAddress", controller.UpdateMergeCoinAddress)
 }

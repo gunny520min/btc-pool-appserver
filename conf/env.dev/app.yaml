@@ -157,3 +157,7 @@ apis:
   watcher.info:
     uri: "/v1/account/sub-account/info"
     method: "GET"
+
+  merge.updateAddress:
+    uri: "account/merged-mining"
+    method: "POST"
