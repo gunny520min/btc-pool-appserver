@@ -3,6 +3,7 @@ package app
 import (
 	"btc-pool-appserver/application/config"
 	"btc-pool-appserver/application/library/errs"
+	"btc-pool-appserver/application/library/lang"
 	"btc-pool-appserver/application/library/log"
 	"os"
 	"sync/atomic"
@@ -65,7 +66,7 @@ func Init(typeStr string, workDir string) {
 	config.Load(workDir + "conf/env." + env + "/")
 
 	// 初始化语言包
-	// lang.Load(workDir + "conf/lang/")
+	lang.Load(workDir + "conf/lang/")
 
 	// 初始化常用错误， err_msg依赖lang
 	errs.Init()

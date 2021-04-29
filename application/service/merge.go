@@ -2,6 +2,7 @@ package service
 
 import (
 	"btc-pool-appserver/application/btcpoolclient"
+	"btc-pool-appserver/application/library/lang"
 	"btc-pool-appserver/application/model"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,7 @@ func (p *mergeHandler) GetMergeCoinData(c *gin.Context, params interface{}) (map
 	}
 }
 
-func (p *mergeHandler) FormatMergeCoinInfos(data map[string]interface{}, lang string) map[string]*model.MergeCoin {
+func (p *mergeHandler) FormatMergeCoinInfos(data map[string]interface{}, langP string) map[string]*model.MergeCoin {
 	var res = make(map[string]*model.MergeCoin)
 	//
 	coins := data["merge_mining_coins"].(map[string]string)
@@ -33,8 +34,8 @@ func (p *mergeHandler) FormatMergeCoinInfos(data map[string]interface{}, lang st
 		info.Offline = v == "offline"
 		info.HelpUrl = coinConfig[k]["helper_link"]
 		info.Address = addressInfo[k]
-		// TODO: localized
-		info.Title = k
+		info.Title = lang.Trans(k, langP, "")
+		info.Title = lang.Trans("merge_coin_help_"+k, langP, "")
 		info.HelpTitle = k
 		res[k] = &info
 	}

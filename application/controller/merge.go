@@ -3,6 +3,7 @@ package controller
 import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
+	"btc-pool-appserver/application/library/lang"
 	"btc-pool-appserver/application/library/output"
 	"btc-pool-appserver/application/model"
 	"btc-pool-appserver/application/service"
@@ -20,18 +21,21 @@ func GetMergeCoinInfo(c *gin.Context) {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
-	lang := GetLang(c)
+	langC := GetLang(c)
 	if data, err := service.MergeService.GetMergeCoinData(c, params); err != nil {
 		output.ShowErr(c, err)
 		return
 	} else {
-		infos := service.MergeService.FormatMergeCoinInfos(data, lang)
+		infos := service.MergeService.FormatMergeCoinInfos(data, langC)
 		coinType := params.CoinType
 		btcBchMerge := strings.ToLower(coinType) == "btc" || strings.ToLower(coinType) == "bch"
 		ltcMerge := strings.ToLower(coinType) == "ltc"
 		res := make(map[string]interface{})
-		//TODO: merge coin desc
-		res["desc"] = ""
+		if btcBchMerge {
+			res["desc"] = lang.Trans("merge_coin_desc1", langC, "")
+		} else if ltcMerge {
+			res["desc"] = lang.Trans("merge_coin_desc2", langC, "")
+		}
 		list := make([]model.MergeCoin, 0)
 
 		var filterCoins []string
