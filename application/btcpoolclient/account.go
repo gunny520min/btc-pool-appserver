@@ -1,10 +1,22 @@
 package btcpoolclient
 
 import (
+	"btc-pool-appserver/application/btcpoolclient/clientModel"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
+
+func GetSubAccountInfo(c *gin.Context, params interface{}) (*clientModel.SubAccountEntity, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data clientModel.SubAccountEntity `json:"data"`
+	}{}
+	if _, err := doRequest(c, "account.info", params, &dest); err != nil {
+		return nil, fmt.Errorf("error GetAccountInfo: %v", err)
+	}
+	return &dest.Data, nil
+}
 
 func GetAccountInfo(c *gin.Context, params interface{}) (map[string]interface{}, error) {
 	var dest = struct {

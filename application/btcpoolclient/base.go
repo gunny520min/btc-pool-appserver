@@ -15,6 +15,14 @@ type BtcpoolRescomm struct {
 	Msg  string `json:"err_msg"`
 }
 
+// BtcpoolRescomm ..
+type BtcpoolPageRescomm struct {
+	Page       int `json:"page"`
+	PageSize   int `json:"page_size"`
+	PageCount  int `json:"page_count"`
+	TotalCount int `json:"total_count"`
+}
+
 // GetCode ..
 func (b *BtcpoolRescomm) GetCode() int {
 	return b.Code

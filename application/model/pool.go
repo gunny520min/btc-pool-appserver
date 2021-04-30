@@ -10,6 +10,7 @@ type Dashboard struct {
 	Income
 	IsSmart       bool          `json:"isSmart"`
 	Puid          string        `json:"puid"`
+	CoinType          string        `json:"coinType"`
 	Title         string        `json:"title"`
 	WorkerStatus  WorkerStatus  `json:"workerStatus"`
 	WorkerGroup   []WorkerGroup `json:"workerGroup"`

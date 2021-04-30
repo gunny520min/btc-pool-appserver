@@ -43,7 +43,10 @@ apis:
     method: "GET"
 
   subaccount.algorithms:
-    uri: "v1/account/sub-account/algorithms/morelist"
+    uri: "/v1/account/sub-account/algorithms/morelist"
+    method: "GET"
+  subaccount.info:
+    uri: "/v1/account/sub-account/info"
     method: "GET"
 
   account.info:

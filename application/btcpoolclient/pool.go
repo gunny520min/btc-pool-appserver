@@ -156,15 +156,15 @@ func GetSubAccountAlgorithms(c *gin.Context, params interface{}) (clientModel.Su
 }
 
 // page of clientModel.WorkGroupEntity
-func GetWorkerStats(c *gin.Context, params interface{}) (map[string]interface{}, error) {
+func GetWorkerStats(c *gin.Context, params interface{}) (*clientModel.WorkerGroupEntity, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string]interface{} `json:"data"`
+		Data clientModel.WorkerGroupEntity `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "worker.stats", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error GetSubAccountAlgorithms: %v", err)
 	}
-	return dest.Data, nil
+	return &dest.Data, nil
 }

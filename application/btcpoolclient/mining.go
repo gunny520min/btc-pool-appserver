@@ -1,6 +1,7 @@
 package btcpoolclient
 
 import (
+	"btc-pool-appserver/application/btcpoolclient/clientModel"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -44,17 +45,20 @@ type Worker struct {
 	WorkerStatus    string  `json:"worker_status"`
 }
 
-func WorkerGroups(c *gin.Context, params interface{}) (map[string][]WorkerStats, error) {
+func WorkerGroups(c *gin.Context, params interface{}) ([]clientModel.WorkerGroupEntity, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string][]WorkerStats `json:"data"`
+		Data struct {
+			BtcpoolPageRescomm
+			List []clientModel.WorkerGroupEntity `json:"list"`
+		} `json:"data"`
 	}{}
 
 	_, err := doRequest(c, "worker.groups", params, &dest)
 	if err != nil {
 		return nil, fmt.Errorf("error WorkerGroups: %v", err)
 	}
-	return dest.Data, nil
+	return dest.Data.List, nil
 }
 
 func WorkerGroupsDelete(c *gin.Context, params interface{}) (map[string]interface{}, error) {

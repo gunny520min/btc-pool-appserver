@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/shopspring/decimal"
 	"math"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,13 +62,15 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 		for _, subaccount := range subAccountAlgorithms.SubAccounts {
 			for _, algorithm := range subaccount.Algorithms {
 				j := 0
+				var l = make([]clientModel.SubAccountAlgorithmDetail, 0)
 				for _, coinAccount := range algorithm.CoinAccounts {
 					if algorithm.IsSmart() == coinAccount.IsSmart() {
-						subaccount.Algorithms[j] = algorithm
+						l = append(l, algorithm)
+						//subaccount.Algorithms[j] = algorithm
 						j++
 					}
 				}
-				subaccount.Algorithms = subaccount.Algorithms[:j]
+				subaccount.Algorithms = l
 			}
 		}
 		// 取puid相同的coinAccount
@@ -91,6 +94,7 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 	}
 }
 
+// 获取用户面板收益数据
 func (p *poolHandler) GetDashboardIncome(c *gin.Context, puid string) (model.Income, error) {
 	var incomeParams = map[string]interface{}{}
 	incomeParams["puid"] = puid
@@ -128,6 +132,7 @@ func (p *poolHandler) GetDashboardIncome(c *gin.Context, puid string) (model.Inc
 	}
 }
 
+// 计算收益数值和单位
 func countIncome(earn string) (string, string) {
 	eNum := decimal.RequireFromString(earn)
 	eStr := decimal.RequireFromString(earn).Truncate(0).String()
@@ -149,4 +154,91 @@ func countIncome(earn string) (string, string) {
 	return eNum.Truncate(int32(dCount)).String(), unit
 }
 
+//
+func (p *poolHandler) GetDashboardWorkerStates(c *gin.Context, puid string, coinType string) (model.WorkerStatus, error) {
+	var incomeParams = map[string]interface{}{}
+	incomeParams["puid"] = puid
+	var workerStats model.WorkerStatus
+	if ws, err := btcpoolclient.GetWorkerStats(c, incomeParams); err != nil {
+		return workerStats, err
+	} else {
+		workerStats.TotalHashrate.Value = ws.Shares15m
+		workerStats.TotalHashrate.Unit = ws.SharesUnit + model.GetCoinSuffixByCoinType(coinType)
+		workerStats.WorkerInactive = ws.WorkersInactive
+		workerStats.WorkerActive = ws.WorkersActive
 
+		return workerStats, nil
+	}
+}
+
+//
+func (p *poolHandler) GetDashboardWorkerGroup(c *gin.Context, puid string, coinType string) ([]model.WorkerGroup, error) {
+	var groupParams = struct {
+		Puid     string `json:"puid"`
+		Page     string `json:"page"`
+		PageSize string `json:"page_size"`
+	}{
+		Puid:     puid,
+		Page:     "1",
+		PageSize: "5",
+	}
+
+	var workerGroups []model.WorkerGroup
+	if list, err := btcpoolclient.WorkerGroups(c, groupParams); err != nil {
+		return workerGroups, err
+	} else {
+		for _, g := range list {
+			mWG := model.WorkerGroup{
+				Gid:          g.Gid,
+				Name:         g.Name,
+				WorkerActive: g.WorkersActive,
+				WorkerTotal:  g.WorkersTotal,
+			}
+			mWG.Hashrate.Value = g.Shares15m
+			mWG.Hashrate.Unit = g.SharesUnit + model.GetCoinSuffixByCoinType(coinType)
+
+			workerGroups = append(workerGroups, mWG)
+		}
+		return workerGroups, nil
+	}
+}
+
+//
+func (p *poolHandler) GetDashboardMiningAddress(c *gin.Context, puid string, coinType string) (model.MiningAddress, error) {
+	var addrParams = struct {
+		Puid string `json:"puid"`
+	}{
+		Puid: puid,
+	}
+
+	var miningAddress model.MiningAddress
+	if sba, err := btcpoolclient.GetSubAccountInfo(c, addrParams); err != nil {
+		return miningAddress, err
+	} else {
+		var list = sba.StratumUrlConf
+		miningAddress.Title = "挖坑地址" // 国际化
+		miningAddress.Desc = "矿机名设置参考：" + sba.Name + ".001"
+		miningAddress.Tips = "注：矿工名须由数字或小写字母组成，密码可任意设置"
+		miningAddress.Address = make([]model.MiningAddressDetail, 0)
+		for index, g := range list {
+			tip := ""
+			url := strings.Split(g, " ")
+			if index == 0 && len(url) == 2 && len(url[1]) > 0 {
+				if strings.ToUpper(coinType) == "BEAM" {
+					tip = url[0] + " 支持普通显卡矿机\n" + url[1] + " 为Nicehash特别优化"
+				}
+				if strings.ToUpper(coinType) == "DCR" {
+					tip = url[0] + " 已知支持蚂蚁矿机DR3，Claymore，gominer\n" + url[1] + " 已知支持Nicehash，芯动科技等矿机"
+				}
+			}
+
+			addD := model.MiningAddressDetail{
+				Addr: g,
+				Tips: tip,
+			}
+
+			miningAddress.Address = append(miningAddress.Address, addD)
+		}
+		return miningAddress, nil
+	}
+}
