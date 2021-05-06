@@ -40,6 +40,7 @@ func InitAppRouter(r *gin.Engine) {
 	pGroup := r.Group("/api")
 	pGroup.GET("/app/version", controller.AppVersion)
 	pGroup.GET("/app/urlConfig", controller.UrlConfig)
+	pGroup.POST("/app/getCaptcha", controller.GetCaptcha)
 }
 
 /// 子账户相关

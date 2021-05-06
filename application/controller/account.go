@@ -42,11 +42,11 @@ func GetSubaccountPayset(c *gin.Context) {
 }
 
 type UpdateAddressParams struct {
-	Puid       AccountParams `json:"puid" binding:"required"`
-	NewAddress string        `json:"newAddress" binding:"required"`
-	VerifyMode string        `json:"verifyMode" binding:"required"`
-	VerifyId   string        `json:"verifyId" binding:"required"`
-	VerifyCode string        `json:"verifyCode" binding:"required"`
+	Puid       AccountParams `form:"puid" binding:"required"`
+	NewAddress string        `form:"newAddress" binding:"required"`
+	VerifyMode string        `form:"verifyMode" binding:"required"`
+	VerifyId   string        `form:"verifyId" binding:"required"`
+	VerifyCode string        `form:"verifyCode" binding:"required"`
 }
 
 func UpdateSubaccountPayAddress(c *gin.Context) {
@@ -68,8 +68,8 @@ func UpdateSubaccountPayAddress(c *gin.Context) {
 
 type PayLimitParams struct {
 	AccountParams
-	Amount   string `json:"amount" binding:"required"`
-	CoinType string `json:"coinType" binding:"required"`
+	Amount   string `form:"amount" binding:"required"`
+	CoinType string `form:"coinType" binding:"required"`
 }
 
 func UpdateSubaccountPayLimit(c *gin.Context) {
@@ -125,7 +125,7 @@ func GetSubacountHiidenList(c *gin.Context) {
 func SetSubacountHiiden(c *gin.Context) {
 	var params struct {
 		AccountParams
-		HiddenPuid string `json:"hidden_puid" binding:"required"`
+		HiddenPuid string `form:"hidden_puid" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -142,7 +142,7 @@ func SetSubacountHiiden(c *gin.Context) {
 func CancelSubacountHiiden(c *gin.Context) {
 	var params struct {
 		AccountParams
-		CancleHiddenPuid string `json:"cancle_hidden_puid" binding:"required"`
+		CancleHiddenPuid string `form:"cancle_hidden_puid" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)

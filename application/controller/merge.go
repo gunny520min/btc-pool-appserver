@@ -15,7 +15,7 @@ import (
 func GetMergeCoinInfo(c *gin.Context) {
 	var params struct {
 		AccountParams
-		CoinType string `json:"coinType" binding:"required"`
+		CoinType string `form:"coinType" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -59,8 +59,8 @@ func GetMergeCoinInfo(c *gin.Context) {
 func UpdateMergeCoinAddress(c *gin.Context) {
 	var params struct {
 		AccountParams
-		CoinType   string `json:"coinType" binding:"required"`
-		NewAddress string `json:"newAddress" binding:"required"`
+		CoinType   string `form:"coinType" binding:"required"`
+		NewAddress string `form:"newAddress" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)

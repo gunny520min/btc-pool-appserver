@@ -11,7 +11,7 @@ import (
 
 func GetWatcherList(c *gin.Context) {
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -27,12 +27,12 @@ func GetWatcherList(c *gin.Context) {
 func CreateWatcher(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Note        string `json:"note" binding:"required"`
-		Lang        string `json:"lang" binding:"required"`
-		Authorities string `json:"authorities" binding:"required"`
-		GrinValue   string `json:"grin_value" binding:"-"`
+		Note        string `form:"note" binding:"required"`
+		Lang        string `form:"lang" binding:"required"`
+		Authorities string `form:"authorities" binding:"required"`
+		GrinValue   string `form:"grin_value" binding:"-"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -53,10 +53,10 @@ func CreateWatcher(c *gin.Context) {
 func DeleteWatcher(c *gin.Context) {
 	var params struct {
 		AccountParams
-		WatcherId string `json:"watcher_id" binding:"required"`
-		Lang      string `json:"lang" binding:"required"`
+		WatcherId string `form:"watcher_id" binding:"required"`
+		Lang      string `form:"lang" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -72,10 +72,10 @@ func DeleteWatcher(c *gin.Context) {
 func UpdateWatcher(c *gin.Context) {
 	var params struct {
 		AccountParams
-		WatcherId   string `json:"watcher_id" binding:"required"`
-		Authorities string `json:"authorities" binding:"required"`
+		WatcherId   string `form:"watcher_id" binding:"required"`
+		Authorities string `form:"authorities" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -91,9 +91,9 @@ func UpdateWatcher(c *gin.Context) {
 func WatcherAuthority(c *gin.Context) {
 	var params struct {
 		AccountParams
-		AccessKey string `json:"access_key" binding:"required"`
+		AccessKey string `form:"access_key" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -109,10 +109,10 @@ func WatcherAuthority(c *gin.Context) {
 // 添加查看别人的观察者链接
 func AddOtherWatcher(c *gin.Context) {
 	var params struct {
-		Puids        string `json:"puids" binding:"required"`
-		WatcherToken string `json:"watcher_token" binding:"required"`
+		Puids        string `form:"puids" binding:"required"`
+		WatcherToken string `form:"watcher_token" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}

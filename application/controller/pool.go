@@ -14,9 +14,9 @@ import (
 func GetMergeEarnstats(c *gin.Context) {
 	var params struct {
 		AccountParams
-		MergeType string `json:"mergeType" binding:"required"`
+		MergeType string `form:"mergeType" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -41,9 +41,9 @@ func GetMergeEarnHistory(c *gin.Context) {
 	var params struct {
 		AccountParams
 		PageParams
-		MergeType string `json:"mergeType" binding:"required"`
+		MergeType string `form:"mergeType" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -61,7 +61,7 @@ func GetEarnstats(c *gin.Context) {
 	var params struct {
 		AccountParams
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -77,10 +77,10 @@ func GetEarnHistory(c *gin.Context) {
 	var params struct {
 		AccountParams
 		PageParams
-		IsDecimal string `json:"is_decimal" binding:"-"`
-		AccessKey string `json:"access_key" binding:"-"`
+		IsDecimal string `form:"is_decimal" binding:"-"`
+		AccessKey string `form:"access_key" binding:"-"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -95,9 +95,9 @@ func GetEarnHistory(c *gin.Context) {
 
 func GetDashboardHome(c *gin.Context) {
 	var params struct {
-		Puid string `json:"puid" binding:"-"`
+		Puid string `form:"puid" binding:"-"`
 	}
-	c.ShouldBindJSON(&params)
+	c.ShouldBindQuery(&params)
 	var res model.Dashboard
 
 	var wg sync.WaitGroup

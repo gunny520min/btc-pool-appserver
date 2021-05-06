@@ -40,9 +40,9 @@ func GetAlertSetting(c *gin.Context) {
 func UpdateAlertHashrate(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Hashrate string `json:"hashrate" binding:"required"`
-		Unit     string `json:"unit" binding:"required"`
-		Enabled  string `json:"enabled" binding:"required"`
+		Hashrate string `form:"hashrate" binding:"required"`
+		Unit     string `form:"unit" binding:"required"`
+		Enabled  string `form:"enabled" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -59,8 +59,8 @@ func UpdateAlertHashrate(c *gin.Context) {
 func UpdateAlertMiners(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Miners  string `json:"miners" binding:"required"`
-		Enabled string `json:"enabled" binding:"required"`
+		Miners  string `form:"miners" binding:"required"`
+		Enabled string `form:"enabled" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -77,7 +77,7 @@ func UpdateAlertMiners(c *gin.Context) {
 func UpdateAlertInterval(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Interval string `json:"interval" binding:"required"`
+		Interval string `form:"interval" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -94,7 +94,7 @@ func UpdateAlertInterval(c *gin.Context) {
 func DeleteAlertContact(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Id string `json:"id" binding:"required"`
+		Id string `form:"id" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -111,11 +111,11 @@ func DeleteAlertContact(c *gin.Context) {
 func CreateAlertContact(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Note        string `json:"note" binding:"required"`
-		Email       string `json:"email" binding:"required"`
-		Region_code string `json:"region_code" binding:"required"`
-		Phone       string `json:"phone" binding:"required"`
-		Country     string `json:"country" binding:"required"`
+		Note        string `form:"note" binding:"required"`
+		Email       string `form:"email" binding:"required"`
+		Region_code string `form:"region_code" binding:"required"`
+		Phone       string `form:"phone" binding:"required"`
+		Country     string `form:"country" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -132,11 +132,11 @@ func CreateAlertContact(c *gin.Context) {
 func UpdateAlertContact(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Note        string `json:"note" binding:"required"`
-		Email       string `json:"email" binding:"required"`
-		Region_code string `json:"region_code" binding:"required"`
-		Phone       string `json:"phone" binding:"required"`
-		Id          string `json:"id" binding:"required"`
+		Note        string `form:"note" binding:"required"`
+		Email       string `form:"email" binding:"required"`
+		Region_code string `form:"region_code" binding:"required"`
+		Phone       string `form:"phone" binding:"required"`
+		Id          string `form:"id" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -168,7 +168,7 @@ func GetAlertList(c *gin.Context) {
 func AlertRead(c *gin.Context) {
 	var params struct {
 		AccountParams
-		LogId string `json:"log_id" binding:"required"`
+		LogId string `form:"log_id" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)

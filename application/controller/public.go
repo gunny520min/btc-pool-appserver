@@ -99,10 +99,12 @@ func GetHomeHashrateHistory(c *gin.Context) {
 
 func GetCaptcha(c *gin.Context) {
 	var params struct {
-		AccountParams
-		Type string `json:"type:" binding:"required"`
+		Puid string `form:"puid" binding:"required"`
+		Type string `form:"type" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+
+	if err := c.ShouldBindQuery(&params); err != nil {
+		fmt.Println(err)
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -113,7 +115,7 @@ func GetCaptcha(c *gin.Context) {
 		return
 	}
 	var p = make(map[string]string)
-	p["puid"] = params.AccountParams.Puid
+	p["puid"] = params.Puid
 	p["lang"] = l
 	if d, err := btcpoolclient.GetCpatcha(c, p, params.Type); err != nil {
 		output.ShowErr(c, err)

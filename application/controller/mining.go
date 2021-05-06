@@ -17,8 +17,8 @@ func GetMinerGroups(c *gin.Context) {
 	}
 	var p = struct {
 		AccountParams
-		Page     string `json:"page"`
-		PageSize string `json:"page_size"`
+		Page     string `form:"page"`
+		PageSize string `form:"page_size"`
 	}{
 		AccountParams: params,
 		Page:          "1",
@@ -35,7 +35,7 @@ func GetMinerGroups(c *gin.Context) {
 func MinerGroupDelete(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Gid string `json:"gid"`
+		Gid string `form:"gid"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -53,7 +53,7 @@ func MinerGroupDelete(c *gin.Context) {
 func MinerGroupCreate(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Name string `json:"name"`
+		Name string `form:"name"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -71,7 +71,7 @@ func MinerGroupCreate(c *gin.Context) {
 func MinerWorkerDelete(c *gin.Context) {
 	var params struct {
 		AccountParams
-		WorkerIds string `json:"workerIds"`
+		WorkerIds string `form:"workerIds"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -80,8 +80,8 @@ func MinerWorkerDelete(c *gin.Context) {
 
 	var p = struct {
 		AccountParams
-		GroupId   string `json:"group_id"`
-		WorkerIds string `json:"worker_id"`
+		GroupId   string `form:"group_id"`
+		WorkerIds string `form:"worker_id"`
 	}{
 		AccountParams: params.AccountParams,
 		GroupId:       "0",
@@ -98,8 +98,8 @@ func MinerWorkerDelete(c *gin.Context) {
 func MinerWorkerMove(c *gin.Context) {
 	var params struct {
 		AccountParams
-		WorkerIds string `json:"workerIds"`
-		GroupId   string `json:"groupId"`
+		WorkerIds string `form:"workerIds"`
+		GroupId   string `form:"groupId"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -108,8 +108,8 @@ func MinerWorkerMove(c *gin.Context) {
 
 	var p = struct {
 		AccountParams
-		GroupId   string `json:"group_id"`
-		WorkerIds string `json:"worker_id"`
+		GroupId   string `form:"group_id"`
+		WorkerIds string `form:"worker_id"`
 	}{
 		AccountParams: params.AccountParams,
 		GroupId:       params.GroupId,
@@ -127,12 +127,12 @@ func GetMinerWorkerList(c *gin.Context) {
 	var params struct {
 		AccountParams
 		PageParams
-		Status    string `json:"status"`
-		Order_by  string `json:"order_by"`
-		Asc       string `json:"asc"`
-		Group     string `json:"group"`
-		Filter    string `json:"filter" binding:"-"`
-		AccessKey string `json:"access_key" binding:"-"`
+		Status    string `form:"status"`
+		Order_by  string `form:"order_by"`
+		Asc       string `form:"asc"`
+		Group     string `form:"group"`
+		Filter    string `form:"filter" binding:"-"`
+		AccessKey string `form:"access_key" binding:"-"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -150,8 +150,8 @@ func GetMinerWorkerList(c *gin.Context) {
 func GetMinerWorkerDetail(c *gin.Context) {
 	var params struct {
 		AccountParams
-		WorkerId  string `json:"workerId"`
-		AccessKey string `json:"access_key" binding:"-"`
+		WorkerId  string `form:"workerId"`
+		AccessKey string `form:"access_key" binding:"-"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
@@ -169,11 +169,11 @@ func GetMinerWorkerDetail(c *gin.Context) {
 func GetMinerWorkerHashrate(c *gin.Context) {
 	var params struct {
 		AccountParams
-		Dimension string `json:"dimension"`
-		Start_ts  string `json:"start_ts"`
-		Count     string `json:"count"`
-		RealPoint string `json:"real_point" binding:"-"`
-		AccessKey string `json:"access_key" binding:"-"`
+		Dimension string `form:"dimension"`
+		Start_ts  string `form:"start_ts"`
+		Count     string `form:"count"`
+		RealPoint string `form:"real_point" binding:"-"`
+		AccessKey string `form:"access_key" binding:"-"`
 	}
 	if err := c.ShouldBindJSON(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)

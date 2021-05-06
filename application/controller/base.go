@@ -8,11 +8,11 @@ import (
 )
 
 type AccountParams struct {
-	Puid string `json:"puid" binding:"required"`
+	Puid string `form:"puid" binding:"required"`
 }
 type PageParams struct {
-	Page     int `json:"page" binding:"required"`
-	PageSize int `json:"page_size" binding:"required"`
+	Page     int `form:"page" binding:"required"`
+	PageSize int `form:"page_size" binding:"required"`
 }
 
 // GetLang ...
