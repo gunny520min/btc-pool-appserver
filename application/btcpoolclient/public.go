@@ -14,7 +14,7 @@ func AppVersionCheck(c *gin.Context, params interface{}) (map[string]interface{}
 
 	_, err := doRequest(c, "app.versionCheck", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error  AppVersionCheck: %v", err)
+		return nil, err //fmt.Errorf("error  AppVersionCheck: %v", err)
 	}
 
 	return dest.Data, nil
@@ -28,7 +28,7 @@ func UrlConfig(c *gin.Context, params interface{}) (map[string]interface{}, erro
 
 	_, err := doRequest(c, "app.urlConfig", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error UrlConfig: %v", err)
+		return nil, err //fmt.Errorf("error UrlConfig: %v", err)
 	}
 
 	return dest.Data, nil
@@ -59,7 +59,7 @@ func GetBannerList(c *gin.Context, params interface{}) ([]Banner, error) {
 
 	_, err := doRequest(c, "app.banner", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error getting banner list: %v", err)
+		return nil, err //fmt.Errorf("error getting banner list: %v", err)
 	}
 
 	return dest.Data, nil
@@ -81,7 +81,7 @@ func GetNoticeList(c *gin.Context, params interface{}) ([]Notice, error) {
 	}{}
 	_, err := doRequest(c, "app.notice", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error getting notice list: %v", err)
+		return nil, err //fmt.Errorf("error getting notice list: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -108,7 +108,7 @@ func GetPoolMultiCoinStats(c *gin.Context) (map[string]CoinStat, error) {
 
 	_, err := doRequest(c, "public.multiCoinStats", "dimension=1h&is_decimal=1&no_share_history=1", &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error multiCoinStats: %v", err)
+		return nil, err //fmt.Errorf("error multiCoinStats: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -145,7 +145,7 @@ func GetCoinIncome(c *gin.Context) (map[string](CoinIncome), error) {
 
 	_, err := doRequest(c, "public.coinsIncome", "", &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetCoinIncome: %v", err)
+		return nil, err //fmt.Errorf("error GetCoinIncome: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -159,12 +159,12 @@ func GetCpatcha(c *gin.Context, params interface{}, typeStr string) (map[string]
 	if typeStr == "sms" {
 		_, err := doRequest(c, "app.captchaSMS", params, &dest)
 		if err != nil {
-			return nil, fmt.Errorf("error GetCoinIncome: %v", err)
+			return nil, err //fmt.Errorf("error GetCoinIncome: %v", err)
 		}
 	} else if typeStr == "email" {
 		_, err := doRequest(c, "app.captchaEmail", params, &dest)
 		if err != nil {
-			return nil, fmt.Errorf("error GetCoinIncome: %v", err)
+			return nil, err //fmt.Errorf("error GetCoinIncome: %v", err)
 		}
 	} else {
 		return nil, fmt.Errorf("err GetCpatcha: wrong type")

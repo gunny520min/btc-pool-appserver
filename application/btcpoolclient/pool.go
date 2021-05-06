@@ -2,7 +2,6 @@ package btcpoolclient
 
 import (
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
-	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,7 @@ func GetPoolShareHashrate(c *gin.Context, params interface{}) (ShareHashrateData
 	_, err := doRequest(c, "pool.hashrateHistory", params, &dest)
 	if err != nil {
 		var res ShareHashrateData
-		return res, fmt.Errorf("error getting banner list: %v", err)
+		return res, err // fmt.Errorf("error getting banner list: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -81,7 +80,7 @@ func GetEarnstats(c *gin.Context, params interface{}) (*EarnStats, error) {
 
 	_, err := doRequest(c, "account.earnStats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error account.earnStats: %v", err)
+		return nil, err //fmt.Errorf("error account.earnStats: %v", err)
 	}
 
 	return &dest.Data, nil
@@ -95,7 +94,7 @@ func GetMergeEarnstats(c *gin.Context, params interface{}) (map[string]EarnStats
 
 	_, err := doRequest(c, "account.mergeEarnStats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error account.mergeEarnStats: %v", err)
+		return nil, err //fmt.Errorf("error account.mergeEarnStats: %v", err)
 	}
 	res := make(map[string]EarnStats)
 	res["earnstats"] = dest.Data
@@ -123,7 +122,7 @@ func GetEarnHistory(c *gin.Context, params interface{}) (map[string]interface{},
 
 	_, err := doRequest(c, "account.earnHistory", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error account.earnHistory: %v", err)
+		return nil, err //fmt.Errorf("error account.earnHistory: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -136,7 +135,7 @@ func GetMergeEarnHistory(c *gin.Context, params interface{}) (map[string]interfa
 
 	_, err := doRequest(c, "account.mergeEarnHistory", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetMergeEarnHistory: %v", err)
+		return nil, err //fmt.Errorf("error GetMergeEarnHistory: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -164,7 +163,7 @@ func GetWorkerStats(c *gin.Context, params interface{}) (*clientModel.WorkerGrou
 
 	_, err := doRequest(c, "worker.stats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetSubAccountAlgorithms: %v", err)
+		return nil, err //fmt.Errorf("error GetSubAccountAlgorithms: %v", err)
 	}
 	return &dest.Data, nil
 }
