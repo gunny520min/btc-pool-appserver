@@ -11,7 +11,7 @@ import (
 
 func GetAccountInfo(c *gin.Context) {
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -26,7 +26,7 @@ func GetAccountInfo(c *gin.Context) {
 
 func GetSubaccountPayset(c *gin.Context) {
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -51,7 +51,7 @@ type UpdateAddressParams struct {
 
 func UpdateSubaccountPayAddress(c *gin.Context) {
 	var params UpdateAddressParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -74,7 +74,7 @@ type PayLimitParams struct {
 
 func UpdateSubaccountPayLimit(c *gin.Context) {
 	var params PayLimitParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -91,7 +91,7 @@ func UpdateSubaccountPayLimit(c *gin.Context) {
 
 func GetAccountMinerConfig(c *gin.Context) {
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -127,7 +127,7 @@ func SetSubacountHiiden(c *gin.Context) {
 		AccountParams
 		HiddenPuid string `form:"hidden_puid" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -144,7 +144,7 @@ func CancelSubacountHiiden(c *gin.Context) {
 		AccountParams
 		CancleHiddenPuid string `form:"cancle_hidden_puid" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}

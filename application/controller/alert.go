@@ -11,7 +11,7 @@ import (
 
 func GetAlertSetting(c *gin.Context) {
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -44,7 +44,7 @@ func UpdateAlertHashrate(c *gin.Context) {
 		Unit     string `form:"unit" binding:"required"`
 		Enabled  string `form:"enabled" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -62,7 +62,7 @@ func UpdateAlertMiners(c *gin.Context) {
 		Miners  string `form:"miners" binding:"required"`
 		Enabled string `form:"enabled" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -79,7 +79,7 @@ func UpdateAlertInterval(c *gin.Context) {
 		AccountParams
 		Interval string `form:"interval" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -96,7 +96,7 @@ func DeleteAlertContact(c *gin.Context) {
 		AccountParams
 		Id string `form:"id" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -117,7 +117,7 @@ func CreateAlertContact(c *gin.Context) {
 		Phone       string `form:"phone" binding:"required"`
 		Country     string `form:"country" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -138,7 +138,7 @@ func UpdateAlertContact(c *gin.Context) {
 		Phone       string `form:"phone" binding:"required"`
 		Id          string `form:"id" binding:"required"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}

@@ -12,7 +12,7 @@ import (
 func GetMinerGroups(c *gin.Context) {
 
 	var params AccountParams
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -40,7 +40,7 @@ func MinerGroupDelete(c *gin.Context) {
 		AccountParams
 		Gid string `form:"gid"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -58,7 +58,7 @@ func MinerGroupCreate(c *gin.Context) {
 		AccountParams
 		Name string `form:"name"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -76,7 +76,7 @@ func MinerWorkerDelete(c *gin.Context) {
 		AccountParams
 		WorkerIds string `form:"workerIds"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -104,7 +104,7 @@ func MinerWorkerMove(c *gin.Context) {
 		WorkerIds string `form:"workerIds"`
 		GroupId   string `form:"groupId"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -137,7 +137,7 @@ func GetMinerWorkerList(c *gin.Context) {
 		Filter    string `form:"filter" binding:"-"`
 		AccessKey string `form:"access_key" binding:"-"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -156,7 +156,7 @@ func GetMinerWorkerDetail(c *gin.Context) {
 		WorkerId  string `form:"workerId"`
 		AccessKey string `form:"access_key" binding:"-"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
@@ -178,7 +178,7 @@ func GetMinerWorkerHashrate(c *gin.Context) {
 		RealPoint string `form:"real_point" binding:"-"`
 		AccessKey string `form:"access_key" binding:"-"`
 	}
-	if err := c.ShouldBindJSON(&params); err != nil {
+	if err := c.ShouldBindQuery(&params); err != nil {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
