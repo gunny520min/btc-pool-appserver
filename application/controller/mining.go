@@ -2,6 +2,7 @@ package controller
 
 import (
 	"btc-pool-appserver/application/btcpoolclient"
+	"btc-pool-appserver/application/btcpoolclient/clientModel"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
 
@@ -28,7 +29,9 @@ func GetMinerGroups(c *gin.Context) {
 		output.ShowErr(c, err)
 		return
 	} else {
-		output.Succ(c, d)
+		output.Succ(c, map[string][]clientModel.WorkerGroupEntity{
+			"list": d,
+		})
 	}
 }
 

@@ -20,7 +20,7 @@ const (
 	ErrnoNeedRefreshToken      = 1010
 	ErrnoAuthNonce             = 10009
 	ErrnoAmountTooSmall        = 955555
-	ErrnoInvalidInvitationCode = 100001
+	ErrnoResultConvert         = 100001
 )
 
 // 一些系统常用错误

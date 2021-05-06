@@ -95,22 +95,26 @@ func GetEarnHistory(c *gin.Context) {
 
 func GetDashboardHome(c *gin.Context) {
 	var params struct {
-		Puid string `form:"puid" binding:"-"`
+		Puid string `form:"puid"`
 	}
-	c.ShouldBindQuery(&params)
+	err := c.ShouldBindQuery(&params)
+	if err != nil {
+		panic(err)
+	}
 	var res model.Dashboard
-
+	var resErr error = nil
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		//notice
 		defer wg.Done()
 		if _, currentCoinAccount, err := service.PoolService.GetDashboardSubaccounts(c, params.Puid); err != nil {
-			output.ShowErr(c, err)
+			resErr = err
 			return
 		} else {
 			res.IsSmart = currentCoinAccount.IsSmart()
 			res.Puid = currentCoinAccount.Puid
+			res.CoinType = currentCoinAccount.CoinType
 			var mCoinType string
 			var smartStr string
 			if currentCoinAccount.IsSmart() {
@@ -123,20 +127,56 @@ func GetDashboardHome(c *gin.Context) {
 			} else {
 				mCoinType = currentCoinAccount.CoinType
 			}
-			res.Title = currentCoinAccount.Name + mCoinType + currentCoinAccount.RegionText
+			res.Title = currentCoinAccount.Name + "@" + mCoinType + "-" + currentCoinAccount.RegionText
 		}
 	}()
 	wg.Wait()
+	if resErr != nil {
+		output.ShowErr(c, resErr)
+		return
+	}
 	wg.Add(4)
 	go func() {
 		defer wg.Done()
 		if income, err := service.PoolService.GetDashboardIncome(c, res.Puid); err != nil {
-
+			resErr = err
 		} else {
 			res.Income = income
 		}
 	}()
 
-	wg.Wait()
+	go func() {
+		defer wg.Done()
+		if workerStats, err := service.PoolService.GetDashboardWorkerStates(c, res.Puid, res.CoinType); err != nil {
 
+		} else {
+			res.WorkerStatus = workerStats
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		if wgs, err := service.PoolService.GetDashboardWorkerGroup(c, res.Puid, res.CoinType); err != nil {
+
+		} else {
+			res.WorkerGroup = wgs
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		if sba, err := service.PoolService.GetDashboardMiningAddress(c, res.Puid, res.CoinType); err != nil {
+
+		} else {
+			res.MiningAddress = sba
+		}
+	}()
+
+	wg.Wait()
+	if resErr != nil {
+		output.ShowErr(c, resErr)
+		return
+	}
+
+	output.Succ(c, res)
 }

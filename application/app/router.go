@@ -10,6 +10,8 @@ import (
 func InitRouter(r *gin.Engine) error {
 	// home页面相关
 	InitPublicRouter(r)
+	// 用户面板相关
+	InitDashboardRouter(r)
 	// app相关
 	InitAppRouter(r)
 	// 子账户
@@ -33,6 +35,12 @@ func InitPublicRouter(r *gin.Engine) {
 	pGroup.GET("/home/latestBlock", controller.ExplorerLatestBlock)
 	pGroup.GET("/home/poolrank", controller.ExplorerPoolRank)
 	pGroup.GET("/home/hashrateHistory", controller.GetHomeHashrateHistory)
+}
+
+// 用户面板
+func InitDashboardRouter(r *gin.Engine) {
+	pGroup := r.Group("/dashboard")
+	pGroup.GET("/baseInfo", controller.GetDashboardHome)
 }
 
 // InitAppRouter ...
