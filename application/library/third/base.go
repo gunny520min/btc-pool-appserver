@@ -23,7 +23,7 @@ type Responser interface {
 	GetCode() int
 	GetMessage() string
 	IsSucc() bool
-	GetMessageSuffix() string
+	//GetMessageSuffix() string
 }
 
 func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, headers map[string]string, dest interface{}) ([]byte, error) {
@@ -79,7 +79,7 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 	}
 
 	if err != nil {
-		return res, fmt.Errorf("third request fail: %w", err)
+		return res, err
 	}
 
 	if c != nil {
@@ -105,8 +105,9 @@ func DoActionRequest(c *gin.Context, api *config.Api, params interface{}, header
 
 			if !responser.IsSucc() {
 				// 这里需要返回一个可以直接输出的err, 所以把api err包进去
-				return nil, fmt.Errorf("third res fail: code %v, msg: %s| %w", responser.GetCode(), responser.GetMessage(), errs.NewApiErrorThird(responser.GetCode(), responser.GetMessage(), nil, lang, responser.GetMessageSuffix()))
+				return nil, errs.NewApiError(responser.GetCode(), responser.GetMessage(), nil,lang)
 			} else {
+				// TODO 暂时没有刷新token的需求
 				switch responser.GetCode() {
 				case errs.ErrnoNeedRefreshToken:
 					if c != nil {

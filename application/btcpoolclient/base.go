@@ -47,7 +47,7 @@ func doRequest(c *gin.Context, action string, params interface{}, dest interface
 
 	// 发起http请求
 	if res, err := third.DoActionRequest(c, &apiConfig, params, nil, dest); err != nil {
-		return nil, fmt.Errorf("btcpool: %w", err)
+		return nil, err
 	} else {
 		return res, nil
 	}

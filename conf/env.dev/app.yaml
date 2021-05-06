@@ -88,6 +88,9 @@ apis:
   worker.stats:
     uri: "/v1/worker/stats"
     method: "GET"
+  worker.shareHistory:
+    uri: "/v1/worker/share-history"
+    method: "GET"
   worker.groups:
     uri: "/v1/worker/groups"
     method: "GET"

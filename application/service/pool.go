@@ -3,7 +3,6 @@ package service
 import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
-	"btc-pool-appserver/application/library/output"
 	"btc-pool-appserver/application/model"
 	"fmt"
 	"github.com/shopspring/decimal"
@@ -55,7 +54,6 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 	algorithmsParams["is_guardian"] = 0
 	algorithmsParams["order_by"] = "puid"
 	if subAccountAlgorithms, e := btcpoolclient.GetSubAccountAlgorithms(c, algorithmsParams); e != nil {
-		output.ShowErr(c, e)
 		return nil, nil, e
 	} else {
 		// 统一机枪池 与 普通账户

@@ -150,7 +150,7 @@ func GetSubAccountAlgorithms(c *gin.Context, params interface{}) (clientModel.Su
 	_, err := doRequest(c, "subaccount.algorithms", params, &dest)
 	if err != nil {
 		var res clientModel.SubAccountAlgorithmList
-		return res, fmt.Errorf("error GetSubAccountAlgorithms: %v", err)
+		return res, err
 	}
 	return dest.Data, nil
 }

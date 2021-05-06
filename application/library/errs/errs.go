@@ -9,18 +9,20 @@ import (
 
 // 错误码
 const (
-	ErrnoSucc                  = 0
-	ErrnoSystem                = 9000
-	ErrnoSign                  = 9005
-	ErrnoInvalidParams         = 10001
-	ErrnoInvalidAppId          = 10002
-	ErrnoInvalidTimestamp      = 10003
-	ErrnoInvalidAppName        = 10004
-	ErrnoLoginFail             = 1001
-	ErrnoNeedRefreshToken      = 1010
-	ErrnoAuthNonce             = 10009
-	ErrnoAmountTooSmall        = 955555
-	ErrnoResultConvert         = 100001
+	ErrnoSucc             = 0
+	ErrnoTokenInvalid     = 20001
+	ErrnoTokenError       = 20011
+	ErrnoSystem           = 9000
+	ErrnoSign             = 9005
+	ErrnoInvalidParams    = 10001
+	ErrnoInvalidAppId     = 10002
+	ErrnoInvalidTimestamp = 10003
+	ErrnoInvalidAppName   = 10004
+	ErrnoLoginFail        = 1001
+	ErrnoNeedRefreshToken = 1010
+	ErrnoAuthNonce        = 10009
+	ErrnoAmountTooSmall   = 955555
+	ErrnoResultConvert    = 100001
 )
 
 // 一些系统常用错误
