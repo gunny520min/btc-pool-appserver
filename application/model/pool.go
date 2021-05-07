@@ -66,3 +66,14 @@ type MiningAddressDetail struct {
 	Addr string `json:"addr"`
 	Tips string `json:"tips"`
 }
+
+type WorkerShareHistoryEntity struct {
+	Timestamp string `json:"timestamp"`
+	Hashrate string `json:"hashrate"`
+	Reject string `json:"reject"`
+}
+
+type WorkerShareHistory struct {
+	Unit string `json:"unit"`
+	List []WorkerShareHistoryEntity `json:"list"`
+}

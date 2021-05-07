@@ -164,7 +164,21 @@ func GetWorkerStats(c *gin.Context, params interface{}) (*clientModel.WorkerGrou
 
 	_, err := doRequest(c, "worker.stats", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetSubAccountAlgorithms: %v", err)
+		return nil, err
+	}
+	return &dest.Data, nil
+}
+
+// page of clientModel.WorkerShareHistory
+func GetWorkerShareHistory(c *gin.Context, params interface{}) (*clientModel.WorkerShareHistory, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data clientModel.WorkerShareHistory `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "worker.shareHistory", params, &dest)
+	if err != nil {
+		return nil, err
 	}
 	return &dest.Data, nil
 }

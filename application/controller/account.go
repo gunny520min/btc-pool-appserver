@@ -4,8 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
-	"fmt"
-
+	"btc-pool-appserver/application/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -105,21 +104,23 @@ func GetAccountMinerConfig(c *gin.Context) {
 	}
 }
 
-func GetSubacountHiidenList(c *gin.Context) {
-	fmt.Println("not implemented")
-	// var params struct {
-	// 	AccountParams
-	// }
-	// if err := c.ShouldBindJSON(&params); err != nil {
-	// 	output.ShowErr(c, errs.ApiErrParams)
-	// 	return
-	// }
-	// if d, err := btcpoolclient.SubacountHiiden(c, params); err != nil {
-	// 	output.ShowErr(c, err)
-	// 	return
-	// } else {
-	// 	output.Succ(c, d)
-	// }
+// GetSubaccountList 获取子账户列表
+func GetSubaccountList(c *gin.Context) {
+	var params struct {
+		AccountParams
+		IsHidden int `form:"isHidden"`
+	}
+	if err := c.ShouldBindQuery(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if subaccountList,err := service.AccountService.GetSubAccountList(c, params.Puid, params.IsHidden); err!=nil {
+		output.ShowErr(c, err)
+	} else {
+		output.SuccList(c, subaccountList)
+	}
+
+
 }
 
 func SetSubacountHiiden(c *gin.Context) {

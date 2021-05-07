@@ -126,6 +126,13 @@ func Succ(c *gin.Context, data interface{}) {
 	})
 }
 
+func SuccList(c *gin.Context, list interface{}) {
+	data := gin.H{
+		"list":        list,
+	}
+	Succ(c, data)
+}
+
 func errorComm(c *gin.Context, errNo int, data interface{}, errMsg string) {
 	json(c, http.StatusOK, errNo, data, errMsg)
 	c.AbortWithStatus(http.StatusOK)
@@ -150,7 +157,7 @@ func SuccJsonStr(c *gin.Context, str string) {
 	c.String(http.StatusOK, res)
 }
 
-func SuccList(c *gin.Context, list interface{}, count int) {
+func SuccPage(c *gin.Context, list interface{}, count int) {
 	limit := c.GetInt("limit")
 	var pageTotal int
 	if count%limit > 0 {

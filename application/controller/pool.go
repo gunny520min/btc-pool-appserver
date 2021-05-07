@@ -180,3 +180,21 @@ func GetDashboardHome(c *gin.Context) {
 
 	output.Succ(c, res)
 }
+
+func GetDashboardWorkerShareHistory(c *gin.Context) {
+	var params struct {
+		Puid string `form:"puid"`
+		Dimension string `form:"dimension"`
+
+	}
+	err := c.ShouldBindQuery(&params)
+	if err != nil {
+		output.ShowErr(c, err)
+		return
+	}
+	if workerShareHistory, err := service.PoolService.GetDashboardWorkerShareHistory(c, params.Puid, params.Dimension); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, workerShareHistory)
+	}
+}

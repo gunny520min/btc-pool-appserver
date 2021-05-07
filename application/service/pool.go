@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"github.com/shopspring/decimal"
 	"math"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +18,7 @@ type poolHandler struct{}
 
 var PoolService = &poolHandler{}
 
-// 获取首页算力图表数据
+// GetShareHashrate 获取首页算力图表数据
 func (p *poolHandler) GetShareHashrate(c *gin.Context, params interface{}) btcpoolclient.ShareHashrateData {
 	var ret btcpoolclient.ShareHashrateData
 	if list, err := btcpoolclient.GetPoolShareHashrate(c, params); err != nil {
@@ -43,7 +45,7 @@ func (p *poolHandler) FormatHashrateChartData(params btcpoolclient.ShareHashrate
 	return res
 }
 
-// 用户面包，用户的子账户数据
+// GetDashboardSubaccounts 用户面包，用户的子账户数据
 func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*clientModel.SubAccountAlgorithmList, *clientModel.SubAccountCoinEntity, error) {
 	var subaccounts *clientModel.SubAccountAlgorithmList = nil
 	var currentCoinEntity *clientModel.SubAccountCoinEntity = nil
@@ -60,15 +62,15 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 		for _, subaccount := range subAccountAlgorithms.SubAccounts {
 			for _, algorithm := range subaccount.Algorithms {
 				j := 0
-				var l = make([]clientModel.SubAccountAlgorithmDetail, 0)
+				var l = make([]clientModel.SubAccountCoinEntity, 0)
 				for _, coinAccount := range algorithm.CoinAccounts {
 					if algorithm.IsSmart() == coinAccount.IsSmart() {
-						l = append(l, algorithm)
+						l = append(l, coinAccount)
 						//subaccount.Algorithms[j] = algorithm
 						j++
 					}
 				}
-				subaccount.Algorithms = l
+				algorithm.CoinAccounts = l
 			}
 		}
 		// 取puid相同的coinAccount
@@ -92,7 +94,7 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 	}
 }
 
-// 获取用户面板收益数据
+// GetDashboardIncome 获取用户面板收益数据
 func (p *poolHandler) GetDashboardIncome(c *gin.Context, puid string) (model.Income, error) {
 	var incomeParams = map[string]interface{}{}
 	incomeParams["puid"] = puid
@@ -152,7 +154,7 @@ func countIncome(earn string) (string, string) {
 	return eNum.Truncate(int32(dCount)).String(), unit
 }
 
-//
+// GetDashboardWorkerStates 用户面板矿工状态数据
 func (p *poolHandler) GetDashboardWorkerStates(c *gin.Context, puid string, coinType string) (model.WorkerStatus, error) {
 	var incomeParams = map[string]interface{}{}
 	incomeParams["puid"] = puid
@@ -169,7 +171,7 @@ func (p *poolHandler) GetDashboardWorkerStates(c *gin.Context, puid string, coin
 	}
 }
 
-//
+// GetDashboardWorkerGroup 用户面板群组数据
 func (p *poolHandler) GetDashboardWorkerGroup(c *gin.Context, puid string, coinType string) ([]model.WorkerGroup, error) {
 	var groupParams = struct {
 		Puid     string `json:"puid"`
@@ -201,7 +203,7 @@ func (p *poolHandler) GetDashboardWorkerGroup(c *gin.Context, puid string, coinT
 	}
 }
 
-//
+// GetDashboardMiningAddress 用户面板挖坑地址数据
 func (p *poolHandler) GetDashboardMiningAddress(c *gin.Context, puid string, coinType string) (model.MiningAddress, error) {
 	var addrParams = struct {
 		Puid string `json:"puid"`
@@ -238,5 +240,53 @@ func (p *poolHandler) GetDashboardMiningAddress(c *gin.Context, puid string, coi
 			miningAddress.Address = append(miningAddress.Address, addD)
 		}
 		return miningAddress, nil
+	}
+}
+
+// GetDashboardWorkerShareHistory 获取用户面板算力图表数据
+func (p *poolHandler) GetDashboardWorkerShareHistory(c *gin.Context, puid string, dimension string) (model.WorkerShareHistory, error) {
+	var startTs = time.Now().Unix()
+	var count = 30
+	if dimension == "1d" {
+		// 以天为单位，统计30天
+		startTs = startTs - 60*60*24*30
+		count = 30
+	} else {
+		// 以小时为单位，统计72小时
+		startTs = startTs - 60*60*24*3
+		count = 72
+	}
+	var params = struct {
+		Puid      string `json:"puid"`
+		StartTs   string `json:"start_ts"`
+		Dimension string `json:"dimension"`
+		Count     int    `json:"count"`
+		RealPoint bool   `json:"real_point"`
+	}{
+		Puid:      puid,
+		StartTs:   strconv.FormatInt(startTs, 10),
+		Dimension: dimension,
+		Count:     count,
+		RealPoint: true,
+	}
+
+	var workerShareHistory model.WorkerShareHistory
+	if wsh, err := btcpoolclient.GetWorkerShareHistory(c, params); err != nil {
+		return workerShareHistory, err
+	} else {
+		workerShareHistory = model.WorkerShareHistory{
+			Unit: wsh.SharesUnit,
+			List: make([]model.WorkerShareHistoryEntity, len(wsh.Tickers)),
+		}
+		for index, entity := range wsh.Tickers {
+			var workerShareHistoryEntity = model.WorkerShareHistoryEntity{
+				Timestamp: entity[0],
+				Hashrate:  entity[1],
+				Reject:    entity[2],
+			}
+			workerShareHistory.List[index] = workerShareHistoryEntity
+		}
+
+		return workerShareHistory, nil
 	}
 }
