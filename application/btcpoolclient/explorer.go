@@ -80,7 +80,7 @@ func GetPoolRank(c *gin.Context, params interface{}) (map[string]PoolRankData, e
 	}{}
 	_, err := doRequest(c, "explorer.poolRank", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetPoolRank: %v", err)
+		return nil, err //fmt.Errorf("error GetPoolRank: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -106,7 +106,7 @@ func GetLatestBlockList(c *gin.Context, params interface{}) (map[string]LatestBl
 
 	_, err := doRequest(c, "explorer.blockList", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetLatestBlockList: %v", err)
+		return nil, err //fmt.Errorf("error GetLatestBlockList: %v", err)
 	}
 	return dest.Data, nil
 }

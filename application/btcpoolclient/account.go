@@ -2,7 +2,6 @@ package btcpoolclient
 
 import (
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +12,7 @@ func GetSubAccountInfo(c *gin.Context, params interface{}) (*clientModel.SubAcco
 		Data clientModel.SubAccountEntity `json:"data"`
 	}{}
 	if _, err := doRequest(c, "account.info", params, &dest); err != nil {
-		return nil, fmt.Errorf("error GetAccountInfo: %v", err)
+		return nil, err //fmt.Errorf("error GetAccountInfo: %v", err)
 	}
 	return &dest.Data, nil
 }
@@ -24,7 +23,7 @@ func GetAccountInfo(c *gin.Context, params interface{}) (map[string]interface{},
 		Data map[string]interface{} `json:"data"`
 	}{}
 	if _, err := doRequest(c, "account.info", params, &dest); err != nil {
-		return nil, fmt.Errorf("error GetAccountInfo: %v", err)
+		return nil, err //fmt.Errorf("error GetAccountInfo: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -44,7 +43,7 @@ func GetSubaccountPayset(c *gin.Context, params interface{}) (map[string]Subacco
 
 	_, err := doRequest(c, "account.payset", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetSubaccountPayset: %v", err)
+		return nil, err //fmt.Errorf("error GetSubaccountPayset: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -57,7 +56,7 @@ func UpdateSubaccountPayAddress(c *gin.Context, params interface{}) (map[string]
 
 	_, err := doRequest(c, "account.paysetAddressUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error UpdateSubaccountPayAddress: %v", err)
+		return nil, err //fmt.Errorf("error UpdateSubaccountPayAddress: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -70,7 +69,7 @@ func UpdateSubaccountPayLimit(c *gin.Context, params interface{}) (map[string]in
 
 	_, err := doRequest(c, "account.paylimitUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error UpdateSubaccountPayLimit: %v", err)
+		return nil, err //fmt.Errorf("error UpdateSubaccountPayLimit: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -83,7 +82,7 @@ func GetAccountMinerConfig(c *gin.Context, params interface{}) (map[string]inter
 
 	_, err := doRequest(c, "account.minerConfig", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error GetAccountMinerConfig: %v", err)
+		return nil, err //fmt.Errorf("error GetAccountMinerConfig: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -96,7 +95,7 @@ func SubacountHiiden(c *gin.Context, params interface{}) (map[string]interface{}
 
 	_, err := doRequest(c, "account.hidden", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error account.hidden: %v", err)
+		return nil, err //fmt.Errorf("error account.hidden: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -109,7 +108,7 @@ func SubacountHiidenCancel(c *gin.Context, params interface{}) (map[string]inter
 
 	_, err := doRequest(c, "account.hiddenCancel", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error account.hiddenCancel: %v", err)
+		return nil, err //fmt.Errorf("error account.hiddenCancel: %v", err)
 	}
 	return dest.Data, nil
 }

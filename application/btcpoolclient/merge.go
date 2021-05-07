@@ -1,7 +1,7 @@
 package btcpoolclient
 
 import (
-	"fmt"
+	"btc-pool-appserver/application/library/errs"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -16,12 +16,12 @@ func UpdateMergeCoinAddress(c *gin.Context, params interface{}) (map[string]inte
 
 	coinType := c.Query("coinType")
 	if len(coinType) == 0 {
-		return nil, fmt.Errorf("request UpdateMergeCoinAddress paramaters no coin type")
+		return nil, errs.ApiErrParams // fmt.Errorf("request UpdateMergeCoinAddress paramaters no coin type")
 	}
 
 	_, err := doRequestEx(c, "merge.updateAddress", "/"+strings.ToLower(coinType)+"/address/update", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error UpdateMergeCoinAddress: %v", err)
+		return nil, err //fmt.Errorf("error UpdateMergeCoinAddress: %v", err)
 	}
 	return dest.Data, nil
 }

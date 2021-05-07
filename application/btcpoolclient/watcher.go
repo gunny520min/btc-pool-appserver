@@ -1,8 +1,6 @@
 package btcpoolclient
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,7 +36,7 @@ func GetWatcherList(c *gin.Context, params interface{}) ([]Watcher, error) {
 
 	_, err := doRequest(c, "watcher.list", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.list: %v", err)
+		return nil, err //fmt.Errorf("error watcher.list: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -51,7 +49,7 @@ func CreateWatcher(c *gin.Context, params interface{}) (map[string]interface{}, 
 
 	_, err := doRequest(c, "watcher.create", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.create: %v", err)
+		return nil, err //fmt.Errorf("error watcher.create: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -64,7 +62,7 @@ func DeleteWatcher(c *gin.Context, params interface{}) (map[string]interface{}, 
 
 	_, err := doRequest(c, "watcher.delete", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.delete: %v", err)
+		return nil, err //fmt.Errorf("error watcher.delete: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -77,7 +75,7 @@ func UpdateWatcher(c *gin.Context, params interface{}) (map[string]interface{}, 
 
 	_, err := doRequest(c, "watcher.update", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.update: %v", err)
+		return nil, err //fmt.Errorf("error watcher.update: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -90,7 +88,7 @@ func WatcherAuthority(c *gin.Context, params interface{}) ([]string, error) {
 
 	_, err := doRequest(c, "watcher.authority", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.authority: %v", err)
+		return nil, err //fmt.Errorf("error watcher.authority: %v", err)
 	}
 
 	return dest.Data["page_authorities"], nil
@@ -105,7 +103,7 @@ func CheckWatcher(c *gin.Context, params interface{}) ([]Watcher, error) {
 
 	_, err := doRequest(c, "watcher.check", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error watcher.check: %v", err)
+		return nil, err //fmt.Errorf("error watcher.check: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -124,7 +122,7 @@ func WatcherRegionInfo(c *gin.Context, params interface{}) (WatcherRegion, error
 	_, err := doRequest(c, "watcher.info", params, &dest)
 	if err != nil {
 		var region WatcherRegion
-		return region, fmt.Errorf("error watcher.info: %v", err)
+		return region, err //fmt.Errorf("error watcher.info: %v", err)
 	}
 	return dest.Data["region_conf"], nil
 }

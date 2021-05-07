@@ -2,7 +2,7 @@ package btcpoolclient
 
 import (
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
-	"fmt"
+	"btc-pool-appserver/application/library/errs"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,7 +56,7 @@ func WorkerGroups(c *gin.Context, params interface{}) ([]clientModel.WorkerGroup
 
 	_, err := doRequest(c, "worker.groups", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerGroups: %v", err)
+		return nil, err //fmt.Errorf("error WorkerGroups: %v", err)
 	}
 	return dest.Data.List, nil
 }
@@ -69,7 +69,7 @@ func WorkerGroupsDelete(c *gin.Context, params interface{}) (map[string]interfac
 
 	_, err := doRequest(c, "worker.deleteGroup", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerGroupsDelete: %v", err)
+		return nil, err //fmt.Errorf("error WorkerGroupsDelete: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -82,7 +82,7 @@ func WorkerGroupsCreate(c *gin.Context, params interface{}) (map[string]interfac
 
 	_, err := doRequest(c, "worker.createGruop", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerGroupsCreate: %v", err)
+		return nil, err //fmt.Errorf("error WorkerGroupsCreate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -96,7 +96,7 @@ func WorkerDelete(c *gin.Context, params interface{}) (map[string]interface{}, e
 
 	_, err := doRequest(c, "worker.update", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerDelete: %v", err)
+		return nil, err //fmt.Errorf("error WorkerDelete: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -110,7 +110,7 @@ func WorkerMove(c *gin.Context, params interface{}) (map[string]interface{}, err
 
 	_, err := doRequest(c, "worker.move", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerMove: %v", err)
+		return nil, err //fmt.Errorf("error WorkerMove: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -124,7 +124,7 @@ func WorkerList(c *gin.Context, params interface{}) (map[string]interface{}, err
 
 	_, err := doRequest(c, "worker.list", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerList: %v", err)
+		return nil, err //fmt.Errorf("error WorkerList: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -138,12 +138,12 @@ func WorkerDetail(c *gin.Context, params interface{}) (map[string]Worker, error)
 
 	workerId := c.Query("workerId")
 	if len(workerId) == 0 {
-		return nil, fmt.Errorf("request WorkerDetail paramaters no workerId")
+		return nil, errs.ApiErrParams //fmt.Errorf("request WorkerDetail paramaters no workerId")
 	}
 
 	_, err := doRequestEx(c, "worker.detailInfo", "/"+workerId, params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerDetail: %v", err)
+		return nil, err //fmt.Errorf("error WorkerDetail: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -157,12 +157,12 @@ func WorkerHashrate(c *gin.Context, params interface{}) (map[string]interface{},
 
 	workerId := c.Query("workerId")
 	if len(workerId) == 0 {
-		return nil, fmt.Errorf("request WorkerHashrate paramaters no workerId")
+		return nil, errs.ApiErrParams //fmt.Errorf("request WorkerHashrate paramaters no workerId")
 	}
 
 	_, err := doRequestEx(c, "worker.hashrateHistory", "/"+workerId+"/share-history/", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error WorkerHashrate: %v", err)
+		return nil, err //fmt.Errorf("error WorkerHashrate: %v", err)
 	}
 	return dest.Data, nil
 }

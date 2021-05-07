@@ -1,8 +1,6 @@
 package btcpoolclient
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +22,7 @@ func AlertSettings(c *gin.Context, params interface{}) (map[string]AlertSetting,
 
 	_, err := doRequest(c, "alert.settings", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.settings: %v", err)
+		return nil, err //fmt.Errorf("error alert.settings: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -50,7 +48,7 @@ func AlertContacts(c *gin.Context, params interface{}) (map[string][]AlertContac
 
 	_, err := doRequest(c, "alert.contacts", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.contacts: %v", err)
+		return nil, err //fmt.Errorf("error alert.contacts: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -63,7 +61,7 @@ func UpdateAlertHashrate(c *gin.Context, params interface{}) (map[string]interfa
 
 	_, err := doRequest(c, "alert.hashrateUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.hashrateUpdate: %v", err)
+		return nil, err //fmt.Errorf("error alert.hashrateUpdate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -76,7 +74,7 @@ func UpdateAlertMiners(c *gin.Context, params interface{}) (map[string]interface
 
 	_, err := doRequest(c, "alert.minersUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.minersUpdate: %v", err)
+		return nil, err //fmt.Errorf("error alert.minersUpdate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -89,7 +87,7 @@ func UpdateAlertInterval(c *gin.Context, params interface{}) (map[string]interfa
 
 	_, err := doRequest(c, "alert.intervalUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.intervalUpdate: %v", err)
+		return nil, err //fmt.Errorf("error alert.intervalUpdate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -102,7 +100,7 @@ func DeleteAlertContact(c *gin.Context, params interface{}) (map[string]interfac
 
 	_, err := doRequest(c, "alert.contactDelete", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.contactDelete: %v", err)
+		return nil, err //fmt.Errorf("error alert.contactDelete: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -115,7 +113,7 @@ func CreateAlertContact(c *gin.Context, params interface{}) (map[string]interfac
 
 	_, err := doRequest(c, "alert.contactCreate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.contactCreate: %v", err)
+		return nil, err //fmt.Errorf("error alert.contactCreate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -128,7 +126,7 @@ func UpdateAlertContact(c *gin.Context, params interface{}) (map[string]interfac
 
 	_, err := doRequest(c, "alert.contactUpdate", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.contactUpdate: %v", err)
+		return nil, err //fmt.Errorf("error alert.contactUpdate: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -150,7 +148,7 @@ func GetAlerMerge(c *gin.Context, params interface{}) ([]AlarmClassification, er
 
 	_, err := doRequest(c, "alert.list", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.list: %v", err)
+		return nil, err //fmt.Errorf("error alert.list: %v", err)
 	}
 	return dest.Data, nil
 }
@@ -163,7 +161,7 @@ func AlertRead(c *gin.Context, params interface{}) (map[string]interface{}, erro
 
 	_, err := doRequest(c, "alert.read", params, &dest)
 	if err != nil {
-		return nil, fmt.Errorf("error alert.read: %v", err)
+		return nil, err //fmt.Errorf("error alert.read: %v", err)
 	}
 	return dest.Data, nil
 }
