@@ -69,3 +69,26 @@ func (p *accountHandler) GetSubAccountList(c *gin.Context, puid string, isHidden
 		return subaccountList, nil
 	}
 }
+
+func (p *accountHandler) GetSubAccountHashrates(c *gin.Context, puids string) (map[string]model.SubaccountHashrateEntity, error) {
+	var params = map[string]interface{}{}
+	params["puids"] = puids
+	var data = make(map[string]model.SubaccountHashrateEntity)
+	if subAccountHashrate, e := btcpoolclient.GetSubaccountHashrate(c, params); e != nil {
+		return nil, e
+	} else {
+		for puid, h := range subAccountHashrate {
+			var hashrateEntity = model.SubaccountHashrateEntity{}
+			hashrateEntity.Puid = h.Puid
+			hashrateEntity.WorkerTotal = h.Workers
+			hashrateEntity.WorkerActive = h.WorkersActive
+			hashrateEntity.Hashrate = h.Shares1d
+			hashrateEntity.HashrateUnit = h.Shares1dUnit+h.HashrateSuffix
+			hashrateEntity.LastAlertTrans = h.LatestAlert.Trans
+
+			data[puid] = hashrateEntity
+		}
+
+		return data, nil
+	}
+}

@@ -1,16 +1,26 @@
 package model
 
 type Income struct {
-	Income        NormalIncome  `json:"income"`
-	SmartIncome   SmartIncome   `json:"smartIncome"`
-	HasIncome     bool          `json:"hasIncome"`
+	Income      NormalIncome `json:"income"`
+	SmartIncome SmartIncome  `json:"smartIncome"`
+	HasIncome   bool         `json:"hasIncome"`
+	CoinType    string
+}
+
+type WatcherDashboard struct {
+	Income
+	IsSmart       bool          `json:"isSmart"`
+	WorkerStatus  WorkerStatus  `json:"workerStatus"`
+	WorkerGroup   []WorkerGroup `json:"workerGroup"`
+	MiningAddress MiningAddress `json:"miningAddress"`
+	Authorities   []string      `json:"authorities"`
 }
 
 type Dashboard struct {
 	Income
 	IsSmart       bool          `json:"isSmart"`
 	Puid          string        `json:"puid"`
-	CoinType          string        `json:"coinType"`
+	CoinType      string        `json:"coinType"`
 	Title         string        `json:"title"`
 	WorkerStatus  WorkerStatus  `json:"workerStatus"`
 	WorkerGroup   []WorkerGroup `json:"workerGroup"`
@@ -30,9 +40,9 @@ type NormalIncome struct {
 }
 
 type SmartIncome struct {
-	IsOtc           bool        `json:"isOtc"`
+	IsOtc           bool                 `json:"isOtc"`
 	IncomeYesterday SmartIncomeYesterday `json:"incomeYesterday"`
-	IncomeToday     ValueUnit   `json:"incomeToday"`
+	IncomeToday     ValueUnit            `json:"incomeToday"`
 }
 
 type SmartIncomeYesterday struct {
@@ -69,11 +79,11 @@ type MiningAddressDetail struct {
 
 type WorkerShareHistoryEntity struct {
 	Timestamp string `json:"timestamp"`
-	Hashrate string `json:"hashrate"`
-	Reject string `json:"reject"`
+	Hashrate  string `json:"hashrate"`
+	Reject    string `json:"reject"`
 }
 
 type WorkerShareHistory struct {
-	Unit string `json:"unit"`
+	Unit string                     `json:"unit"`
 	List []WorkerShareHistoryEntity `json:"list"`
 }

@@ -108,6 +108,7 @@ func GetDashboardHome(c *gin.Context) {
 	go func() {
 		//notice
 		defer wg.Done()
+
 		if _, currentCoinAccount, err := service.PoolService.GetDashboardSubaccounts(c, params.Puid); err != nil {
 			resErr = err
 			return

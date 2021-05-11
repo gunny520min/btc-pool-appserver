@@ -11,7 +11,7 @@ func GetSubAccountInfo(c *gin.Context, params interface{}) (*clientModel.SubAcco
 		BtcpoolRescomm
 		Data clientModel.SubAccountEntity `json:"data"`
 	}{}
-	if _, err := doRequest(c, "account.info", params, &dest); err != nil {
+	if _, err := doRequest(c, "subaccount.info", params, &dest); err != nil {
 		return nil, err //fmt.Errorf("error GetAccountInfo: %v", err)
 	}
 	return &dest.Data, nil
@@ -112,3 +112,32 @@ func SubacountHiidenCancel(c *gin.Context, params interface{}) (map[string]inter
 	}
 	return dest.Data, nil
 }
+
+
+func GetSubaccountHashrate(c *gin.Context, params interface{}) (map[string]clientModel.SubAccountHashrateDetail, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data map[string]clientModel.SubAccountHashrateDetail `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "subaccount.hashrate", params, &dest)
+	if err != nil {
+		return nil, err
+	}
+	return dest.Data, nil
+}
+
+func SubaccountChangeHashrate(c *gin.Context, params interface{}) (*clientModel.ChangeHashrateRes, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data clientModel.ChangeHashrateRes `json:"data"`
+	}{}
+
+	_, err := doRequest(c, "subaccount.changeHashrate", params, &dest)
+	if err != nil {
+		return nil, err
+	}
+	return &dest.Data, nil
+}
+
+

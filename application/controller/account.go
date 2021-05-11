@@ -104,8 +104,8 @@ func GetAccountMinerConfig(c *gin.Context) {
 	}
 }
 
-// GetSubaccountList 获取子账户列表
-func GetSubaccountList(c *gin.Context) {
+// GetSubAccountList 获取子账户列表
+func GetSubAccountList(c *gin.Context) {
 	var params struct {
 		AccountParams
 		IsHidden int `form:"isHidden"`
@@ -119,8 +119,41 @@ func GetSubaccountList(c *gin.Context) {
 	} else {
 		output.SuccList(c, subaccountList)
 	}
+}
 
+// GetSubAccountHashrates 获取子账户算力
+func GetSubAccountHashrates(c *gin.Context) {
+	var params struct {
+		Puids string `form:"puids"`
+	}
+	if err := c.ShouldBindQuery(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if subaccountHashrates,err := service.AccountService.GetSubAccountHashrates(c, params.Puids); err!=nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, subaccountHashrates)
+	}
+}
 
+// ChangeSubAccountHashrate 一键切换
+func ChangeSubAccountHashrate(c *gin.Context) {
+	var params struct {
+		AccountParams
+		Source string `form:"source"`
+		Dest string `form:"dest"`
+	}
+	if err := c.ShouldBind(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if d, err := btcpoolclient.SubaccountChangeHashrate(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
 }
 
 func SetSubacountHiiden(c *gin.Context) {

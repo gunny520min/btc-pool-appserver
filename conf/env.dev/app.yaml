@@ -1,6 +1,7 @@
 timeout: 10000
 
-base: "https://pre.pool.btc.com"
+base: "https://pool.btc.com"
+#base: "https://pre.pool.btc.com"
 
 apis:
   app.banner:
@@ -45,6 +46,12 @@ apis:
   subaccount.algorithms:
     uri: "/v1/account/sub-account/algorithms/morelist"
     method: "GET"
+  subaccount.hashrate:
+    uri: "/v1/account/sub-account/hashrate-miners"
+    method: "GET"
+  subaccount.changeHashrate:
+    uri: "/v1/change/hashrate"
+    method: "POST"
   subaccount.info:
     uri: "/v1/account/sub-account/info"
     method: "GET"

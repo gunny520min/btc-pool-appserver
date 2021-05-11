@@ -21,3 +21,12 @@ type SubaccountAlgorithmCoinAccountEntity struct {
 	IsHidden  bool   `json:"isHidden"`
 	IsCurrent bool   `json:"IsCurrent"`
 }
+
+type SubaccountHashrateEntity struct {
+	Puid         string   `json:"puid"`
+	WorkerTotal  int   `json:"workerTotal"`
+	WorkerActive int   `json:"workerActive"`
+	Hashrate     string   `json:"hashrate"`
+	HashrateUnit string   `json:"hashrateUnit"`
+	LastAlertTrans string `json:"lastAlertTrans"`
+}

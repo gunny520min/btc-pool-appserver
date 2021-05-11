@@ -56,7 +56,9 @@ func InitAppRouter(r *gin.Engine) {
 func InitAccountSubaccount(r *gin.Engine) {
 	pgroup := r.Group("/account/subaccount/")
 	// 子账户
-	pgroup.GET("/list", controller.GetSubaccountList)
+	pgroup.GET("/list", controller.GetSubAccountList)
+	pgroup.GET("/hashrate", controller.GetSubAccountHashrates)
+	pgroup.GET("/changeHashrate", controller.ChangeSubAccountHashrate)
 	// 收款地址管理
 	pgroup.GET("/info", controller.GetAccountInfo)
 	pgroup.GET("/addressPayset", controller.GetSubaccountPayset)
@@ -111,6 +113,10 @@ func InitWatcher(r *gin.Engine) {
 	pgroup.GET("/update", controller.UpdateWatcher)
 	pgroup.GET("/authority", controller.WatcherAuthority)
 	pgroup.GET("/check", controller.AddOtherWatcher)
+	pgroup.GET("/hashrate", controller.GetWatcherHashrate)
+	pgroup.GET("/dashboard", controller.GetWatcherDashboard)
+	pgroup.GET("/dashboard/workerChart", controller.GetWatcherDashboardWorkerShareHistory)
+
 }
 
 func InitMergeMining(r *gin.Engine) {
