@@ -32,8 +32,8 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	info.Coin = statInfo.Coin_type
 	info.TotalCount = statInfo.Rewards_count
 	info.TotalBlocks = statInfo.Blocks_count
-	info.PoolHashrate = statInfo.Stats.Shares_15m
-	info.HashrateUnit = statInfo.Stats.Shares_unit + statInfo.Coin_suffix
+	info.PoolHashrate = statInfo.Stats.Shares.Shares_15m
+	info.HashrateUnit = statInfo.Stats.Shares.Shares_unit + statInfo.Coin_suffix
 
 	var hash, unit = calculateHashRate(income.Hashrate, 3)
 	info.AllHashrate = hash
