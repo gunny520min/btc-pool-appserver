@@ -134,6 +134,7 @@ type CoinIncome struct {
 	NextIncomeUsd            string  `json:"next_income_usd"`
 	NextIncomeCny            string  `json:"next_income_cny"`
 	PaymentMode              string  `json:"payment_mode"`
+	IncomeHashrateUnit       string  `json:"income_hashrate_unit"`
 	IncomeHashrateUnitSuffix string  `json:"income_hashrate_unit_suffix"`
 	IncomeRealCoin           float64 `json:"income_real_coin"`
 	IncomeRealUsd            float64 `json:"income_real_usd"`
