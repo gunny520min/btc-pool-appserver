@@ -114,8 +114,9 @@ func (p *publicHandler) FormatNoticeList(list btcpoolclient.NoticeList, lang str
 	var noticeList = make([]model.Notice, 0)
 	for _, v := range list {
 		var n model.Notice
+		n.Id = v.Id
 		n.Content = v.Title
-		n.Link = v.Url
+		n.Link = v.HtmlUrl
 		noticeList = append(noticeList, n)
 	}
 	return noticeList

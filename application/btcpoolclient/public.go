@@ -68,9 +68,10 @@ func GetBannerList(c *gin.Context, params interface{}) ([]Banner, error) {
 // Notice
 type NoticeList []Notice
 type Notice struct {
-	Id    string `json:"id"`
-	Url   string `json:"url"`
-	Title string `json:"title"`
+	Id      string `json:"id"`
+	Url     string `json:"url"`
+	HtmlUrl string `json:"html_url"`
+	Title   string `json:"title"`
 }
 
 // Get notice list

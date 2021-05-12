@@ -128,6 +128,7 @@ func (p *poolHandler) GetDashboardIncome(c *gin.Context, puid string) (model.Inc
 		income.HasIncome = earnState.EarningsBefore
 		income.SmartIncome = smartIncome
 		income.Income = normalIncome
+		income.CoinType = earnState.CoinType
 		return income, nil
 	}
 }

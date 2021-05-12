@@ -2,7 +2,8 @@ package model
 
 import (
 	"btc-pool-appserver/application/btcpoolclient"
-	"fmt"
+	"github.com/shopspring/decimal"
+	"math"
 	"strings"
 )
 
@@ -34,8 +35,9 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	info.PoolHashrate = statInfo.Stats.Shares_15m
 	info.HashrateUnit = statInfo.Stats.Shares_unit + statInfo.Coin_suffix
 
-	info.AllHashrate = fmt.Sprintf("%v", income.Hashrate)
-	info.AllHashrateUnit = statInfo.Stats.Shares_unit + statInfo.Coin_suffix
+	var hash, unit = calculateHashRate(income.Hashrate, 3)
+	info.AllHashrate = hash
+	info.AllHashrateUnit = unit + statInfo.Coin_suffix
 	info.Diff = income.Diff
 	info.NextDiff = income.NextDiff
 	info.NextDiffTime = income.DiffAdjustTime
@@ -50,4 +52,27 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 		info.IncomeCurrencyUsd = income.IncomeUsd
 	}
 
+}
+// value 要转化的hashrate，l小数点后位数
+func calculateHashRate(value float64, l int32) (string, string) {
+	d := decimal.NewFromFloatWithExponent(value, 0)
+	switch len(d.String()) {
+	case 0, 1, 2, 3:
+		return decimal.NewFromFloat(value).Truncate(l).String(), ""
+	case 4, 5, 6:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(3))).Truncate(l).String(), "K"
+	case 7, 8, 9:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(6))).Truncate(l).String(), "M"
+	case 10, 11, 12:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(9))).Truncate(l).String(), "G"
+	case 13, 14, 15:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(12))).Truncate(l).String(), "T"
+	case 16, 17, 18:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(15))).Truncate(l).String(), "P"
+	case 19, 20, 21:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(18))).Truncate(l).String(), "E"
+	case 22, 23, 24:
+		return decimal.NewFromFloat(value).Div(decimal.NewFromFloat(math.Pow10(21))).Truncate(l).String(), "Z"
+	}
+	return "",""
 }

@@ -4,7 +4,7 @@ type Income struct {
 	Income      NormalIncome `json:"income"`
 	SmartIncome SmartIncome  `json:"smartIncome"`
 	HasIncome   bool         `json:"hasIncome"`
-	CoinType    string
+	CoinType    string       `json:"coinType"`
 }
 
 type WatcherDashboard struct {
@@ -20,7 +20,7 @@ type Dashboard struct {
 	Income
 	IsSmart       bool          `json:"isSmart"`
 	Puid          string        `json:"puid"`
-	CoinType      string        `json:"coinType"`
+	//CoinType      string        `json:"coinType"`
 	Title         string        `json:"title"`
 	WorkerStatus  WorkerStatus  `json:"workerStatus"`
 	WorkerGroup   []WorkerGroup `json:"workerGroup"`

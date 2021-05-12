@@ -231,3 +231,42 @@ func (p *watcherHandler) GetWatcherDashboardWorkerShareHistory(c *gin.Context, a
 		return workerShareHistory, nil
 	}
 }
+
+// GetWatcherDashboardIncome 获取观察者用户面板收益数据
+func (p *poolHandler) GetWatcherDashboardIncome(c *gin.Context, accessKey string, puid string) (model.Income, error) {
+	var incomeParams = map[string]interface{}{}
+	incomeParams["access_key"] = accessKey
+	incomeParams["puid"] = puid
+	incomeParams["is_decimal"] = 1
+	var income model.Income
+	var normalIncome model.NormalIncome
+	var smartIncome model.SmartIncome
+	if earnState, err := btcpoolclient.GetEarnstats(c, incomeParams); err != nil {
+		return income, err
+	} else {
+		if earnState.IsSmart() {
+			smartIncome.IncomeToday.Value, smartIncome.IncomeToday.Unit = countIncome(earnState.EarningsToday)
+			smartIncome.IncomeToday.Coin = earnState.GetCoin()
+			smartIncome.IsOtc = earnState.EarningsYesterdayIsOtc
+			smartIncome.IncomeYesterday.Btc.Value, smartIncome.IncomeYesterday.Btc.Unit = countIncome(earnState.EarningsYesterdayCoins.Btc)
+			smartIncome.IncomeYesterday.Btc.Coin = "BTC"
+			smartIncome.IncomeYesterday.Bch.Value, smartIncome.IncomeYesterday.Bch.Unit = countIncome(earnState.EarningsYesterdayCoins.Bch)
+			smartIncome.IncomeYesterday.Bch.Coin = "BCH"
+			smartIncome.IncomeYesterday.Bsv.Value, smartIncome.IncomeYesterday.Bsv.Unit = countIncome(earnState.EarningsYesterdayCoins.Bsv)
+			smartIncome.IncomeYesterday.Bsv.Coin = "BSV"
+		} else {
+			normalIncome.IncomeUnpaid.Value, normalIncome.IncomeUnpaid.Unit = countIncome(earnState.Unpaid)
+			normalIncome.IncomeUnpaid.Coin = earnState.GetCoin()
+			normalIncome.IncomePaid.Value, normalIncome.IncomePaid.Unit = countIncome(earnState.TotalPaid)
+			normalIncome.IncomePaid.Coin = earnState.GetCoin()
+			normalIncome.IncomeToday.Value, normalIncome.IncomeToday.Unit = countIncome(earnState.EarningsToday)
+			normalIncome.IncomeToday.Coin = earnState.GetCoin()
+			normalIncome.IncomeYesterday.Value, normalIncome.IncomeYesterday.Unit = countIncome(earnState.EarningsYesterday)
+			normalIncome.IncomeYesterday.Coin = earnState.GetCoin()
+		}
+		income.HasIncome = earnState.EarningsBefore
+		income.SmartIncome = smartIncome
+		income.Income = normalIncome
+		return income, nil
+	}
+}

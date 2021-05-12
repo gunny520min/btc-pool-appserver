@@ -66,7 +66,7 @@ func UnwrapApiError(err error) *ErrApi {
 func GetApiErrMessage(errNo int, language, suffix string) string {
 	transKey := fmt.Sprintf("api.err_msg%s.%v", suffix, errNo)
 	if language == "" {
-		language = "en_US"
+		language = "en-us"
 	}
 	return lang.Trans(transKey, language)
 }

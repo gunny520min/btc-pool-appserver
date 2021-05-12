@@ -29,12 +29,12 @@ func InitRouter(r *gin.Engine) error {
 
 // 首页 ..
 func InitPublicRouter(r *gin.Engine) {
-	pGroup := r.Group("/api/public")
-	pGroup.GET("/home/coinInfoList", controller.HomeCoinInfoList)
-	pGroup.GET("/homepage/activities", controller.HomeBannerNotice)
-	pGroup.GET("/home/latestBlock", controller.ExplorerLatestBlock)
-	pGroup.GET("/home/poolrank", controller.ExplorerPoolRank)
-	pGroup.GET("/home/hashrateHistory", controller.GetHomeHashrateHistory)
+	pGroup := r.Group("/home")
+	pGroup.GET("/coinInfoList", controller.HomeCoinInfoList)
+	pGroup.GET("/activities", controller.HomeBannerNotice)
+	pGroup.GET("/latestBlock", controller.ExplorerLatestBlock)
+	pGroup.GET("/poolrank", controller.ExplorerPoolRank)
+	pGroup.GET("/hashrateHistory", controller.GetHomeHashrateHistory)
 }
 
 // 用户面板
@@ -116,6 +116,8 @@ func InitWatcher(r *gin.Engine) {
 	pgroup.GET("/hashrate", controller.GetWatcherHashrate)
 	pgroup.GET("/dashboard", controller.GetWatcherDashboard)
 	pgroup.GET("/dashboard/workerChart", controller.GetWatcherDashboardWorkerShareHistory)
+	pgroup.GET("/earnInfo", controller.GetWatcherEarnStats)
+	pgroup.GET("/earnHistory", controller.GetWatcherEarnHistory)
 
 }
 

@@ -119,7 +119,7 @@ func GetDashboardHome(c *gin.Context) {
 			var mCoinType string
 			var smartStr string
 			if currentCoinAccount.IsSmart() {
-				if GetLang(c) == "zh_cn" {
+				if GetLang(c) == "zh-cn" {
 					smartStr = "机枪"
 				} else {
 					smartStr = "Smart Pool"

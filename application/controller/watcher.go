@@ -251,9 +251,8 @@ func GetWatcherDashboard(c *gin.Context) {
 func GetWatcherDashboardWorkerShareHistory(c *gin.Context) {
 	var params struct {
 		AccessKey string `form:"accessKey"`
-		Puid string `form:"puid"`
+		Puid      string `form:"puid"`
 		Dimension string `form:"dimension"`
-
 	}
 	err := c.ShouldBindQuery(&params)
 	if err != nil {
@@ -266,3 +265,42 @@ func GetWatcherDashboardWorkerShareHistory(c *gin.Context) {
 		output.Succ(c, workerShareHistory)
 	}
 }
+
+func GetWatcherEarnStats(c *gin.Context) {
+	var params struct {
+		Puid      string `form:"puid"`
+		AccessKey string `form:"accessKey"`
+	}
+	if err := c.ShouldBindQuery(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if stats, err := service.WatcherService.GetWatcherDashboardIncome(c, params.AccessKey, params.Puid); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, stats)
+	}
+}
+
+
+func GetWatcherEarnHistory(c *gin.Context) {
+	var params struct {
+		AccountParams
+		PageParams
+		IsDecimal string `form:"is_decimal" binding:"-"`
+		AccessKey string `form:"access_key"`
+	}
+	if err := c.ShouldBindQuery(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	params.IsDecimal = "1"
+	if d, err := btcpoolclient.GetEarnHistory(c, params); err != nil {
+		output.ShowErr(c, err)
+		return
+	} else {
+		output.Succ(c, d)
+	}
+}
+

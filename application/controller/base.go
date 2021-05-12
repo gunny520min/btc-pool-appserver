@@ -29,7 +29,7 @@ func GetLang(c *gin.Context) string {
 	}
 
 	if len(langStr) == 0 {
-		return "en_us"
+		return "en-us"
 	} else {
 		return langStr
 	}
