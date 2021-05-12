@@ -31,11 +31,11 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	info.Coin = statInfo.Coin_type
 	info.TotalCount = statInfo.Rewards_count
 	info.TotalBlocks = statInfo.Blocks_count
-	info.PoolHashrate = statInfo.Stats.Shares_15m
-	info.HashrateUnit = statInfo.Stats.Shares_unit + statInfo.Coin_suffix
+	info.PoolHashrate = statInfo.Stats.Shares.Shares_15m
+	info.HashrateUnit = statInfo.Stats.Shares.Shares_unit + statInfo.Coin_suffix
 
 	info.AllHashrate = fmt.Sprintf("%v", income.Hashrate)
-	info.AllHashrateUnit = statInfo.Stats.Shares_unit + statInfo.Coin_suffix
+	info.AllHashrateUnit = statInfo.Stats.Shares.Shares_unit + statInfo.Coin_suffix
 	info.Diff = income.Diff
 	info.NextDiff = income.NextDiff
 	info.NextDiffTime = income.DiffAdjustTime
