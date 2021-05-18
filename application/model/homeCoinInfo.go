@@ -52,8 +52,11 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 
 	if strings.ToLower(statInfo.Coin_type) == "btc" {
 		if nDiff, err := strconv.ParseFloat(income.NextDiff, 64); err != nil {
+			info.NextDiff = "-"
+			info.NextDiffChange = "-"
+		} else {
 			change := ((nDiff - income.Diff) / income.Diff) * 100
-			var nDiffStr, nDiffUnit = calculateHashRate(nDiff, 2)
+			var nDiffStr, nDiffUnit = calculateHashRate(nDiff, 3)
 			info.NextDiff = fmt.Sprintf("%v %v", nDiffStr, nDiffUnit)
 			info.NextDiffChange = fmt.Sprintf("%0.3f%%", change)
 		}
@@ -79,15 +82,24 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 }
 
 func keepStringNum(value string, l int32) string {
-	if d, e := decimal.NewFromString(value); e != nil {
+	s := fmt.Sprintf("%%.%df", l)
+	if v, err := strconv.ParseFloat(value, 64); err != nil {
 		return "-"
 	} else {
-		return d.Round(l).String()
+		return fmt.Sprintf(s, v)
 	}
+	//if d, e := decimal.NewFromString(value); e != nil {
+	//	return "-"
+	//} else {
+	//	return d.Round(l).String()
+	//}
 }
 
 func keepFloatNum(value float64, l int32) string {
-	return decimal.NewFromFloat(value).Round(l).String()
+	s := fmt.Sprintf("%%.%df", l)
+	return fmt.Sprintf(s, value)
+
+	//return decimal.NewFromFloat(value).Round(l).String()
 }
 
 // value 要转化的hashrate，l小数点后位数
