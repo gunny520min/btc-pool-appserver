@@ -11,20 +11,20 @@ import (
 
 // 获取最新出块列表
 type ExplorerParams struct {
-	App_a     string `form:"app_a" form:"app_a" binding:"required"`
-	App_b     string `form:"app_b" form:"app_b" binding:"required"`
-	Coins     string `form:"coins" form:"coins" binding:"required"`
-	Nonce     string `form:"nonce" form:"nonce" binding:"required"`
-	Sign      string `form:"sign" form:"sign" binding:"required"`
-	Timestamp string `form:"timestamp" form:"timestamp" binding:"required"`
+	App_a     string `json:"app_a" form:"app_a" binding:"required"`
+	App_b     string `json:"app_b" form:"app_b" binding:"required"`
+	Coins     string `json:"coins" form:"coins" binding:"required"`
+	Nonce     string `json:"nonce" form:"nonce" binding:"required"`
+	Sign      string `json:"sign" form:"sign" binding:"required"`
+	Timestamp string `json:"timestamp" form:"timestamp" binding:"required"`
 }
 type LatestBlocksParameters struct {
 	ExplorerParams
-	ShowUnconfirmInfo string `form:"show_unconfirm_info" form:"show_unconfirm_info" binding:"required"`
+	ShowUnconfirmInfo string `json:"show_unconfirm_info" form:"show_unconfirm_info" binding:"required"`
 }
 type PoolRankParameters struct {
 	ExplorerParams
-	From string `form:"from" form:"from" binding:"required"`
+	From string `json:"from" form:"from" binding:"required"`
 }
 
 func ExplorerLatestBlock(c *gin.Context) {
@@ -38,8 +38,7 @@ func ExplorerLatestBlock(c *gin.Context) {
 	latestBlockCh := service.PublicService.AsnycGetLatestBlocks(c, "", blockParams)
 	latestBlock := <-latestBlockCh
 
-	res := make(map[string]interface{})
-	res["blocks"] = service.PublicService.FormatLatestBlockList(latestBlock)
+	res := service.PublicService.FormatLatestBlockList(latestBlock)
 	output.Succ(c, res)
 }
 
@@ -51,10 +50,14 @@ func ExplorerPoolRank(c *gin.Context) {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
+	// coin := c.Query("coin")
+	// if coin == "" {
+	// 	output.ShowErr(c, errs.ApiErrParams)
+	// 	return
+	// }
 	poolrankCh := service.PublicService.AsnycGetPoolRank(c, "", poolrankParams)
 	poolrank := <-poolrankCh
 
-	res := make(map[string]interface{})
-	res["poolRank"] = service.PublicService.FormatPoolRankList(poolrank)
+	res := service.PublicService.FormatPoolRankList(poolrank)
 	output.Succ(c, res)
 }

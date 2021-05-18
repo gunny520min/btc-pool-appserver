@@ -182,10 +182,10 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 }
 
 // get pool rank
-func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params interface{}) <-chan btcpoolclient.PoolRankList {
-	ch := make(chan btcpoolclient.PoolRankList, 0)
+func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params interface{}) <-chan map[string]btcpoolclient.PoolRankData {
+	ch := make(chan map[string]btcpoolclient.PoolRankData, 0)
 	go func() {
-		var res btcpoolclient.PoolRankList
+		var res map[string]btcpoolclient.PoolRankData
 		defer func() {
 			if err := recover(); err != nil {
 				_ = c.Error(fmt.Errorf("AsnycGetPoolrank err %v", err))
@@ -195,34 +195,40 @@ func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params int
 		if dic, err := btcpoolclient.GetPoolRank(c, params); err != nil {
 			_ = c.Error(err).SetType(gin.ErrorTypeNu)
 		} else {
-			res = dic[strings.ToLower(coin)].Realtime.List
+			res = dic
+			// res = dic[strings.ToLower(coin)].Realtime.List
 		}
 	}()
 	return ch
 }
 
-func (p *publicHandler) FormatPoolRankList(params btcpoolclient.PoolRankList) []model.PoolRank {
-	res := make([]model.PoolRank, 0)
-	for _, v := range params {
-		res = append(res, model.PoolRank{
-			PoolName:               v.PoolName,
-			IconLink:               v.IconLink,
-			RealtimeHashrate:       v.RealtimeHashrate,
-			EstimateHashrate:       v.EstimateHashrate,
-			RealtimeCur2maxPercent: v.RealtimeCur2maxPercent,
-			EstimateCur2max:        v.EstimateCur2max,
-			HashSuffix:             v.HashSuffix,
-			RealtimeDiff24hPercent: v.RealtimeDiff24hPercent,
-		})
+func (p *publicHandler) FormatPoolRankList(rankData map[string]btcpoolclient.PoolRankData) map[string]([]model.PoolRank) {
+	res := make(map[string]([]model.PoolRank), 0)
+
+	for k, v := range rankData {
+		ranks := make([]model.PoolRank, 0)
+		for _, rankInfo := range v.Realtime.List {
+			ranks = append(ranks, model.PoolRank{
+				PoolName:               rankInfo.PoolName,
+				IconLink:               rankInfo.IconLink,
+				RealtimeHashrate:       rankInfo.RealtimeHashrate,
+				EstimateHashrate:       rankInfo.EstimateHashrate,
+				RealtimeCur2maxPercent: rankInfo.RealtimeCur2maxPercent,
+				EstimateCur2max:        rankInfo.EstimateCur2max,
+				HashSuffix:             rankInfo.HashSuffix,
+				RealtimeDiff24hPercent: rankInfo.RealtimeDiff24hPercent,
+			})
+		}
+		res[k] = ranks
 	}
 	return res
 }
 
 // get latest block
-func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string, params interface{}) <-chan btcpoolclient.LatestBlockList {
-	ch := make(chan btcpoolclient.LatestBlockList, 0)
+func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string, params interface{}) <-chan (map[string]btcpoolclient.LatestBlockList) {
+	ch := make(chan (map[string]btcpoolclient.LatestBlockList), 0)
 	go func() {
-		var res btcpoolclient.LatestBlockList
+		var res (map[string]btcpoolclient.LatestBlockList)
 		defer func() {
 			if err := recover(); err != nil {
 				_ = c.Error(fmt.Errorf("AsnycGetLatestBlocks err %v", err))
@@ -232,23 +238,28 @@ func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string, params
 		if dic, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
 			_ = c.Error(err).SetType(gin.ErrorTypeNu)
 		} else {
-			res = dic[strings.ToLower(coin)].List
+			res = dic
 		}
 	}()
 	return ch
 }
 
-func (p *publicHandler) FormatLatestBlockList(params btcpoolclient.LatestBlockList) []model.LatestBlock {
-	res := make([]model.LatestBlock, 0)
-	for _, v := range params {
-		res = append(res, model.LatestBlock{
-			Timestamp: v.Timestamp,
-			Reward:    v.Reward,
-			Height:    v.Height,
-			PoolName:  v.PoolName,
-			Hash:      v.Hash,
-			Size:      v.Size,
-		})
+func (p *publicHandler) FormatLatestBlockList(blkListInfo map[string]btcpoolclient.LatestBlockList) map[string]([]model.LatestBlock) {
+
+	res := make(map[string]([]model.LatestBlock), 0)
+	blkArr := make([]model.LatestBlock, 0)
+	for k, v := range blkListInfo {
+		for _, blkInfo := range v {
+			blkArr = append(blkArr, model.LatestBlock{
+				Timestamp: blkInfo.Timestamp,
+				Reward:    blkInfo.Reward,
+				Height:    blkInfo.Height,
+				PoolName:  blkInfo.PoolName,
+				Hash:      blkInfo.Hash,
+				Size:      blkInfo.Size,
+			})
+		}
+		res[k] = blkArr
 	}
 	return res
 }

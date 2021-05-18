@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"sort"
@@ -91,22 +92,41 @@ type LatestBlock struct {
 	Height    int    `json:"height"`
 	PoolName  string `json:"relayed_by_text"`
 	Hash      string `json:"hash"`
-	Size      int    `json:"size"`
+	Size      string `json:"size"`
 }
 type LatestBlockList []LatestBlock
-type LatestBlockData struct {
-	List LatestBlockList `json:"list"`
-}
 
-func GetLatestBlockList(c *gin.Context, params interface{}) (map[string]LatestBlockData, error) {
+func GetLatestBlockList(c *gin.Context, params interface{}) (map[string]LatestBlockList, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string]LatestBlockData `json:"data"`
+		Data map[string](map[string]interface{}) `json:"data"`
 	}{}
 
+	// test := make(map[string]string)
+	// test["coins"] = "btc,bch"
+	// test["show_unconfirm_info"] = "true"
+	// ps := Sign(test)
 	_, err := doRequest(c, "explorer.blockList", params, &dest)
 	if err != nil {
 		return nil, err //fmt.Errorf("error GetLatestBlockList: %v", err)
 	}
-	return dest.Data, nil
+
+	res := make(map[string]LatestBlockList)
+	for k, v := range dest.Data {
+		resByre, resByteErr := json.Marshal(v["list"])
+		if resByteErr != nil {
+			return nil, resByteErr
+		}
+		var newData LatestBlockList
+		jsonRes := json.Unmarshal(resByre, &newData)
+		if jsonRes != nil {
+			return nil, jsonRes
+		}
+		blkArr := make(LatestBlockList, 0)
+		for _, blk := range newData {
+			blkArr = append(blkArr, blk)
+		}
+		res[k] = blkArr
+	}
+	return res, nil
 }
