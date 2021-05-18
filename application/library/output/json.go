@@ -46,8 +46,8 @@ func json(c *gin.Context, httpCode, errNo int, data interface{}, errMsg string) 
 		data = struct{}{}
 	}
 	c.JSON(httpCode, gin.H{
-		"code":      errNo,
-		"msg":       errMsg,
+		"err_no":      errNo,
+		"err_msg":       errMsg,
 		"timestamp": time.Now().Unix(),
 		"trace_id":  log.GetRequestID(c),
 		"data":      data,
