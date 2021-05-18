@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/model"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 
@@ -178,6 +179,15 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 			}
 		}
 	}
+	sort.SliceStable(ret, func(i, j int) bool {
+		if ret[i].Coin == "BTC" {
+			return true
+		} else if ret[j].Coin == "BTC" {
+			return false
+		} else {
+			return ret[i].Coin < ret[j].Coin
+		}
+	})
 	return ret
 }
 

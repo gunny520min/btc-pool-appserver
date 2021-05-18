@@ -13,22 +13,24 @@ import (
 
 type HomeCoinInfo struct {
 	Coin              string `json:"coin"`
-	CurrencyUsd       string `json:"currencyUsd"`       // 币值
-	CurrencyCny       string `json:"currencyCny"`       // 币值rmb
-	PoolHashrate      string `json:"poolHashrate"`      // 总算力
-	HashrateUnit      string `json:"hashrateUnit"`      // 算力单位
-	TotalCount        string `json:"totalCount"`        // 总币数
-	TotalBlocks       string `json:"totalBlocks"`       // 总区块数
-	AllHashrate       string `json:"allHashrate"`       // 全网算力
-	AllHashrateUnit   string `json:"allHashrateUnit"`   // 全网算力单位
-	Diff              string `json:"diff"`              // 全网难度
-	NextDiff          string `json:"nextDiff"`          // 下次调整难度
-	NextDiffChange    string `json:"nextDiffChange"`    // 下次调整难度百分比
-	NextDiffTime      string `json:"nextDiffTime"`      // 下次调整难度时间
-	IncomeCoin        string `json:"incomeCoin"`        // 币单位收益
-	IncomeUnit        string `json:"incomeUnit"`        // 单位收益单位： th/s
-	IncomeCurrencyUsd string `json:"incomeCurrencyUsd"` // 币值单位收益
-	IncomeCurrencyCny string `json:"incomeCurrencyCny"` // 币值单位收益rmb
+	CurrencyUsd       string `json:"currency_usd"`        // 币值
+	CurrencyCny       string `json:"currency_cny"`        // 币值rmb
+	PoolHashrate      string `json:"pool_hashrate"`       // 总算力
+	HashrateUnit      string `json:"hashrate_unit"`       // 算力单位
+	TotalCount        string `json:"total_count"`         // 总币数
+	TotalBlocks       string `json:"total_blocks"`        // 总区块数
+	AllHashrate       string `json:"all_hashrate"`        // 全网算力
+	AllHashrateUnit   string `json:"all_hashrate_unit"`   // 全网算力单位
+	Diff              string `json:"diff"`                // 全网难度
+	DiffUnit          string `json:"diff_unit"`           // 难度单位
+	NextDiff          string `json:"next_iff"`            // 下次调整难度
+	NextDiffUnit      string `json:"next_diff_unit"`      // 难度单位
+	NextDiffChange    string `json:"next_diff_change"`    // 下次调整难度百分比
+	NextDiffTime      string `json:"next_diff_time"`      // 下次调整难度时间
+	IncomeCoin        string `json:"income_coin"`         // 币单位收益
+	IncomeUnit        string `json:"income_unit"`         // 单位收益单位： th/s
+	IncomeCurrencyUsd string `json:"income_currency_usd"` // 币值单位收益
+	IncomeCurrencyCny string `json:"income_currency_cny"` // 币值单位收益rmb
 
 }
 
@@ -48,13 +50,15 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	info.IncomeUnit = income.IncomeHashrateUnit + income.IncomeHashrateUnitSuffix
 
 	var diff, diffUnit = calculateHashRate(income.Diff, 2)
-	info.Diff = fmt.Sprintf("%v %v", diff, diffUnit)
+	info.Diff = diff
+	info.DiffUnit = diffUnit
 
 	if strings.ToLower(statInfo.Coin_type) == "btc" {
-		if nDiff, err := strconv.ParseFloat(income.NextDiff, 64); err != nil {
+		if nDiff, err := strconv.ParseFloat(income.NextDiff, 64); err == nil {
 			change := ((nDiff - income.Diff) / income.Diff) * 100
 			var nDiffStr, nDiffUnit = calculateHashRate(nDiff, 2)
-			info.NextDiff = fmt.Sprintf("%v %v", nDiffStr, nDiffUnit)
+			info.NextDiff = nDiffStr
+			info.NextDiffUnit = nDiffUnit
 			info.NextDiffChange = fmt.Sprintf("%0.3f%%", change)
 		}
 		info.NextDiffTime = income.DiffAdjustTime
