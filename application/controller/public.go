@@ -38,6 +38,22 @@ func HomeBannerNotice(c *gin.Context) {
 	output.Succ(c, res)
 }
 
+func GetObserverBanner(c *gin.Context) {
+	lang := GetLang(c)
+	res := make(map[string]interface{})
+	para := struct {
+		WatcherBanner string `"json":"watcher_banner" "form":"watcher_banner"`
+	}{
+		"1",
+	}
+	if bannerList, err := btcpoolclient.GetBannerList(c, para); err != nil {
+		output.ShowErr(c, err)
+	}else {
+		res["banner"] = service.PublicService.FormatBannerList(bannerList, lang)
+	}
+	output.Succ(c, res)
+}
+
 func HomeCoinInfoList(c *gin.Context) {
 	//get mul coin stat
 	multiCoinChan := service.PublicService.AsnycGetMultiCoinStats(c)

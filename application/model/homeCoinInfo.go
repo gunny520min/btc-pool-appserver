@@ -13,25 +13,24 @@ import (
 
 type HomeCoinInfo struct {
 	Coin              string `json:"coin"`
-	CurrencyUsd       string `json:"currency_usd"`        // 币值
-	CurrencyCny       string `json:"currency_cny"`        // 币值rmb
-	PoolHashrate      string `json:"pool_hashrate"`       // 总算力
-	HashrateUnit      string `json:"hashrate_unit"`       // 算力单位
-	TotalCount        string `json:"total_count"`         // 总币数
-	TotalBlocks       string `json:"total_blocks"`        // 总区块数
-	AllHashrate       string `json:"all_hashrate"`        // 全网算力
-	AllHashrateUnit   string `json:"all_hashrate_unit"`   // 全网算力单位
-	Diff              string `json:"diff"`                // 全网难度
-	DiffUnit          string `json:"diff_unit"`           // 难度单位
-	NextDiff          string `json:"next_iff"`            // 下次调整难度
-	NextDiffUnit      string `json:"next_diff_unit"`      // 难度单位
-	NextDiffChange    string `json:"next_diff_change"`    // 下次调整难度百分比
-	NextDiffTime      string `json:"next_diff_time"`      // 下次调整难度时间
-	IncomeCoin        string `json:"income_coin"`         // 币单位收益
-	IncomeUnit        string `json:"income_unit"`         // 单位收益单位： th/s
-	IncomeCurrencyUsd string `json:"income_currency_usd"` // 币值单位收益
-	IncomeCurrencyCny string `json:"income_currency_cny"` // 币值单位收益rmb
-
+	CurrencyCny       string `json:"currencyCny"`
+	CurrencyUsd       string `json:"currencyUsd"`
+	PoolHashrate      string `json:"poolHashrate"`
+	HashrateUnit      string `json:"hashrateUnit"`
+	TotalCount        string `json:"totalCount"`
+	TotalBlocks       string `json:"totalBlocks"`
+	AllHashrate       string `json:"allHashrate"`
+	AllHashrateUnit   string `json:"allHashrateUnit"`
+	Diff              string `json:"diff"`
+	DiffUnit          string `json:"diffUnit"`
+	NextDiff          string `json:"nextDiff"`
+	NextDiffUnit      string `json:"nextDiffUnit"`
+	NextDiffChange    string `json:"nextDiffChange"`
+	NextDiffTime      string `json:"nextDiffTime"`
+	IncomeCoin        string `json:"incomeCoin"`
+	IncomeUnit        string `json:"incomeUnit"`
+	IncomeCurrencyUsd string `json:"incomeCurrencyUsd"`
+	IncomeCurrencyCny string `json:"incomeCurrencyCny"`
 }
 
 func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoolclient.CoinIncome) {
