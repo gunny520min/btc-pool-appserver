@@ -18,13 +18,14 @@ type WatcherDashboard struct {
 
 type Dashboard struct {
 	Income
-	IsSmart       bool          `json:"isSmart"`
-	Puid          string        `json:"puid"`
-	//CoinType      string        `json:"coinType"`
-	Title         string        `json:"title"`
-	WorkerStatus  WorkerStatus  `json:"workerStatus"`
-	WorkerGroup   []WorkerGroup `json:"workerGroup"`
-	MiningAddress MiningAddress `json:"miningAddress"`
+	IsSmart        bool          `json:"isSmart"`
+	hasSubAccounts bool          `json:"hasSubAccounts"`
+	Puid           string        `json:"puid"`
+	CoinUnit       string        `json:"coinUnit"`
+	Title          string        `json:"title"`
+	WorkerStatus   WorkerStatus  `json:"workerStatus"`
+	WorkerGroup    []WorkerGroup `json:"workerGroup"`
+	MiningAddress  MiningAddress `json:"miningAddress"`
 }
 type ValueUnit struct {
 	Value string `json:"value"`

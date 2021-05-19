@@ -113,9 +113,18 @@ func GetDashboardHome(c *gin.Context) {
 			resErr = err
 			return
 		} else {
+			if currentCoinAccount==nil {
+				// 用户从未创建过账户
+				res.Puid = ""
+				res.IsSmart = false
+				res.CoinUnit = ""
+				res.CoinType = ""
+				res.HasIncome = false
+			}
 			res.IsSmart = currentCoinAccount.IsSmart()
 			res.Puid = currentCoinAccount.Puid
 			res.CoinType = currentCoinAccount.CoinType
+			res.CoinUnit = model.GetCoinSuffixByCoinType(currentCoinAccount.CoinType)
 			var mCoinType string
 			var smartStr string
 			if currentCoinAccount.IsSmart() {

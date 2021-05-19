@@ -53,7 +53,7 @@ type SubAccountCoinEntity struct {
 }
 
 func (sa *SubAccountCoinEntity) IsSmart() bool {
-	return strings.HasPrefix(sa.CoinType, "smart_")
+	return strings.HasPrefix(strings.ToLower(sa.CoinType), "smart_")
 }
 
 type WorkerGroupEntity struct {

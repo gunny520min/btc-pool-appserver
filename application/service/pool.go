@@ -3,6 +3,7 @@ package service
 import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/btcpoolclient/clientModel"
+	"btc-pool-appserver/application/library/tool"
 	"btc-pool-appserver/application/model"
 	"fmt"
 	"github.com/shopspring/decimal"
@@ -58,6 +59,9 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 	if subAccountAlgorithms, e := btcpoolclient.GetSubAccountAlgorithms(c, algorithmsParams); e != nil {
 		return nil, nil, e
 	} else {
+		if len(subAccountAlgorithms.SubAccounts)==0 {
+			return &subAccountAlgorithms, nil, nil
+		}
 		// 统一机枪池 与 普通账户
 		for _, subaccount := range subAccountAlgorithms.SubAccounts {
 			for _, algorithm := range subaccount.Algorithms {
@@ -70,21 +74,24 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 						j++
 					}
 				}
-				algorithm.CoinAccounts = l
+				a := &algorithm
+				a.CoinAccounts = l
 			}
 		}
+		var cce clientModel.SubAccountCoinEntity
 		// 取puid相同的coinAccount
 		if len(puid) > 0 {
 			for _, subaccount := range subAccountAlgorithms.SubAccounts {
 				for _, algorithm := range subaccount.Algorithms {
 					for _, coinAccount := range algorithm.CoinAccounts {
 						if puid == coinAccount.Puid {
-							currentCoinEntity = &coinAccount
+							cce = coinAccount
 						}
 					}
 				}
 			}
 		}
+		currentCoinEntity = &cce
 		// 如果没有取到，默认使用第一个作为账户默认coinAccount
 		if currentCoinEntity == nil {
 			currentCoinEntity = &subAccountAlgorithms.SubAccounts[0].Algorithms[0].CoinAccounts[0]
@@ -152,7 +159,8 @@ func countIncome(earn string) (string, string) {
 	if dCount < 0 {
 		dCount = 0
 	}
-	return eNum.Truncate(int32(dCount)).String(), unit
+
+	return tool.KeepStringNum(eNum.Truncate(int32(dCount)).String(), int32(dCount)), unit
 }
 
 // GetDashboardWorkerStates 用户面板矿工状态数据

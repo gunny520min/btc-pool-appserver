@@ -2,6 +2,7 @@ package model
 
 import (
 	"btc-pool-appserver/application/btcpoolclient"
+	"btc-pool-appserver/application/library/tool"
 
 	"fmt"
 	"math"
@@ -35,9 +36,9 @@ type HomeCoinInfo struct {
 func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoolclient.CoinIncome) {
 	info.Coin = statInfo.Coin_type
 
-	info.TotalCount = keepStringNum(statInfo.Rewards_count, 0)
-	info.TotalBlocks = keepStringNum(statInfo.Blocks_count, 0)
-	info.PoolHashrate = keepStringNum(statInfo.Stats.Shares.Shares_15m, 3)
+	info.TotalCount = tool.KeepStringNum(statInfo.Rewards_count, 0)
+	info.TotalBlocks = tool.KeepStringNum(statInfo.Blocks_count, 0)
+	info.PoolHashrate = tool.KeepStringNum(statInfo.Stats.Shares.Shares_15m, 3)
 
 	info.HashrateUnit = statInfo.Stats.Shares.Shares_unit + statInfo.Coin_suffix
 
@@ -69,37 +70,16 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	}
 
 	if strings.ToLower(statInfo.Coin_type) == "btc" && strings.ToLower(income.PaymentMode) == "fpps" {
-		info.IncomeCoin = keepFloatNum(income.IncomeOptimizeCoin, 8)
-		info.IncomeCurrencyCny = keepFloatNum(income.IncomeOptimizeCny, 2)
-		info.IncomeCurrencyUsd = keepFloatNum(income.IncomeOptimizeUsd, 2)
+		info.IncomeCoin = tool.KeepFloatNum(income.IncomeOptimizeCoin, 8)
+		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeOptimizeCny, 2)
+		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeOptimizeUsd, 2)
 	} else {
-		info.IncomeCoin = keepFloatNum(income.IncomeCoin, 8)
-		info.IncomeCurrencyCny = keepFloatNum(income.IncomeCny, 2)
-		info.IncomeCurrencyUsd = keepFloatNum(income.IncomeUsd, 2)
+		info.IncomeCoin = tool.KeepFloatNum(income.IncomeCoin, 8)
+		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
+		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
 	}
 	info.CurrencyCny = fmt.Sprintf("%.2f", income.IncomeCny/income.IncomeCoin)
 	info.CurrencyUsd = fmt.Sprintf("%.2f", income.IncomeUsd/income.IncomeCoin)
-}
-
-func keepStringNum(value string, l int32) string {
-	s := fmt.Sprintf("%%.%df", l)
-	if v, err := strconv.ParseFloat(value, 64); err != nil {
-		return "-"
-	} else {
-		return fmt.Sprintf(s, v)
-	}
-	//if d, e := decimal.NewFromString(value); e != nil {
-	//	return "-"
-	//} else {
-	//	return d.Round(l).String()
-	//}
-}
-
-func keepFloatNum(value float64, l int32) string {
-	s := fmt.Sprintf("%%.%df", l)
-	return fmt.Sprintf(s, value)
-
-	//return decimal.NewFromFloat(value).Round(l).String()
 }
 
 // value 要转化的hashrate，l小数点后位数

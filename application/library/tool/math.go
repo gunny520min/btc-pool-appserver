@@ -1,7 +1,9 @@
 package tool
 
 import (
+	"fmt"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -22,4 +24,25 @@ func RandNewStr(len int) string {
 	}
 
 	return string(data)
+}
+
+func KeepStringNum(value string, l int32) string {
+	s := fmt.Sprintf("%%.%df", l)
+	if v, err := strconv.ParseFloat(value, 64); err != nil {
+		return "-"
+	} else {
+		return fmt.Sprintf(s, v)
+	}
+	//if d, e := decimal.NewFromString(value); e != nil {
+	//	return "-"
+	//} else {
+	//	return d.Round(l).String()
+	//}
+}
+
+func KeepFloatNum(value float64, l int32) string {
+	s := fmt.Sprintf("%%.%df", l)
+	return fmt.Sprintf(s, value)
+
+	//return decimal.NewFromFloat(value).Round(l).String()
 }
