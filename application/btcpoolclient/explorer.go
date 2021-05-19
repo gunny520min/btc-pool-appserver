@@ -35,6 +35,9 @@ func Sign(params map[string]string) map[string]string {
 		res[k] = v
 		ks = append(ks, k)
 	}
+	for k,_ := range res{
+		ks = append(ks, k)
+	}
 	sort.Strings(ks)
 
 	args := make([]string, 0)
@@ -74,12 +77,12 @@ type PoolRankData struct {
 }
 
 // 获取矿池排名
-func GetPoolRank(c *gin.Context, params interface{}) (map[string]PoolRankData, error) {
+func GetPoolRank(c *gin.Context, params map[string]string) (map[string]PoolRankData, error) {
 	var dest = struct {
 		BtcpoolRescomm
 		Data map[string]PoolRankData `json:"data"`
 	}{}
-	_, err := doRequest(c, "explorer.poolRank", params, &dest)
+	_, err := doRequest(c, "explorer.poolRank", Sign(params), &dest)
 	if err != nil {
 		return nil, err //fmt.Errorf("error GetPoolRank: %v", err)
 	}

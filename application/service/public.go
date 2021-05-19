@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/model"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 
@@ -178,11 +179,20 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 			}
 		}
 	}
+	sort.SliceStable(ret, func(i, j int) bool {
+		if ret[i].Coin == "BTC" {
+			return true
+		} else if ret[j].Coin == "BTC" {
+			return false
+		} else {
+			return ret[i].Coin < ret[j].Coin
+		}
+	})
 	return ret
 }
 
 // get pool rank
-func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params interface{}) <-chan map[string]btcpoolclient.PoolRankData {
+func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params map[string]string) <-chan map[string]btcpoolclient.PoolRankData {
 	ch := make(chan map[string]btcpoolclient.PoolRankData, 0)
 	go func() {
 		var res map[string]btcpoolclient.PoolRankData

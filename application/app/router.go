@@ -118,7 +118,7 @@ func InitWatcher(r *gin.Engine) {
 	pgroup.GET("/dashboard/workerChart", controller.GetWatcherDashboardWorkerShareHistory)
 	pgroup.GET("/earnInfo", controller.GetWatcherEarnStats)
 	pgroup.GET("/earnHistory", controller.GetWatcherEarnHistory)
-
+	pgroup.GET("/observerBanner", controller.GetObserverBanner)
 }
 
 func InitMergeMining(r *gin.Engine) {
