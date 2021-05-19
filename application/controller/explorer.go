@@ -19,27 +19,30 @@ type ExplorerParams struct {
 	Timestamp string `json:"timestamp" form:"timestamp" binding:"required"`
 }
 type LatestBlocksParameters struct {
-	ExplorerParams
-	ShowUnconfirmInfo string `json:"show_unconfirm_info" form:"show_unconfirm_info" binding:"required"`
+	//ExplorerParams
+	Coins string `json:"coins" form:"coins" binding:"required"`
 }
 type PoolRankParameters struct {
 	//ExplorerParams
-	From string `json:"from" form:"from" binding:"required"`
+	From  string `json:"from" form:"from" binding:"required"`
+	Coins string `json:"coins" form:"coins" binding:"required"`
 }
 
 func ExplorerLatestBlock(c *gin.Context) {
-
 	var blockParams LatestBlocksParameters
 	if err := c.ShouldBindQuery(&blockParams); err != nil {
 		fmt.Printf(">> explorer params1 = %v %v\n", blockParams, err)
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
-	latestBlockCh := service.PublicService.AsnycGetLatestBlocks(c, "", blockParams)
-	latestBlock := <-latestBlockCh
-
-	res := service.PublicService.FormatLatestBlockList(latestBlock)
-	output.Succ(c, res)
+	p := make(map[string]string)
+	p["coins"] = blockParams.Coins
+	p["show_unconfirm_info"] = "true"
+	if res, err := service.PublicService.GetLatestBlocks(c, p); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, res)
+	}
 }
 
 func ExplorerPoolRank(c *gin.Context) {
@@ -50,17 +53,12 @@ func ExplorerPoolRank(c *gin.Context) {
 		output.ShowErr(c, errs.ApiErrParams)
 		return
 	}
-	// coin := c.Query("coin")
-	// if coin == "" {
-	// 	output.ShowErr(c, errs.ApiErrParams)
-	// 	return
-	// }
 	p := make(map[string]string)
-	p["coins"] = "btc,bch"
+	p["coins"] = poolRankParams.Coins
 	p["from"] = poolRankParams.From
-	poolRankCh := service.PublicService.AsnycGetPoolRank(c, "", p)
-	poolRank := <-poolRankCh
-
-	res := service.PublicService.FormatPoolRankList(poolRank)
-	output.Succ(c, res)
+	if res, err := service.PublicService.GetPoolRank(c, p); err!=nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, res)
+	}
 }

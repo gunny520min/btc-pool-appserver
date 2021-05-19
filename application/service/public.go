@@ -33,7 +33,6 @@ func (p *publicHandler) GetBannerAndNotice(c *gin.Context, params interface{}) (
 		//notice
 		defer wg.Done()
 		var p = make(map[string]string)
-		p["test"] = "1"
 		noticeList, eNotice = btcpoolclient.GetNoticeList(c, p)
 	}()
 	go func() {
@@ -123,50 +122,28 @@ func (p *publicHandler) FormatNoticeList(list btcpoolclient.NoticeList, lang str
 	return noticeList
 }
 
-// 获取全网币收益
-func (p *publicHandler) AsyncGetAllCoinIncome(c *gin.Context) <-chan btcpoolclient.CoinIncomList {
-	ch := make(chan btcpoolclient.CoinIncomList)
-	go func() {
-		incomeList := make(btcpoolclient.CoinIncomList, 0)
-		defer func() {
-			if err := recover(); err != nil {
-				_ = c.Error(fmt.Errorf("get all coin income async panic: %v", err))
-			}
-			ch <- incomeList
-		}()
-		if dic, err := btcpoolclient.GetCoinIncome(c); err != nil {
-			_ = c.Error(err).SetType(gin.ErrorTypeNu)
-		} else {
-			for k, info := range dic {
-				info.CoinType = k
-				incomeList = append(incomeList, info)
-			}
+// GetAllCoinIncome  获取全网币收益
+func (p *publicHandler) GetAllCoinIncome(c *gin.Context) (btcpoolclient.CoinIncomList, error) {
+
+	incomeList := make(btcpoolclient.CoinIncomList, 0)
+	if dic, err := btcpoolclient.GetCoinIncome(c); err != nil {
+		return incomeList, err
+	} else {
+		for k, info := range dic {
+			info.CoinType = k
+			incomeList = append(incomeList, info)
 		}
-	}()
-	return ch
+		return incomeList, nil
+	}
+
 }
 
-// 获取多币种信息
-func (p *publicHandler) AsnycGetMultiCoinStats(c *gin.Context) <-chan (map[string](btcpoolclient.CoinStat)) {
-	ch := make(chan map[string](btcpoolclient.CoinStat))
-	go func() {
-		var res map[string](btcpoolclient.CoinStat)
-		defer func() {
-			if err := recover(); err != nil {
-				_ = c.Error(fmt.Errorf("get multicoin_stats async panic %v", err))
-			}
-			ch <- res
-		}()
-		if info, err := btcpoolclient.GetPoolMultiCoinStats(c); err != nil {
-			_ = c.Error(err).SetType(gin.ErrorTypeNu)
-		} else {
-			res = info
-		}
-	}()
-	return ch
+// GetMultiCoinStats 获取多币种信息
+func (p *publicHandler) GetMultiCoinStats(c *gin.Context) (map[string]btcpoolclient.CoinStat, error) {
+	return btcpoolclient.GetPoolMultiCoinStats(c)
 }
 
-func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.CoinStat), incomeList btcpoolclient.CoinIncomList) []*model.HomeCoinInfo {
+func (p *publicHandler) FormatHomeCoinList(mulStats map[string]btcpoolclient.CoinStat, incomeList btcpoolclient.CoinIncomList) []*model.HomeCoinInfo {
 	var ret []*model.HomeCoinInfo = make([]*model.HomeCoinInfo, 0)
 	for k, stats := range mulStats {
 		for _, income := range incomeList {
@@ -191,85 +168,52 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 	return ret
 }
 
-// get pool rank
-func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params map[string]string) <-chan map[string]btcpoolclient.PoolRankData {
-	ch := make(chan map[string]btcpoolclient.PoolRankData, 0)
-	go func() {
-		var res map[string]btcpoolclient.PoolRankData
-		defer func() {
-			if err := recover(); err != nil {
-				_ = c.Error(fmt.Errorf("AsnycGetPoolrank err %v", err))
+// GetPoolRank get pool rank
+func (p *publicHandler) GetPoolRank(c *gin.Context, params map[string]string) (map[string][]model.PoolRank, error) {
+	res := make(map[string][]model.PoolRank, 0)
+	if dic, err := btcpoolclient.GetPoolRank(c, params); err != nil {
+		return res, err
+	} else {
+		for k, v := range dic {
+			ranks := make([]model.PoolRank, 0)
+			for _, rankInfo := range v.Realtime.List {
+				ranks = append(ranks, model.PoolRank{
+					PoolName:               rankInfo.PoolName,
+					IconLink:               rankInfo.IconLink,
+					RealtimeHashrate:       rankInfo.RealtimeHashrate,
+					EstimateHashrate:       rankInfo.EstimateHashrate,
+					RealtimeCur2maxPercent: rankInfo.RealtimeCur2maxPercent,
+					EstimateCur2max:        rankInfo.EstimateCur2max,
+					HashSuffix:             rankInfo.HashSuffix,
+					RealtimeDiff24hPercent: rankInfo.RealtimeDiff24hPercent,
+				})
 			}
-			ch <- res
-		}()
-		if dic, err := btcpoolclient.GetPoolRank(c, params); err != nil {
-			_ = c.Error(err).SetType(gin.ErrorTypeNu)
-		} else {
-			res = dic
-			// res = dic[strings.ToLower(coin)].Realtime.List
+			res[k] = ranks
 		}
-	}()
-	return ch
-}
-
-func (p *publicHandler) FormatPoolRankList(rankData map[string]btcpoolclient.PoolRankData) map[string]([]model.PoolRank) {
-	res := make(map[string]([]model.PoolRank), 0)
-
-	for k, v := range rankData {
-		ranks := make([]model.PoolRank, 0)
-		for _, rankInfo := range v.Realtime.List {
-			ranks = append(ranks, model.PoolRank{
-				PoolName:               rankInfo.PoolName,
-				IconLink:               rankInfo.IconLink,
-				RealtimeHashrate:       rankInfo.RealtimeHashrate,
-				EstimateHashrate:       rankInfo.EstimateHashrate,
-				RealtimeCur2maxPercent: rankInfo.RealtimeCur2maxPercent,
-				EstimateCur2max:        rankInfo.EstimateCur2max,
-				HashSuffix:             rankInfo.HashSuffix,
-				RealtimeDiff24hPercent: rankInfo.RealtimeDiff24hPercent,
-			})
-		}
-		res[k] = ranks
+		return res, nil
 	}
-	return res
 }
 
 // get latest block
-func (p *publicHandler) AsnycGetLatestBlocks(c *gin.Context, coin string, params interface{}) <-chan (map[string]btcpoolclient.LatestBlockList) {
-	ch := make(chan (map[string]btcpoolclient.LatestBlockList), 0)
-	go func() {
-		var res (map[string]btcpoolclient.LatestBlockList)
-		defer func() {
-			if err := recover(); err != nil {
-				_ = c.Error(fmt.Errorf("AsnycGetLatestBlocks err %v", err))
+func (p *publicHandler) GetLatestBlocks(c *gin.Context, params map[string]string) (map[string]([]model.LatestBlock), error) {
+	data := make(map[string][]model.LatestBlock)
+	if res, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
+		return data, err
+	} else {
+		blkArr := make([]model.LatestBlock, 0)
+		for k, v := range res {
+			for _, blkInfo := range v {
+				blkArr = append(blkArr, model.LatestBlock{
+					Timestamp: blkInfo.Timestamp,
+					Reward:    blkInfo.Reward,
+					Height:    blkInfo.Height,
+					PoolName:  blkInfo.PoolName,
+					Hash:      blkInfo.Hash,
+					Size:      blkInfo.Size,
+				})
 			}
-			ch <- res
-		}()
-		if dic, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
-			_ = c.Error(err).SetType(gin.ErrorTypeNu)
-		} else {
-			res = dic
+			data[k] = blkArr
 		}
-	}()
-	return ch
-}
-
-func (p *publicHandler) FormatLatestBlockList(blkListInfo map[string]btcpoolclient.LatestBlockList) map[string]([]model.LatestBlock) {
-
-	res := make(map[string]([]model.LatestBlock), 0)
-	blkArr := make([]model.LatestBlock, 0)
-	for k, v := range blkListInfo {
-		for _, blkInfo := range v {
-			blkArr = append(blkArr, model.LatestBlock{
-				Timestamp: blkInfo.Timestamp,
-				Reward:    blkInfo.Reward,
-				Height:    blkInfo.Height,
-				PoolName:  blkInfo.PoolName,
-				Hash:      blkInfo.Hash,
-				Size:      blkInfo.Size,
-			})
-		}
-		res[k] = blkArr
+		return data, nil
 	}
-	return res
 }

@@ -6,6 +6,7 @@ import (
 	"btc-pool-appserver/application/library/output"
 	"btc-pool-appserver/application/service"
 	"fmt"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,32 +49,68 @@ func GetObserverBanner(c *gin.Context) {
 	}
 	if bannerList, err := btcpoolclient.GetBannerList(c, para); err != nil {
 		output.ShowErr(c, err)
-	}else {
+	} else {
 		res["banner"] = service.PublicService.FormatBannerList(bannerList, lang)
 	}
 	output.Succ(c, res)
 }
 
 func HomeCoinInfoList(c *gin.Context) {
-	//get mul coin stat
-	multiCoinChan := service.PublicService.AsnycGetMultiCoinStats(c)
-	incomeChan := service.PublicService.AsyncGetAllCoinIncome(c)
-	multiCoin := <-multiCoinChan
-	income := <-incomeChan
-	// coin := GetParam(c, "coin")
-	res := make(map[string]interface{})
-	// if strings.Contains("btc,bch", strings.ToLower(coin)) {
-	// 	// get pool rank
-	// 	// get latest blocks
 
-	// 	res["blocks"] = service.PublicService.FormatLatestBlockList(latestBlock)
-	// 	res["poolRank"] = service.PublicService.FormatPoolRankList(poolrank)
-	// } else {
-	// 	res["blocks"] = make([]model.LatestBlock, 0)
-	// 	res["poolRank"] = make([]model.PoolRank, 0)
-	// }
-	res["coinList"] = service.PublicService.FormatHomeCoinList(multiCoin, income)
-	output.Succ(c, res)
+	res := make(map[string]interface{})
+	var wg sync.WaitGroup
+	wg.Add(4)
+	var coinStats map[string]btcpoolclient.CoinStat
+	var coinIncome btcpoolclient.CoinIncomList
+	var errS error = nil
+	var errI error = nil
+	//get mul coin stat
+	go func() {
+		defer wg.Done()
+		coinStats, errS = service.PublicService.GetMultiCoinStats(c)
+
+	}()
+	go func() {
+		defer wg.Done()
+		coinIncome, errI = service.PublicService.GetAllCoinIncome(c)
+
+	}()
+	go func() {
+		defer wg.Done()
+
+		p := make(map[string]string)
+		p["coins"] = "btc,bch"
+		p["show_unconfirm_info"] = "true"
+		if blocks, err := service.PublicService.GetLatestBlocks(c, p); err != nil {
+
+		} else {
+			res["blocks"] = blocks
+		}
+
+	}()
+	go func() {
+		defer wg.Done()
+		p := make(map[string]string)
+		p["coins"] = "btc,bch"
+		p["from"] = c.GetHeader("platform")
+		if poolRank, err := service.PublicService.GetPoolRank(c, p); err != nil {
+		} else {
+			res["poolRank"] = poolRank
+		}
+
+	}()
+	wg.Wait()
+	if errS == nil && errI == nil {
+		// 成功
+		res["coinList"] = service.PublicService.FormatHomeCoinList(coinStats, coinIncome)
+		output.Succ(c, res)
+	} else {
+		if errS != nil {
+			output.ShowErr(c, errS)
+		} else {
+			output.ShowErr(c, errI)
+		}
+	}
 }
 
 func GetHomeHashrateHistory(c *gin.Context) {

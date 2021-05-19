@@ -33,7 +33,6 @@ func Sign(params map[string]string) map[string]string {
 	ks := make([]string, 0)
 	for k, v := range params {
 		res[k] = v
-		ks = append(ks, k)
 	}
 	for k,_ := range res{
 		ks = append(ks, k)
@@ -99,17 +98,13 @@ type LatestBlock struct {
 }
 type LatestBlockList []LatestBlock
 
-func GetLatestBlockList(c *gin.Context, params interface{}) (map[string]LatestBlockList, error) {
+func GetLatestBlockList(c *gin.Context, params map[string]string) (map[string]LatestBlockList, error) {
 	var dest = struct {
 		BtcpoolRescomm
-		Data map[string](map[string]interface{}) `json:"data"`
+		Data map[string]map[string]interface{} `json:"data"`
 	}{}
 
-	// test := make(map[string]string)
-	// test["coins"] = "btc,bch"
-	// test["show_unconfirm_info"] = "true"
-	// ps := Sign(test)
-	_, err := doRequest(c, "explorer.blockList", params, &dest)
+	_, err := doRequest(c, "explorer.blockList", Sign(params), &dest)
 	if err != nil {
 		return nil, err //fmt.Errorf("error GetLatestBlockList: %v", err)
 	}
