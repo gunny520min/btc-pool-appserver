@@ -192,7 +192,7 @@ func (p *publicHandler) FormatHomeCoinList(mulStats map[string](btcpoolclient.Co
 }
 
 // get pool rank
-func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params interface{}) <-chan map[string]btcpoolclient.PoolRankData {
+func (p *publicHandler) AsnycGetPoolRank(c *gin.Context, coin string, params map[string]string) <-chan map[string]btcpoolclient.PoolRankData {
 	ch := make(chan map[string]btcpoolclient.PoolRankData, 0)
 	go func() {
 		var res map[string]btcpoolclient.PoolRankData
