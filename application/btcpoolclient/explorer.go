@@ -120,11 +120,7 @@ func GetLatestBlockList(c *gin.Context, params map[string]string) (map[string]La
 		if jsonRes != nil {
 			return nil, jsonRes
 		}
-		blkArr := make(LatestBlockList, 0)
-		for _, blk := range newData {
-			blkArr = append(blkArr, blk)
-		}
-		res[k] = blkArr
+		res[k] = newData
 	}
 	return res, nil
 }
