@@ -53,18 +53,22 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 	info.Diff = diff
 	info.DiffUnit = diffUnit
 
-	if strings.ToLower(statInfo.Coin_type) == "btc" {
+	if strings.Contains("btc,dcr,ltc,BTC,DCR,LTC", statInfo.Coin_type) {
 		if nDiff, err := strconv.ParseFloat(income.NextDiff, 64); err == nil {
 			change := ((nDiff - income.Diff) / income.Diff) * 100
-			var nDiffStr, nDiffUnit = calculateHashRate(nDiff, 2)
+			var nDiffStr, nDiffUnit = calculateHashRate(nDiff, 3)
 			info.NextDiff = nDiffStr
 			info.NextDiffUnit = nDiffUnit
 			info.NextDiffChange = fmt.Sprintf("%0.3f%%", change)
+			info.NextDiffTime = income.DiffAdjustTime
+		} else {
+			info.NextDiff = "-"
+			info.NextDiffTime = "-"
+			info.NextDiffChange = ""
 		}
-		info.NextDiffTime = income.DiffAdjustTime
 	} else {
-		info.NextDiff = income.NextDiff
-		info.NextDiffTime = income.DiffAdjustTime
+		info.NextDiff = "-"//income.NextDiff
+		info.NextDiffTime = "-"//income.DiffAdjustTime
 		info.NextDiffChange = ""
 	}
 
@@ -73,9 +77,15 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeOptimizeCny, 2)
 		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeOptimizeUsd, 2)
 	} else {
-		info.IncomeCoin = tool.KeepFloatNum(income.IncomeCoin, 8)
-		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
-		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		if strings.ToLower(statInfo.Coin_type) == "ubtc" {
+			info.IncomeCoin = "-"
+			info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
+			info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		}else {
+			info.IncomeCoin = tool.KeepFloatNum(income.IncomeCoin, 8)
+			info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
+			info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		}
 	}
 	info.CurrencyCny = fmt.Sprintf("%.2f", income.IncomeCny/income.IncomeCoin)
 	info.CurrencyUsd = fmt.Sprintf("%.2f", income.IncomeUsd/income.IncomeCoin)
