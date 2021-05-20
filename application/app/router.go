@@ -32,8 +32,6 @@ func InitPublicRouter(r *gin.Engine) {
 	pGroup := r.Group("/home")
 	pGroup.GET("/coinInfoList", controller.HomeCoinInfoList)
 	pGroup.GET("/activities", controller.HomeBannerNotice)
-	pGroup.GET("/latestBlock", controller.ExplorerLatestBlock)
-	pGroup.GET("/poolrank", controller.ExplorerPoolRank)
 	pGroup.GET("/hashrateHistory", controller.GetHomeHashrateHistory)
 }
 

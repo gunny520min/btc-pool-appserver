@@ -10,12 +10,10 @@ type LatestBlock struct {
 }
 
 type PoolRank struct {
-	PoolName               string `json:"poolName"`
-	IconLink               string `json:"iconLink"`
-	RealtimeHashrate       string `json:"realtimeHashrate"`
-	EstimateHashrate       string `json:"estimateHashrate"`
-	RealtimeCur2maxPercent string `json:"realtimeCur2maxPercent"`
-	EstimateCur2max        string `json:"estimateCur2max"`
-	HashSuffix             string `json:"hashrateSuffix"`
-	RealtimeDiff24hPercent string `json:"realtimeDiff24hPercent"`
+	Rank     string `json:"rank"`
+	PoolName string `json:"poolName"`
+	IconLink string `json:"iconLink"`
+	Progress string `json:"progress"`
+	Diff     string `json:"diff"`
+	Hashrate string `json:"hashrate"`
 }

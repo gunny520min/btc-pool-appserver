@@ -34,7 +34,7 @@ func Sign(params map[string]string) map[string]string {
 	for k, v := range params {
 		res[k] = v
 	}
-	for k,_ := range res{
+	for k, _ := range res {
 		ks = append(ks, k)
 	}
 	sort.Strings(ks)
@@ -62,8 +62,8 @@ type PoolRank struct {
 	IconLink               string `json:"icon_link"`
 	RealtimeHashrate       string `json:"realtime_hashrate"`
 	EstimateHashrate       string `json:"estimate_hashrate"`
-	RealtimeCur2maxPercent string `json:"realtime_cur2max_percent"`
 	EstimateCur2max        string `json:"estimate_cur2max"`
+	Cur2maxPercent         string `json:"cur2max_percent"`
 	HashSuffix             string `json:"hashrate_suffix"`
 	RealtimeDiff24hPercent string `json:"realtime_diff_24h_percent"`
 }

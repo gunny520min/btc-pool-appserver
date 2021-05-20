@@ -2,9 +2,11 @@ package service
 
 import (
 	"btc-pool-appserver/application/btcpoolclient"
+	"btc-pool-appserver/application/library/tool"
 	"btc-pool-appserver/application/model"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -176,16 +178,29 @@ func (p *publicHandler) GetPoolRank(c *gin.Context, params map[string]string) (m
 	} else {
 		for k, v := range dic {
 			ranks := make([]model.PoolRank, 0)
-			for _, rankInfo := range v.Realtime.List {
+			for i, rankInfo := range v.Realtime.List {
+
+				var hash string
+				if len(rankInfo.RealtimeHashrate) == 0 {
+					hash = tool.KeepStringNum(rankInfo.EstimateHashrate, 2)
+				} else {
+					hash = tool.KeepStringNum(rankInfo.RealtimeHashrate, 2)
+				}
+
+				var diff string
+				if len(rankInfo.RealtimeHashrate) == 0 {
+					diff = "-"
+				} else {
+					diff = tool.KeepStringNum(rankInfo.RealtimeDiff24hPercent, 2)
+				}
+
 				ranks = append(ranks, model.PoolRank{
+					Rank:                   strconv.Itoa(i + 1),
 					PoolName:               rankInfo.PoolName,
 					IconLink:               rankInfo.IconLink,
-					RealtimeHashrate:       rankInfo.RealtimeHashrate,
-					EstimateHashrate:       rankInfo.EstimateHashrate,
-					RealtimeCur2maxPercent: rankInfo.RealtimeCur2maxPercent,
-					EstimateCur2max:        rankInfo.EstimateCur2max,
-					HashSuffix:             rankInfo.HashSuffix,
-					RealtimeDiff24hPercent: rankInfo.RealtimeDiff24hPercent,
+					Progress:				rankInfo.Cur2maxPercent,
+					Hashrate:               hash,
+					Diff: diff,
 				})
 			}
 			res[k] = ranks
