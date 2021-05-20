@@ -77,9 +77,15 @@ func (info *HomeCoinInfo) SetData(statInfo btcpoolclient.CoinStat, income btcpoo
 		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeOptimizeCny, 2)
 		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeOptimizeUsd, 2)
 	} else {
-		info.IncomeCoin = tool.KeepFloatNum(income.IncomeCoin, 8)
-		info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
-		info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		if strings.ToLower(statInfo.Coin_type) == "ubtc" {
+			info.IncomeCoin = "-"
+			info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
+			info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		}else {
+			info.IncomeCoin = tool.KeepFloatNum(income.IncomeCoin, 8)
+			info.IncomeCurrencyCny = tool.KeepFloatNum(income.IncomeCny, 2)
+			info.IncomeCurrencyUsd = tool.KeepFloatNum(income.IncomeUsd, 2)
+		}
 	}
 	info.CurrencyCny = fmt.Sprintf("%.2f", income.IncomeCny/income.IncomeCoin)
 	info.CurrencyUsd = fmt.Sprintf("%.2f", income.IncomeUsd/income.IncomeCoin)
