@@ -195,7 +195,7 @@ func (p *publicHandler) GetPoolRank(c *gin.Context, params map[string]string) (m
 }
 
 // get latest block
-func (p *publicHandler) GetLatestBlocks(c *gin.Context, params map[string]string) (map[string]([]model.LatestBlock), error) {
+func (p *publicHandler) GetLatestBlocks(c *gin.Context, params map[string]string) (map[string][]model.LatestBlock, error) {
 	data := make(map[string][]model.LatestBlock)
 	if res, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
 		return data, err

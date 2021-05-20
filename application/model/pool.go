@@ -19,7 +19,7 @@ type WatcherDashboard struct {
 type Dashboard struct {
 	Income
 	IsSmart        bool          `json:"isSmart"`
-	hasSubAccounts bool          `json:"hasSubAccounts"`
+	HasSubAccounts bool          `json:"hasSubAccounts"`
 	Puid           string        `json:"puid"`
 	CoinUnit       string        `json:"coinUnit"`
 	Title          string        `json:"title"`

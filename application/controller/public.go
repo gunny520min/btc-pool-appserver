@@ -4,6 +4,7 @@ import (
 	"btc-pool-appserver/application/btcpoolclient"
 	"btc-pool-appserver/application/library/errs"
 	"btc-pool-appserver/application/library/output"
+	"btc-pool-appserver/application/model"
 	"btc-pool-appserver/application/service"
 	"fmt"
 	"sync"
@@ -144,7 +145,7 @@ func GetHomeHashrateHistory(c *gin.Context) {
 		// } else {
 		shareData := service.PoolService.GetShareHashrate(c, p)
 		res["histories"] = service.PoolService.FormatHashrateChartData(shareData)
-		res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData)
+		res["unit"] = service.PoolService.FormatHashrateChartUnit(shareData) + model.GetCoinSuffixByCoinType(coin)
 		output.Succ(c, res)
 		// }
 	}

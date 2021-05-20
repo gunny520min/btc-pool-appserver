@@ -117,10 +117,12 @@ func GetDashboardHome(c *gin.Context) {
 				// 用户从未创建过账户
 				res.Puid = ""
 				res.IsSmart = false
+				res.HasSubAccounts = false
 				res.CoinUnit = ""
 				res.CoinType = ""
 				res.HasIncome = false
 			}
+			res.HasSubAccounts = true
 			res.IsSmart = currentCoinAccount.IsSmart()
 			res.Puid = currentCoinAccount.Puid
 			res.CoinType = currentCoinAccount.CoinType
