@@ -215,8 +215,8 @@ func (p *publicHandler) GetLatestBlocks(c *gin.Context, params map[string]string
 	if res, err := btcpoolclient.GetLatestBlockList(c, params); err != nil {
 		return data, err
 	} else {
-		blkArr := make([]model.LatestBlock, 0)
 		for k, v := range res {
+			blkArr := make([]model.LatestBlock, 0)
 			for _, blkInfo := range v {
 				blkArr = append(blkArr, model.LatestBlock{
 					Timestamp: blkInfo.Timestamp,
