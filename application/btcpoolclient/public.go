@@ -88,19 +88,27 @@ func GetNoticeList(c *gin.Context, params interface{}) ([]Notice, error) {
 }
 
 type CoinStat struct {
-	Stats         CoinInnerStat `json:"stats"`
-	Coin_type     string        `json:"coin_type"`
-	Coin_pay_mode string        `json:"coin_pay_mode"`
-	Coin_suffix   string        `json:"coin_suffix"`
-	Blocks_count  string        `json:"blocks_count"`
-	Rewards_count string        `json:"rewards_count"`
+	Stats        CoinInnerStat  `json:"stats"`
+	CoinType     string         `json:"coin_type"`
+	CoinPayMode  string         `json:"coin_pay_mode"`
+	CoinPayLimit string         `json:"coin_pay_limit"`
+	CoinSuffix   string         `json:"coin_suffix"`
+	BlocksCount  string         `json:"blocks_count"`
+	RewardsCount string         `json:"rewards_count"`
+	IndexCoin    IndexCoinModel `json:"index_coin"`
 }
 type CoinInnerStat struct {
 	Shares CoinStatShares `json:"shares"`
 }
 type CoinStatShares struct {
-	Shares_15m  string `json:"shares_15m"`
-	Shares_unit string `json:"shares_unit"`
+	Shares15m  string `json:"shares_15m"`
+	SharesUnit string `json:"shares_unit"`
+}
+type IndexCoinModel struct {
+	Algorithm string `json:"algorithm"`
+	Mode      string `json:"mode"`
+	Text      string `json:"text"`
+	PayLimit  string `json:"pay_limit"`
 }
 
 // 获取多币种状态
