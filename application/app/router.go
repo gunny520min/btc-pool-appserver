@@ -27,10 +27,11 @@ func InitRouter(r *gin.Engine) error {
 	return nil
 }
 
-// 首页 ..
+// InitHomeRouter 首页 ..
 func InitHomeRouter(r *gin.Engine) {
-	pGroup := r.Group("/home")
-	pGroup.GET("/info", controller.HomeInfo)
+	pGroup := r.Group("")
+	pGroup.GET("/home/info", controller.HomeInfo)
+	pGroup.GET("/linkData", controller.LinkData)
 }
 
 // 用户面板

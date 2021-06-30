@@ -30,19 +30,8 @@ type HomeModule struct {
 	Url   string `json:"url"`
 }
 
-type PoolRankInfo struct {
-	Index     string                 `json:"index"`
-	Icon string                      `json:"icon"`
-	Name string                      `json:"name"`
-	HashratePercent string           `json:"hashratePercent"`
-	Hashrate string                  `json:"hashrate"`
-	HashrateUnit string              `json:"hashrateUnit"`
-	HashrateChangePercent     string `json:"hashrateChangePercent"`
-	Lucy7Day string                  `json:"lucy7Day"`
-}
-
-
 type HomeCoin struct {
+	Coin           string `json:"coin"`
 	Id             string `json:"id"`
 	Name           string `json:"name"`
 	Algorithm      string `json:"algorithm"`
@@ -61,6 +50,7 @@ type HomeCoin struct {
 
 func (info *HomeCoin) SetData(statInfo btcpoolclient.CoinStat, income btcpoolclient.CoinIncome, lan string) {
 	info.Id = statInfo.CoinType
+	info.Coin = statInfo.CoinType
 	info.Name = statInfo.IndexCoin.Text
 	info.Algorithm = statInfo.IndexCoin.Algorithm
 	isEn := strings.ToLower(lan) == "en_us"
