@@ -79,6 +79,7 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 			}
 		}
 		var cce clientModel.SubAccountCoinEntity
+		var hasSamePuid = false
 		// 取puid相同的coinAccount
 		if len(puid) > 0 {
 			for _, subaccount := range subAccountAlgorithms.SubAccounts {
@@ -86,6 +87,7 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 					for _, coinAccount := range algorithm.CoinAccounts {
 						if puid == coinAccount.Puid {
 							cce = coinAccount
+							hasSamePuid = true
 						}
 					}
 				}
@@ -93,7 +95,7 @@ func (p *poolHandler) GetDashboardSubaccounts(c *gin.Context, puid string) (*cli
 		}
 		currentCoinEntity = &cce
 		// 如果没有取到，默认使用第一个作为账户默认coinAccount
-		if currentCoinEntity == nil {
+		if !hasSamePuid {
 			currentCoinEntity = &subAccountAlgorithms.SubAccounts[0].Algorithms[0].CoinAccounts[0]
 		}
 		subaccounts = &subAccountAlgorithms
