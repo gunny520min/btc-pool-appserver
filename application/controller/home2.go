@@ -107,3 +107,41 @@ func LinkData(c *gin.Context) {
 		output.Succ(c, res)
 	}
 }
+
+// PoolHashrates 矿池图表数据
+func PoolHashrates(c *gin.Context) {
+
+	type PoolHashrateParam struct {
+		CoinType  string `form:"coinType" binding:"required"`
+		Dimension string `form:"dimension" binding:"required"`
+	}
+	var pa PoolHashrateParam
+	if err := c.ShouldBindQuery(&pa); err != nil {
+		output.ShowErr(c, err)
+		return
+	}
+
+	res := make(map[string]interface{})
+	params := make(map[string]interface{})
+	params["dimension"] = "1h" //pa.Dimension
+	params["count"] = 72
+	params["real_point"] = "1"
+	params["coin_type"] = pa.CoinType
+	//var p struct {
+	//	Dimension string `json:"dimension"`
+	//	Count     int    `json:"count"`
+	//	RealPoint string `json:"real_point"`
+	//	CoinType  string `json:"coin_type"`
+	//}
+	//p.CoinType = coin
+	//p.Count = 72
+	//p.Dimension = "1h"
+	//p.RealPoint = "1"
+	if data, err := service.HomeService.GetShareHashrate(c, params); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		res["histories"] = data.Tickets
+		res["unit"] = data.Unit
+		output.Succ(c, res)
+	}
+}

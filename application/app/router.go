@@ -32,6 +32,7 @@ func InitHomeRouter(r *gin.Engine) {
 	pGroup := r.Group("")
 	pGroup.GET("/home/info", controller.HomeInfo)
 	pGroup.GET("/linkData", controller.LinkData)
+	pGroup.GET("/pool/hashrates", controller.PoolHashrates)
 }
 
 // 用户面板

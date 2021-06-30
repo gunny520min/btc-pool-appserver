@@ -138,3 +138,34 @@ func (p *homeHandler) GetModules(c *gin.Context) []model.HomeModule {
 	}
 	return []model.HomeModule{observable, counter, minerRank, chainData}
 }
+
+type ShareHashrate struct {
+	Tickets []model.HashrateData
+	Unit string
+}
+// GetShareHashrate 获取首页算力图表数据
+func (p *homeHandler) GetShareHashrate(c *gin.Context, params interface{}) (ShareHashrate, error) {
+	var ret ShareHashrate
+	if data, err := btcpoolclient.GetPoolShareHashrate(c, params); err != nil {
+		return ret, err
+	} else {
+		ret.Tickets = p.FormatHashrateChartData(data)
+		ret.Unit = p.FormatHashrateChartUnit(data)
+	}
+	return ret, nil
+}
+
+func (p *homeHandler) FormatHashrateChartUnit(params btcpoolclient.ShareHashrateData) string {
+	return params.Unit
+}
+
+func (p *homeHandler) FormatHashrateChartData(params btcpoolclient.ShareHashrateData) []model.HashrateData {
+	res := make([]model.HashrateData, 0)
+	for _, v := range params.Tickers {
+		var item model.HashrateData
+		item.Hashrate = v[1]
+		item.Timestamp = v[0]
+		res = append(res, item)
+	}
+	return res
+}
