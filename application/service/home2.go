@@ -169,3 +169,19 @@ func (p *homeHandler) FormatHashrateChartData(params btcpoolclient.ShareHashrate
 	}
 	return res
 }
+
+// GetPoolDataBaseInfo 矿池数据
+func (p *homeHandler) GetPoolDataBaseInfo (c *gin.Context, coin string) (model.PoolBaseInfo, error) {
+	info := model.PoolBaseInfo{
+		MiningGift: "挖BTC免费送NMC、ELA",
+		Paymode: "FPPS",
+		PayLimit: "0.005BTC",
+		PayType: "达到起付额后自动支付",
+		PayTime: "每日 08:00-16:00(UTC)支付昨日收益",
+		MiningTutorial: "https://btc.com",
+		Address: []string{"us.ss.btc.com:1800", "us.ss.btc.com:443", "us.ss.btc.com:25"},
+		AccountName: "youdao1.001",
+	}
+	return info, nil
+}
+

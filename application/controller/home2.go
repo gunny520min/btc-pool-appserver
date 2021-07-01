@@ -145,3 +145,19 @@ func PoolHashrates(c *gin.Context) {
 		output.Succ(c, res)
 	}
 }
+
+// GetPoolBaseInfo 矿池数据
+func GetPoolBaseInfo(c *gin.Context) {
+	coin := c.Query("coinType")
+	if len(coin) == 0 {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if info, err := service.HomeService.GetPoolDataBaseInfo(c, coin); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		res := make(map[string]interface{})
+		res["baseInfo"] = info
+		output.Succ(c, res)
+	}
+}

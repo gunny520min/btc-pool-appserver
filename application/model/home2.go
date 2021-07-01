@@ -95,6 +95,17 @@ func (info *HomeCoin) SetData(statInfo btcpoolclient.CoinStat, income btcpoolcli
 	}
 }
 
+type PoolBaseInfo struct {
+	MiningGift     string `json:"miningGift"`
+	Paymode        string `json:"paymode"`
+	PayLimit       string `json:"payLimit"`
+	PayType        string `json:"payType"`
+	PayTime        string
+	MiningTutorial string `json:"miningTutorial"`
+	Address []string   `json:"address"`
+	AccountName string `json:"accountName"`
+}
+
 // value 要转化的hashrate，l小数点后位数
 func calculateHashRate(value float64, l int32) (string, string) {
 	d := decimal.NewFromFloatWithExponent(value, 0) // 取整数部分
