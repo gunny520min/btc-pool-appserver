@@ -1,7 +1,8 @@
 timeout: 10000
 
 #base: "https://pool.btc.com"
-base: "https://pre.pool.btc.com"
+#base: "https://pre.pool.btc.com"
+base: "https://dev.pool.btc.com"
 
 apis:
   app.banner:
