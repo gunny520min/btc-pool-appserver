@@ -66,6 +66,11 @@ type PoolRank struct {
 	Cur2maxPercent         string `json:"cur2max_percent"`
 	HashSuffix             string `json:"hashrate_suffix"`
 	RealtimeDiff24hPercent string `json:"realtime_diff_24h_percent"`
+	HashrateUnit           string `json:"hashrate_unit"`
+	EstimateHashrateUnit   string `json:"estimate_hashrate_unit"`
+	HashrateSuffix         string `json:"hashrate_suffix"`
+	Lucky                  string `json:"lucky"`
+	Lucky3d                string `json:"lucky_3d"`
 }
 
 type RealtimeData struct {

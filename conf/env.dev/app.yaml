@@ -1,7 +1,8 @@
 timeout: 10000
 
-base: "https://pool.btc.com"
+#base: "https://pool.btc.com"
 #base: "https://pre.pool.btc.com"
+base: "https://dev.pool.btc.com"
 
 apis:
   app.banner:
@@ -54,6 +55,12 @@ apis:
     method: "POST"
   subaccount.info:
     uri: "/v1/account/sub-account/info"
+    method: "GET"
+  subaccount.create:
+    uri: "/v1/account/sub-account/create"
+    method: "POST"
+  subaccount.createInit:
+    uri: "/v1/account/sub-account/create/init"
     method: "GET"
 
   account.info:

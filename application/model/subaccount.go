@@ -6,6 +6,18 @@ type SubaccountEntity struct {
 	Algorithms []SubaccountAlgorithmEntity `json:"algorithms"`
 }
 
+type SubaccountEntity2 struct {
+	Title      string                                 `json:"title"`
+	SearchKey  string                                 `json:"searchKey"`
+	SubAccount []SubaccountAlgorithmCoinAccountEntity `json:"subAccount"`
+}
+
+type SubaccountEntityCurrent2 struct {
+	Puid     string `json:"puid"`
+	CoinType string `json:"coinType"`
+	SubaccountEntity2
+}
+
 type SubaccountAlgorithmEntity struct {
 	AlgorithmText string                                 `json:"algorithmText"`
 	CurrentCoin   string                                 `json:"currentCoin"`
@@ -16,17 +28,32 @@ type SubaccountAlgorithmEntity struct {
 }
 
 type SubaccountAlgorithmCoinAccountEntity struct {
-	Puid      string `json:"puid"`
-	CoinType  string `json:"coinType"`
-	IsHidden  bool   `json:"isHidden"`
-	IsCurrent bool   `json:"IsCurrent"`
+	Puid         string   `json:"puid"`
+	CoinType     string   `json:"coinType"`
+	IsHidden     bool     `json:"isHidden"`
+	IsCurrent    bool     `json:"isCurrent"`
+	SupportCoins []string `json:"supportCoins"`
 }
 
 type SubaccountHashrateEntity struct {
-	Puid         string   `json:"puid"`
-	WorkerTotal  int   `json:"workerTotal"`
-	WorkerActive int   `json:"workerActive"`
-	Hashrate     string   `json:"hashrate"`
-	HashrateUnit string   `json:"hashrateUnit"`
+	Puid           string `json:"puid"`
+	WorkerTotal    int    `json:"workerTotal"`
+	WorkerActive   int    `json:"workerActive"`
+	Hashrate       string `json:"hashrate"`
+	HashrateUnit   string `json:"hashrateUnit"`
 	LastAlertTrans string `json:"lastAlertTrans"`
+}
+
+type CreateSubaccountInit struct {
+	CoinTypeList       []string                     `json:"coinTypeList"`
+	RegionList         map[string]string            `json:"regionList"`
+	CoinTypeRegionNode map[string]map[string]string `json:"regionNode"`
+}
+type CreateSubaccountInitEntity struct {
+	CoinType   string                           `json:"coinType"`
+	RegionNode []CreateSubaccountInitNodeEntity `json:"regionNode"`
+}
+type CreateSubaccountInitNodeEntity struct {
+	RegionName string `json:"regionName"`
+	ShowText   string `json:"showText"`
 }

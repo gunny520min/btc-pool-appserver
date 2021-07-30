@@ -113,7 +113,6 @@ func SubacountHiidenCancel(c *gin.Context, params interface{}) (map[string]inter
 	return dest.Data, nil
 }
 
-
 func GetSubaccountHashrate(c *gin.Context, params interface{}) (map[string]clientModel.SubAccountHashrateDetail, error) {
 	var dest = struct {
 		BtcpoolRescomm
@@ -140,4 +139,15 @@ func SubaccountChangeHashrate(c *gin.Context, params interface{}) (*clientModel.
 	return &dest.Data, nil
 }
 
+func SubaccountCreateInit(c *gin.Context, params interface{}) (*clientModel.CreateSubaccountInitRes, error) {
+	var dest = struct {
+		BtcpoolRescomm
+		Data clientModel.CreateSubaccountInitRes `json:"data"`
+	}{}
 
+	_, err := doRequest(c, "subaccount.createInit", params, &dest)
+	if err != nil {
+		return nil, err
+	}
+	return &dest.Data, nil
+}

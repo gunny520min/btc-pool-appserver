@@ -121,6 +121,22 @@ func GetSubAccountList(c *gin.Context) {
 	}
 }
 
+// GetSubAccountList 获取子账户列表
+func GetSubAccountInfo(c *gin.Context) {
+	var params struct {
+		AccountParams
+	}
+	if err := c.ShouldBindQuery(&params); err != nil {
+		output.ShowErr(c, errs.ApiErrParams)
+		return
+	}
+	if subaccountList,err := service.AccountService.GetCurrentSubAccount(c, params.Puid); err!=nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, subaccountList)
+	}
+}
+
 // GetSubAccountHashrates 获取子账户算力
 func GetSubAccountHashrates(c *gin.Context) {
 	var params struct {
@@ -150,13 +166,12 @@ func ChangeSubAccountHashrate(c *gin.Context) {
 	}
 	if d, err := btcpoolclient.SubaccountChangeHashrate(c, params); err != nil {
 		output.ShowErr(c, err)
-		return
 	} else {
 		output.Succ(c, d)
 	}
 }
 
-func SetSubacountHiiden(c *gin.Context) {
+func SetSubaccountHidden(c *gin.Context) {
 	var params struct {
 		AccountParams
 		HiddenPuid string `form:"hidden_puid" binding:"required"`
@@ -167,13 +182,12 @@ func SetSubacountHiiden(c *gin.Context) {
 	}
 	if d, err := btcpoolclient.SubacountHiiden(c, params); err != nil {
 		output.ShowErr(c, err)
-		return
 	} else {
 		output.Succ(c, d)
 	}
 }
 
-func CancelSubacountHiiden(c *gin.Context) {
+func CancelSubaccountHidden(c *gin.Context) {
 	var params struct {
 		AccountParams
 		CancleHiddenPuid string `form:"cancle_hidden_puid" binding:"required"`
@@ -184,7 +198,14 @@ func CancelSubacountHiiden(c *gin.Context) {
 	}
 	if d, err := btcpoolclient.SubacountHiidenCancel(c, params); err != nil {
 		output.ShowErr(c, err)
-		return
+	} else {
+		output.Succ(c, d)
+	}
+}
+
+func GetSubaccountCreateInit(c *gin.Context) {
+	if d, err := service.AccountService.GetSubAccountCreateInit(c); err != nil {
+		output.ShowErr(c, err)
 	} else {
 		output.Succ(c, d)
 	}
