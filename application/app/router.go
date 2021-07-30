@@ -74,6 +74,9 @@ func InitAccountSubaccount(r *gin.Engine) {
 	// 隐藏子账户
 	pgroup.GET("/hidden", controller.SetSubaccountHidden)
 	pgroup.GET("/hiddenCancel", controller.CancelSubaccountHidden)
+	pgroup.GET("/createInit", controller.GetSubaccountCreateInit)
+	pgroup.GET("/create", controller.GetSubaccountCreateInit)// TODO
+	pgroup.GET("/delete", controller.CancelSubaccountHidden)// TODO
 }
 
 /// 报警相关

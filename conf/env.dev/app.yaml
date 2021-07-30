@@ -56,6 +56,12 @@ apis:
   subaccount.info:
     uri: "/v1/account/sub-account/info"
     method: "GET"
+  subaccount.create:
+    uri: "/v1/account/sub-account/create"
+    method: "POST"
+  subaccount.createInit:
+    uri: "/v1/account/sub-account/create/init"
+    method: "GET"
 
   account.info:
     uri: "/v1/account/info"

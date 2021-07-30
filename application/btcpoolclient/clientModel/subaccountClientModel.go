@@ -56,10 +56,25 @@ type SubAccountHashrateAlert struct {
 }
 
 type ChangeHashrateRes struct {
-	DestPuid string `json:"dest_puid"`
+	DestPuid     string `json:"dest_puid"`
 	DestPuidName string `json:"dest_puid_name"`
 	DestRegionId string `json:"dest_region_id"`
-	SwitchMode string `json:"switch_mode"`
+	SwitchMode   string `json:"switch_mode"`
+	RegionName   string `json:"region_name"`
+	RegionUrl    string `json:"region_url"`
+}
+
+type CreateSubaccountInitRes struct {
+	NodeList     map[string]map[string]CreateSubaccountInitRegionRes `json:"node_list"`
+	CoinTypeList []string                                `json:"coin_type_list"`
+	RegionList   map[string]string                       `json:"region_list"`
+}
+
+type CreateSubaccountInitRegionRes struct {
 	RegionName string `json:"region_name"`
-	RegionUrl string `json:"region_url"`
+	DefaultUrl string `json:"default_url"`
+	PingUrl    string `json:"ping_url"`
+	Text       string `json:"text"`
+	Region     string `json:"region"`
+
 }

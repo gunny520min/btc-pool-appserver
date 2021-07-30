@@ -13,8 +13,8 @@ type SubaccountEntity2 struct {
 }
 
 type SubaccountEntityCurrent2 struct {
-	Puid              string            `json:"puid"`
-	CoinType          string            `json:"coinType"`
+	Puid     string `json:"puid"`
+	CoinType string `json:"coinType"`
 	SubaccountEntity2
 }
 
@@ -42,4 +42,18 @@ type SubaccountHashrateEntity struct {
 	Hashrate       string `json:"hashrate"`
 	HashrateUnit   string `json:"hashrateUnit"`
 	LastAlertTrans string `json:"lastAlertTrans"`
+}
+
+type CreateSubaccountInit struct {
+	CoinTypeList       []string                     `json:"coinTypeList"`
+	RegionList         map[string]string            `json:"regionList"`
+	CoinTypeRegionNode map[string]map[string]string `json:"regionNode"`
+}
+type CreateSubaccountInitEntity struct {
+	CoinType   string                           `json:"coinType"`
+	RegionNode []CreateSubaccountInitNodeEntity `json:"regionNode"`
+}
+type CreateSubaccountInitNodeEntity struct {
+	RegionName string `json:"regionName"`
+	ShowText   string `json:"showText"`
 }

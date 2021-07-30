@@ -118,3 +118,41 @@ func (p *accountHandler) GetSubAccountHashrates(c *gin.Context, puids string) (m
 		return data, nil
 	}
 }
+
+func (p *accountHandler) GetSubAccountCreateInit(c *gin.Context) ([]model.CreateSubaccountInitEntity, error) {
+	var params = map[string]interface{}{}
+	var data = make([]model.CreateSubaccountInitEntity, 0)
+	if subaccountCreateInit, e := btcpoolclient.SubaccountCreateInit(c, params); e != nil {
+		return data, e
+	} else {
+		coinTypeList := make([]string, 0)
+		for _, coinType := range subaccountCreateInit.CoinTypeList {
+			for k, _ := range subaccountCreateInit.NodeList {
+				if coinType == k {
+					coinTypeList = append(coinTypeList, coinType)
+				}
+			}
+		}
+
+		for _, key := range coinTypeList {
+			item := model.CreateSubaccountInitEntity{}
+			item.CoinType = key
+			item.RegionNode = make([]model.CreateSubaccountInitNodeEntity, 0)
+			for name, _ := range subaccountCreateInit.RegionList {
+				if n, ok := subaccountCreateInit.NodeList[key]; ok {
+					for _, childn := range n {
+						if name == childn.Region {
+							node := model.CreateSubaccountInitNodeEntity{}
+							node.ShowText = childn.Text
+							node.RegionName = childn.RegionName
+							item.RegionNode = append(item.RegionNode, node)
+						}
+					}
+				}
+			}
+			data = append(data, item)
+		}
+
+		return data, nil
+	}
+}

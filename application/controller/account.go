@@ -202,3 +202,11 @@ func CancelSubaccountHidden(c *gin.Context) {
 		output.Succ(c, d)
 	}
 }
+
+func GetSubaccountCreateInit(c *gin.Context) {
+	if d, err := service.AccountService.GetSubAccountCreateInit(c); err != nil {
+		output.ShowErr(c, err)
+	} else {
+		output.Succ(c, d)
+	}
+}
